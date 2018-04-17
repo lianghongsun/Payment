@@ -36,6 +36,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
      user = [UserInfo shareObject];
+    user.isLogin = YES;//测试数据暂时填写
     // 设置导航控制器的代理为self
     self.navigationController.delegate = self;
 }
@@ -167,14 +168,14 @@
         
         cell.smarttoBlock = ^(HoemfirstCell *cell){
             if (user.isLogin) {
-                if (user.identityAuthed==0) {
-                    [self showMessage:@"请先进行实名认证" viewHeight:100];
-                    return;
-                }
-                if (user.merchantAuthed==0) {
-                    [self showMessage:@"请先进行店铺认证" viewHeight:100];
-                    return;
-                }
+//                if (user.identityAuthed==0) {
+//                    [self showMessage:@"请先进行实名认证" viewHeight:100];
+//                    return;
+//                }
+//                if (user.merchantAuthed==0) {
+//                    [self showMessage:@"请先进行店铺认证" viewHeight:100];
+//                    return;
+//                }
                 SmartCodeVC *vc = [[SmartCodeVC alloc]initWithNibName:@"SmartCodeVC" bundle:nil];
                 vc.hidesBottomBarWhenPushed = YES;  // 设置B
                 [weakself.navigationController pushViewController:vc animated:YES];
@@ -186,14 +187,14 @@
         
         cell.paymenttoBlock  = ^(HoemfirstCell *cell){
             if (user.isLogin) {
-                if (user.identityAuthed==0) {
-                    [self showMessage:@"请先进行实名认证" viewHeight:100];
-                    return;
-                }
-                if (user.merchantAuthed==0) {
-                    [self showMessage:@"请先进行店铺认证" viewHeight:100];
-                    return;
-                }
+//                if (user.identityAuthed==0) {
+//                    [self showMessage:@"请先进行实名认证" viewHeight:100];
+//                    return;
+//                }
+//                if (user.merchantAuthed==0) {
+//                    [self showMessage:@"请先进行店铺认证" viewHeight:100];
+//                    return;
+//                }
                 PaymentCodeVC *vc = [[PaymentCodeVC alloc]initWithNibName:@"PaymentCodeVC" bundle:nil];
                 vc.hidesBottomBarWhenPushed = YES;  // 设置B
                 [weakself.navigationController pushViewController:vc animated:YES];
@@ -214,14 +215,14 @@
             cell.withdrawalstoBlock = ^(HomeBalanceCell *cell) {
                 
                 if (user.isLogin) {
-                    if (user.identityAuthed==0) {
-                        [self showMessage:@"请先进行实名认证" viewHeight:100];
-                        return;
-                    }
-                    if (user.merchantAuthed==0) {
-                        [self showMessage:@"请先进行店铺认证" viewHeight:100];
-                        return;
-                    }
+//                    if (user.identityAuthed==0) {
+//                        [self showMessage:@"请先进行实名认证" viewHeight:100];
+//                        return;
+//                    }
+//                    if (user.merchantAuthed==0) {
+//                        [self showMessage:@"请先进行店铺认证" viewHeight:100];
+//                        return;
+//                    }
                     WithdrawalsVC *vc = [[WithdrawalsVC alloc]initWithNibName:@"WithdrawalsVC" bundle:nil];
                     vc.hidesBottomBarWhenPushed = YES;  // 设置B
                     [weakself.navigationController pushViewController:vc animated:YES];
@@ -240,14 +241,14 @@
             HomeCertificationCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
             cell.reimbursementoBlock  = ^(HomeCertificationCell *cell) {
                 if (user.isLogin) {
-                    if (user.identityAuthed==0) {
-                        [self showMessage:@"请先进行实名认证" viewHeight:100];
-                        return;
-                    }
-                    if (user.merchantAuthed==0) {
-                        [self showMessage:@"请先进行店铺认证" viewHeight:100];
-                        return;
-                    }
+//                    if (user.identityAuthed==0) {
+//                        [self showMessage:@"请先进行实名认证" viewHeight:100];
+//                        return;
+//                    }
+//                    if (user.merchantAuthed==0) {
+//                        [self showMessage:@"请先进行店铺认证" viewHeight:100];
+//                        return;
+//                    }
                     CreditCardVC *vc = [[CreditCardVC alloc]initWithNibName:@"CreditCardVC" bundle:nil];
                     vc.hidesBottomBarWhenPushed = YES;  // 设置B
                     [weakself.navigationController pushViewController:vc animated:YES];
@@ -281,14 +282,14 @@
             
             cell.todaytoBlock  = ^(HomeCertificationCell *cell){
                 if (user.isLogin) {
-                    if (user.identityAuthed==0) {
-                        [self showMessage:@"请先进行实名认证" viewHeight:100];
-                        return;
-                    }
-                    if (user.merchantAuthed==0) {
-                        [self showMessage:@"请先进行店铺认证" viewHeight:100];
-                        return;
-                    }
+//                    if (user.identityAuthed==0) {
+//                        [self showMessage:@"请先进行实名认证" viewHeight:100];
+//                        return;
+//                    }
+//                    if (user.merchantAuthed==0) {
+//                        [self showMessage:@"请先进行店铺认证" viewHeight:100];
+//                        return;
+//                    }
                     TodayBillVC *vc = [[TodayBillVC alloc]initWithNibName:@"TodayBillVC" bundle:nil];
                     vc.hidesBottomBarWhenPushed = YES;  // 设置B
                     [weakself.navigationController pushViewController:vc animated:YES];

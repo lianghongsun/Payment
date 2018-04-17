@@ -10,8 +10,11 @@
 #import "RealNameCationCell.h"
 #import "ZZYPhotoHelper.h"
 
-@interface RealNameSecondVC ()<UITableViewDataSource,UITableViewDelegate>
-
+@interface RealNameSecondVC ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
+{
+    UITextField *nameTx;
+    UITextField *numTx;
+}
 @end
 
 @implementation RealNameSecondVC
@@ -60,6 +63,11 @@
     
     static NSString *identifier1 = @"RealNameCationCell";
     RealNameCationCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+    cell.nameTx.delegate = self;
+    cell.numTx.delegate = self;
+    nameTx = cell.nameTx;
+    numTx = cell.numTx;
+    
     cell.positivetoBlock = ^(RealNameCationCell *cell) {
         
         [[ZZYPhotoHelper shareHelper] showImageViewSelcteWithResultBlock:^(id data) {
@@ -96,6 +104,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == nameTx) {
+        [nameTx resignFirstResponder];
+        [numTx becomeFirstResponder];
+    }else{
+        [numTx resignFirstResponder];
+    }
+    return YES;
 }
 
 @end

@@ -9,7 +9,7 @@
 #import "ShopCerifiThreeVC.h"
 #import "ShopCerifFourVC.h"
 
-@interface ShopCerifiThreeVC ()
+@interface ShopCerifiThreeVC ()<UITextFieldDelegate>
 
 @end
 
@@ -18,6 +18,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"店铺信息";
+    
+    self.nameTx.delegate = self;
+    self.provinceTx.delegate = self;
+    self.cityTx.delegate = self;
+    self.countyTx.delegate = self;
+    self.adreeTx.delegate = self;
+    self.categoryTx.delegate = self;
     
     [self.agreeBtn setImage:[UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e615", 40, RGB(220, 220, 220))] forState:UIControlStateNormal];
     [self.agreeBtn setImage:[UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e614", 40, ThemeColor)] forState:UIControlStateSelected];
@@ -58,4 +65,33 @@
     }
     
 }
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.nameTx) {
+        [self.nameTx resignFirstResponder];
+        [self.provinceTx becomeFirstResponder];
+    }else if(textField == self.provinceTx){
+        [self.provinceTx resignFirstResponder];
+        [self.cityTx becomeFirstResponder];
+    }
+    else if (textField == self.cityTx){
+        [self.cityTx resignFirstResponder];
+        [self.countyTx becomeFirstResponder];
+    }
+    else if (textField == self.countyTx){
+        [self.countyTx resignFirstResponder];
+        [self.adreeTx becomeFirstResponder];
+    }
+    else if (textField == self.adreeTx){
+        [self.adreeTx resignFirstResponder];
+        [self.categoryTx becomeFirstResponder];
+    }
+    else{
+        [self.categoryTx resignFirstResponder];
+    }
+    return YES;
+}
+
 @end

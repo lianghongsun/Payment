@@ -9,7 +9,7 @@
 #import "AddCreditCardVC.h"
 #import "ConfirmPaymentVC.h"
 
-@interface AddCreditCardVC ()
+@interface AddCreditCardVC ()<UITextFieldDelegate>
 
 @end
 
@@ -18,6 +18,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"添加信用卡";
+    
+    self.cardText.delegate = self;
+    self.againcardText.delegate = self;
+    self.cardnameText.delegate = self;
+    
     
 }
 
@@ -31,4 +36,22 @@
     ConfirmPaymentVC *vc = [[ConfirmPaymentVC alloc]initWithNibName:@"ConfirmPaymentVC" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.cardText) {
+        [self.cardText resignFirstResponder];
+        [self.againcardText becomeFirstResponder];
+    }else if(textField == self.againcardText){
+        [self.againcardText resignFirstResponder];
+        [self.cardnameText becomeFirstResponder];
+    }
+    else{
+        [self.cardnameText resignFirstResponder];
+    }
+    return YES;
+}
+
+
+
 @end

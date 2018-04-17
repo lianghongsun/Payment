@@ -9,7 +9,7 @@
 #import "BindingYHKSecondVC.h"
 #import "UIView+Extension.h"
 
-@interface BindingYHKSecondVC ()<LSXPopMenuDelegate>
+@interface BindingYHKSecondVC ()<LSXPopMenuDelegate,UITextFieldDelegate>
 {
     NSArray *titlearr;
 }
@@ -21,6 +21,15 @@
     [super viewDidLoad];
     titlearr = @[@"个人账户",@"对公账户"];
     self.title = @"增加收款银行卡";
+    
+    self.nameTx.delegate = self;
+    self.yhknumTx.delegate = self;
+    self.openaccountTc.delegate = self;
+    self.iponeTx.delegate = self;
+    self.codeTx.delegate = self;
+    
+    self.typeLab.text = [NSString stringWithFormat:@"%@",titlearr[0]];
+    
     self.typeview.layer.borderWidth = 1;
     self.typeview.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     [self.typeBtn setImage:[UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e60e", 40, ThemeColor)] forState:UIControlStateNormal];
@@ -55,4 +64,30 @@
 }
 - (IBAction)getcodeAction:(id)sender {
 }
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == self.nameTx) {
+        [self.nameTx resignFirstResponder];
+        [self.yhknumTx becomeFirstResponder];
+    }else if(textField == self.yhknumTx){
+        [self.yhknumTx resignFirstResponder];
+    }
+    else if (textField == self.openaccountTc){
+        [self.openaccountTc resignFirstResponder];
+        [self.iponeTx becomeFirstResponder];
+    }
+    else if (textField == self.iponeTx){
+        [self.iponeTx resignFirstResponder];
+        [self.codeTx becomeFirstResponder];
+    }
+    else
+    {
+        [self.codeTx resignFirstResponder];
+    }
+    return YES;
+}
+
+
 @end
