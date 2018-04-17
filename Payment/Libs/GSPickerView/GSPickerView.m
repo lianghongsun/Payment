@@ -43,7 +43,7 @@
     if (!_cancleBtn) {
         _cancleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _cancleBtn.frame = CGRectMake(10, 0, 60, 40);
-        _cancleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        _cancleBtn.titleLabel.font = [UIFont systemFontOfSize:17];
         _cancleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [_cancleBtn setTitle:@"取消" forState:UIControlStateNormal];
         [_cancleBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
@@ -61,9 +61,9 @@
     if (!_sureBtn) {
         _sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _sureBtn.frame = CGRectMake(kScreenWidth - 70, 0, 60, 40);
-        _sureBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+        _sureBtn.titleLabel.font = [UIFont systemFontOfSize:17];
         _sureBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [_sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+        [_sureBtn setTitle:@"完成" forState:UIControlStateNormal];
         [_sureBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [_sureBtn addTarget:self action:@selector(sureBtnAction) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -132,6 +132,7 @@
         [self.contentView addSubview:self.cancleBtn];
         [self.contentView addSubview:self.titleLabel];
         [self.contentView addSubview:self.sureBtn];
+        [self addSingleTapGestures];
         
     }
     return self;
@@ -171,6 +172,16 @@
 - (void)disAppear{
     [self removeFromSuperview];
 }
+
+- (void)addSingleTapGestures {
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTap:)];
+    [self addGestureRecognizer:singleTap];
+}
+
+- (void)singleTap:(UITapGestureRecognizer *)sender {
+    [self disAppear];
+}
+
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     return 1;

@@ -54,11 +54,7 @@
     [self.tableview registerNib:[UINib nibWithNibName:@"HomeCertificationCell" bundle:nil] forCellReuseIdentifier:@"HomeCertificationCell"];
     [self.tableview registerNib:[UINib nibWithNibName:@"HomeDataStatisticsCell" bundle:nil] forCellReuseIdentifier:@"HomeDataStatisticsCell"];
     
-    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
-    header.lastUpdatedTimeLabel.hidden = YES;
-    header.stateLabel.textColor = [UIColor blackColor];
-    header.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    self.tableview.mj_header = header;
+    self.tableview.mj_header = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
@@ -70,7 +66,7 @@
     
 }
 
-- (void)refreshData {
+- (void)loadNewData {
     [self.tableview reloadData];
    [self.tableview.mj_header endRefreshing];
 }
@@ -125,7 +121,7 @@
         else if (indexPath.section == 2){
             return 200;
         }
-        return 120;
+        return 135;
     }
     else{
         if (indexPath.section == 0) {
@@ -134,7 +130,7 @@
         else if (indexPath.section == 1){
             return 200;
         }
-        return 120;
+        return 135;
     }
     
 }

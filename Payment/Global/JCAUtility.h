@@ -88,7 +88,7 @@
 +(NSString *)stringWithHoursandmintues:(NSString *)time;
 
 // 获取当前时间
-+(NSString *)stringWithCurrentTime;
++(NSString *)stringWithCurrentTime:(NSString *)formatstr;
 
 // 获取当前月份第一天
 +(NSString *)getMonthBeginAndEndWith:(NSString *)dateStr;

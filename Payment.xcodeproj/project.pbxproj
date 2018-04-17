@@ -169,6 +169,7 @@
 		4F931C752084A2B000BBE236 /* ForgetGesturesPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F931C732084A2B000BBE236 /* ForgetGesturesPassVC.m */; };
 		4F931C762084A2B000BBE236 /* ForgetGesturesPassVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F931C742084A2B000BBE236 /* ForgetGesturesPassVC.xib */; };
 		4F931C7A2084AEB500BBE236 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F931C792084AEB400BBE236 /* iconfont.ttf */; };
+		4F931C7E2085A0E800BBE236 /* ITDatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F931C7D2085A0E800BBE236 /* ITDatePickerController.m */; };
 		4FAC85C12079C054009EDE41 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAC85C02079C054009EDE41 /* AudioToolbox.framework */; };
 		4FAC85C72079EE04009EDE41 /* ConstituteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAC85C52079EE04009EDE41 /* ConstituteVC.m */; };
 		4FAC85C82079EE04009EDE41 /* ConstituteVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FAC85C62079EE04009EDE41 /* ConstituteVC.xib */; };
@@ -586,6 +587,8 @@
 		4F931C732084A2B000BBE236 /* ForgetGesturesPassVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForgetGesturesPassVC.m; sourceTree = "<group>"; };
 		4F931C742084A2B000BBE236 /* ForgetGesturesPassVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForgetGesturesPassVC.xib; sourceTree = "<group>"; };
 		4F931C792084AEB400BBE236 /* iconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconfont.ttf; sourceTree = "<group>"; };
+		4F931C7C2085A0E800BBE236 /* ITDatePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITDatePickerController.h; sourceTree = "<group>"; };
+		4F931C7D2085A0E800BBE236 /* ITDatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITDatePickerController.m; sourceTree = "<group>"; };
 		4FAC85C02079C054009EDE41 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		4FAC85C42079EE04009EDE41 /* ConstituteVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstituteVC.h; sourceTree = "<group>"; };
 		4FAC85C52079EE04009EDE41 /* ConstituteVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConstituteVC.m; sourceTree = "<group>"; };
@@ -1332,6 +1335,15 @@
 			path = SetGestureLock;
 			sourceTree = "<group>";
 		};
+		4F931C7B2085A0E800BBE236 /* ITDatePickerController */ = {
+			isa = PBXGroup;
+			children = (
+				4F931C7C2085A0E800BBE236 /* ITDatePickerController.h */,
+				4F931C7D2085A0E800BBE236 /* ITDatePickerController.m */,
+			);
+			path = ITDatePickerController;
+			sourceTree = "<group>";
+		};
 		4FAC85C22079ED79009EDE41 /* SubTrendVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -1752,6 +1764,7 @@
 		BBC0BE59206F985500439D37 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				4F931C7B2085A0E800BBE236 /* ITDatePickerController */,
 				4F931C792084AEB400BBE236 /* iconfont.ttf */,
 				4F7A9FD320809E5600072745 /* GSPickerView */,
 				4F7A9FC1207E205000072745 /* LSXPopMenu */,
@@ -2334,6 +2347,7 @@
 				4F7A9EB6207AFC0B00072745 /* MJExtensionConst.m in Sources */,
 				BBC0BE25206F947500439D37 /* AppDelegate.m in Sources */,
 				4F7A9E69207AF82F00072745 /* YTKRequest.m in Sources */,
+				4F931C7E2085A0E800BBE236 /* ITDatePickerController.m in Sources */,
 				BB71FB002078883300AD9C57 /* NewMonthbillVC.m in Sources */,
 				4F7A9F23207AFDA900072745 /* GetusermoneyAPI.m in Sources */,
 				4F7A9F25207AFDA900072745 /* MyactiveAPI.m in Sources */,

@@ -36,13 +36,34 @@
     
     [self setUidata];
     [self.tableview registerNib:[UINib nibWithNibName:@"collectionCell" bundle:nil] forCellReuseIdentifier:@"collectionCell"];
-    self.tableview.delegate = self;
-    self.tableview.dataSource = self;
+    [self setrefreshHeaderOrFooter];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
+}
+
+#pragma mark -- sterefresh
+
+- (void)setrefreshHeaderOrFooter {
+    self.tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    
+    self.tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMore)];
+    self.tableview.delegate = self;
+    self.tableview.dataSource = self;
+}
+
+- (void)loadNewData {
+    [self.tableview reloadData];
+    self.tableview.mj_footer.state = MJRefreshStateIdle;
+    [self.tableview.mj_header endRefreshing];
+}
+
+- (void)loadMore {
+    [self.tableview.mj_footer endRefreshing];
+    self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
 }
 
 #pragma mark - UINavigationControllerDelegate

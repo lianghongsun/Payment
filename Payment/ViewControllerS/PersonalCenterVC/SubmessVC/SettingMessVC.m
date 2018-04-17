@@ -7,9 +7,9 @@
 //
 
 #import "SettingMessVC.h"
-#import "GesturesCell.h"
 
-@interface SettingMessVC ()<UITableViewDataSource,UITableViewDelegate>
+
+@interface SettingMessVC ()
 
 @end
 
@@ -17,9 +17,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.tableview registerNib:[UINib nibWithNibName:@"GesturesCell" bundle:nil] forCellReuseIdentifier:@"GesturesCell"];
-    self.tableview.delegate = self;
-    self.tableview.dataSource = self;
+    self.title = @"消息通知设置";
+    self.noticeswitch.onTintColor = ThemeColor;
+    [self.noticeswitch setOn:NO];
+    self.voiceswitch.onTintColor = ThemeColor;
+    self.vibrationswitch.onTintColor = ThemeColor;
+     [self.noticeswitch addTarget:self action:@selector(noticeAction:) forControlEvents:UIControlEventValueChanged];
+    [self.voiceswitch addTarget:self action:@selector(voicesAction:) forControlEvents:UIControlEventValueChanged];
+    [self.vibrationswitch addTarget:self action:@selector(vibrationAction:) forControlEvents:UIControlEventValueChanged];
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -27,64 +35,41 @@
     
 }
 
-#pragma mark - UITableViewDataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+-(void)noticeAction:(id)sender
 {
-    return 3;
+    UISwitch *switchButton = (UISwitch*)sender;
+    BOOL isButtonOn = [switchButton isOn];
+    if (isButtonOn) {
+        LxPrintf(@"通知打开了");
+    }else {
+        LxPrintf(@"通知关闭了");
+    }
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+-(void)voicesAction:(id)sender
 {
-    return 1;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return 0.00001;
+    UISwitch *switchButton = (UISwitch*)sender;
+    BOOL isButtonOn = [switchButton isOn];
+    if (isButtonOn) {
+        LxPrintf(@"消息打开了");
+    }else {
+        LxPrintf(@"消息关闭了");
     }
-    return 10;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0.00001;
-}
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)vibrationAction:(id)sender
 {
-    return TAbcell_H;
+    UISwitch *switchButton = (UISwitch*)sender;
+    BOOL isButtonOn = [switchButton isOn];
+    if (isButtonOn) {
+        LxPrintf(@"震动打开了");
+    }else {
+        LxPrintf(@"震动关闭了");
+    }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
-        static NSString *identifier1 = @"GesturesCell";
-        GesturesCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
-    
-    if (indexPath.section == 0) {
-         cell.gestureLab.text = @"新消息通知";
-    }
-    else if (indexPath.section == 1){
-        cell.gestureLab.text = @"消息声音";
-    }
-    else{
-        cell.gestureLab.text = @"震动";
-    }
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        return cell;
-}
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        
-    }
-    else{
-        
-        
-    }
-    
-    
-}
 
 
 @end

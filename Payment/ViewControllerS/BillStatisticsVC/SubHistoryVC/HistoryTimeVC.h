@@ -10,9 +10,8 @@
 
 @interface HistoryTimeVC : BaseViewController
 @property (weak, nonatomic) IBOutlet UILabel *starttimeLab;
-@property (weak, nonatomic) IBOutlet UILabel *endtimeLab;
+@property (copy, nonatomic) NSString *choosetime;
 
 - (IBAction)startAction:(id)sender;
-- (IBAction)endtimeAction:(id)sender;
 - (IBAction)queryAction:(id)sender;
 @end

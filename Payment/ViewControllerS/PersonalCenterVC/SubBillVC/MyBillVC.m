@@ -26,7 +26,7 @@ NSString *const cityHeaderView = @"CityHeaderView";
     [super viewDidLoad];
     self.title = @"我的账单";
     
-    enttime = [JCAUtility stringWithCurrentTime];
+    enttime = [JCAUtility stringWithCurrentTime:@"yyyy年MM月dd日"];
     begintime = [JCAUtility getMonthBeginAndEndWith:enttime];
     self.PeriodtimeLab.text = [NSString stringWithFormat:@"%@-%@",begintime,enttime];
   
@@ -42,10 +42,7 @@ NSString *const cityHeaderView = @"CityHeaderView";
     [self.newtableview registerNib:[UINib nibWithNibName:@"collectionCell" bundle:nil] forCellReuseIdentifier:@"collectionCell"];
     [self.newtableview registerClass:[GYZCityHeaderView class] forHeaderFooterViewReuseIdentifier:cityHeaderView];
     
-    self.newtableview.delegate = self;
-    self.newtableview.dataSource = self;
-    self.tableview.delegate = self;
-    self.tableview.dataSource = self;
+  
     [self.newtableview setHidden:YES];
     [self.tableview setHidden:NO];
     
@@ -56,7 +53,43 @@ NSString *const cityHeaderView = @"CityHeaderView";
     
 }
 
+#pragma mark -- sterefresh
 
+- (void)setrefreshHeaderOrFooter {
+    self.tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.newtableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(newloadNewData)];
+    
+    
+    self.tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMore)];
+    self.newtableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(newloadMore)];
+    
+    self.tableview.delegate = self;
+    self.tableview.dataSource = self;
+    self.newtableview.delegate = self;
+    self.newtableview.dataSource = self;
+}
+
+- (void)loadNewData {
+    [self.tableview reloadData];
+    self.tableview.mj_footer.state = MJRefreshStateIdle;
+    [self.tableview.mj_header endRefreshing];
+}
+
+- (void)loadMore {
+    [self.tableview.mj_footer endRefreshing];
+    self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
+}
+
+- (void)newloadNewData {
+    [self.newtableview reloadData];
+    self.newtableview.mj_footer.state = MJRefreshStateIdle;
+    [self.newtableview.mj_header endRefreshing];
+}
+
+- (void)newloadMore {
+    [self.newtableview.mj_footer endRefreshing];
+    self.newtableview.mj_footer.state = MJRefreshStateNoMoreData;
+}
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

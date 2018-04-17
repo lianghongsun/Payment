@@ -83,6 +83,9 @@
         static NSString *identifier1 = @"GesturesCell";
         GesturesCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         cell.gestureLab.text = @"手势密码";
+        cell.gestureSwitch.onTintColor = ThemeColor;
+        [cell.gestureSwitch setOn:YES];
+        [cell.gestureSwitch addTarget:self action:@selector(noticeAction:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryType = UITableViewCellAccessoryNone;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         return cell;
@@ -140,6 +143,17 @@
     }
     
     
+}
+
+-(void)noticeAction:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    BOOL isButtonOn = [switchButton isOn];
+    if (isButtonOn) {
+        LxPrintf(@"通知打开了");
+    }else {
+        LxPrintf(@"通知关闭了");
+    }
 }
 
 

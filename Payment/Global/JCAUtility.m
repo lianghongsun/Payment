@@ -399,11 +399,11 @@ static CGRect oldframe;
 }
 
 // 获取当前时间
-+(NSString *)stringWithCurrentTime{
++(NSString *)stringWithCurrentTime:(NSString *)formatstr{
     //转换当前时间的格式为 XXXX-XX-XX
     NSDate *dateNow = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy年MM月dd日"];
+    [formatter setDateFormat:formatstr];
     NSString *dateStr = [formatter stringFromDate:dateNow];
     return dateStr;
 }

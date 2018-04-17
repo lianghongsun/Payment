@@ -25,7 +25,7 @@
    
     [self setUidata];
     
-    enttime = [JCAUtility stringWithCurrentTime];
+    enttime = [JCAUtility stringWithCurrentTime:@"yyyy年MM月dd日"];
     begintime = [JCAUtility getMonthBeginAndEndWith:enttime];
     self.PeriodtimeLab.text = [NSString stringWithFormat:@"%@-%@",begintime,enttime];
 }

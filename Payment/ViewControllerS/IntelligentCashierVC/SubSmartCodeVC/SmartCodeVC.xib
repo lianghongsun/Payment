@@ -82,20 +82,29 @@
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="brokenline" translatesAutoresizingMaskIntoConstraints="NO" id="WaO-mv-FhR">
+                            <rect key="frame" x="0.0" y="0.0" width="295" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="JqE-9D-2nc"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="WaO-mv-FhR" firstAttribute="top" secondItem="qi0-iD-BXw" secondAttribute="top" id="5uR-5q-vth"/>
                         <constraint firstItem="GjG-xH-T74" firstAttribute="leading" secondItem="qi0-iD-BXw" secondAttribute="leading" constant="30" id="AfC-9a-I9A"/>
                         <constraint firstAttribute="trailing" secondItem="GjG-xH-T74" secondAttribute="trailing" constant="30" id="IlN-vF-7dn"/>
+                        <constraint firstAttribute="trailing" secondItem="WaO-mv-FhR" secondAttribute="trailing" id="cdn-XL-2u9"/>
                         <constraint firstItem="zgi-An-KeZ" firstAttribute="top" secondItem="GjG-xH-T74" secondAttribute="bottom" constant="20" id="dao-wG-F7H"/>
                         <constraint firstItem="GjG-xH-T74" firstAttribute="top" secondItem="qi0-iD-BXw" secondAttribute="top" constant="30" id="jyG-6z-NfG"/>
                         <constraint firstAttribute="bottom" secondItem="zgi-An-KeZ" secondAttribute="bottom" constant="20" id="kEH-He-Kyg"/>
+                        <constraint firstItem="WaO-mv-FhR" firstAttribute="leading" secondItem="qi0-iD-BXw" secondAttribute="leading" id="lPu-aV-sD9"/>
                         <constraint firstItem="zgi-An-KeZ" firstAttribute="leading" secondItem="qi0-iD-BXw" secondAttribute="leading" constant="20" id="sMt-hA-rf9"/>
                         <constraint firstAttribute="trailing" secondItem="zgi-An-KeZ" secondAttribute="trailing" constant="20" id="wkn-eZ-yaM"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="10"/>
+                            <integer key="value" value="0"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
@@ -152,45 +161,35 @@
                     <rect key="frame" x="40" y="30" width="295" height="120"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="支付宝收款" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftw-8k-6QF">
-                            <rect key="frame" x="55" y="90" width="71.5" height="17"/>
+                            <rect key="frame" x="65" y="90" width="71.5" height="17"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="微信收款" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cpx-bb-2fV">
-                            <rect key="frame" x="177" y="90" width="57.5" height="17"/>
+                            <rect key="frame" x="167" y="90" width="57.5" height="17"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ailpay" translatesAutoresizingMaskIntoConstraints="NO" id="dZV-w2-vNt">
-                            <rect key="frame" x="60" y="20" width="60" height="60"/>
+                            <rect key="frame" x="60" y="10" width="80" height="80"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="60" id="6WM-4v-hqq"/>
-                                <constraint firstAttribute="height" constant="60" id="ylU-TL-3lA"/>
+                                <constraint firstAttribute="width" constant="80" id="6WM-4v-hqq"/>
+                                <constraint firstAttribute="height" constant="80" id="ylU-TL-3lA"/>
                             </constraints>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="weixin" translatesAutoresizingMaskIntoConstraints="NO" id="Wfn-R8-ldp">
-                            <rect key="frame" x="175" y="20" width="60" height="60"/>
+                            <rect key="frame" x="155" y="10" width="80" height="80"/>
                         </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NaU-ZX-aFk">
-                            <rect key="frame" x="5" y="119" width="285" height="1"/>
-                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="cvg-SP-Ffl"/>
-                            </constraints>
-                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="NaU-ZX-aFk" secondAttribute="trailing" constant="5" id="0VF-2s-onO"/>
                         <constraint firstItem="Wfn-R8-ldp" firstAttribute="width" secondItem="dZV-w2-vNt" secondAttribute="width" id="3f1-en-7tn"/>
                         <constraint firstItem="Cpx-bb-2fV" firstAttribute="centerY" secondItem="ftw-8k-6QF" secondAttribute="centerY" id="7On-Vi-HdA"/>
-                        <constraint firstItem="NaU-ZX-aFk" firstAttribute="leading" secondItem="gnc-6O-dlS" secondAttribute="leading" constant="5" id="BQr-5f-8xq"/>
                         <constraint firstAttribute="trailing" secondItem="Wfn-R8-ldp" secondAttribute="trailing" constant="60" id="Ey6-d0-kvx"/>
                         <constraint firstItem="Wfn-R8-ldp" firstAttribute="centerY" secondItem="dZV-w2-vNt" secondAttribute="centerY" id="Gep-6q-DhH"/>
-                        <constraint firstItem="dZV-w2-vNt" firstAttribute="top" secondItem="gnc-6O-dlS" secondAttribute="top" constant="20" id="Njn-cr-QRj"/>
+                        <constraint firstItem="dZV-w2-vNt" firstAttribute="top" secondItem="gnc-6O-dlS" secondAttribute="top" constant="10" id="Njn-cr-QRj"/>
                         <constraint firstAttribute="height" constant="120" id="O4L-Oe-YQs"/>
-                        <constraint firstAttribute="bottom" secondItem="NaU-ZX-aFk" secondAttribute="bottom" id="WzM-py-aNt"/>
-                        <constraint firstItem="Cpx-bb-2fV" firstAttribute="top" secondItem="Wfn-R8-ldp" secondAttribute="bottom" constant="10" id="dzV-6Q-2fa"/>
+                        <constraint firstItem="Cpx-bb-2fV" firstAttribute="top" secondItem="Wfn-R8-ldp" secondAttribute="bottom" id="dzV-6Q-2fa"/>
                         <constraint firstItem="Cpx-bb-2fV" firstAttribute="centerX" secondItem="Wfn-R8-ldp" secondAttribute="centerX" id="iqi-3j-oSa"/>
                         <constraint firstItem="Wfn-R8-ldp" firstAttribute="height" secondItem="dZV-w2-vNt" secondAttribute="height" id="kaU-Ls-iug"/>
                         <constraint firstItem="dZV-w2-vNt" firstAttribute="leading" secondItem="gnc-6O-dlS" secondAttribute="leading" constant="60" id="pcv-m2-3ir"/>
@@ -198,7 +197,7 @@
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="10"/>
+                            <integer key="value" value="0"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
@@ -244,6 +243,7 @@
     </objects>
     <resources>
         <image name="ailpay" width="320" height="317"/>
+        <image name="brokenline" width="309" height="20"/>
         <image name="right" width="20" height="30"/>
         <image name="weixin" width="150" height="150"/>
     </resources>

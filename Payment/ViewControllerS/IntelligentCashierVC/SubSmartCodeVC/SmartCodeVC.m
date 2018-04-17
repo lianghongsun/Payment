@@ -20,6 +20,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"收款码收款";
+    
+    
+    [self setimage];
     [self setrigBtn];
     QrUrlStr = @"http://www.baidu.com";
     
@@ -57,8 +60,8 @@
     self.saoyisaoImage.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e63a", 80, RGB(255, 255, 255))];
     self.moneyImage.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e6e7", 80, RGB(255, 255, 255))];
     self.succImage.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e634", 80, RGB(255, 255, 255))];
-    self.saoyisaoright.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e604", 20, RGB(255, 255, 255))];
-    self.moneyright.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e604", 20, RGB(255, 255, 255))];
+    self.saoyisaoright.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e604", 25, RGB(255, 255, 255))];
+    self.moneyright.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e604", 25, RGB(255, 255, 255))];
     
 }
 

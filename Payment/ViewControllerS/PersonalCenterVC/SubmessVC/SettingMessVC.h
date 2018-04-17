@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface SettingMessVC : UIViewController
-@property (weak, nonatomic) IBOutlet UITableView *tableview;
+
+@property (weak, nonatomic) IBOutlet UISwitch *noticeswitch;
+@property (weak, nonatomic) IBOutlet UISwitch *voiceswitch;
+@property (weak, nonatomic) IBOutlet UISwitch *vibrationswitch;
 
 @end

@@ -10,7 +10,9 @@
 #import "NewHistorybillVC.h"
 #import "HistoryTimeVC.h"
 @interface HistoryBillVC ()
-
+{
+    NSString *begintime;
+}
 @end
 
 @implementation HistoryBillVC
@@ -18,6 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"历史账单";
+    begintime = [JCAUtility stringWithCurrentTime:@"yyyy年MM月"];
+    self.PeriodtimeLab.text = begintime;
     self.backgrView.backgroundColor = ThemeColor;
    self.allgetLab.layer.borderWidth = 1;
    self.allgetLab.layer.cornerRadius = self.allgetLab.frame.size.height/2;
@@ -65,6 +69,7 @@
 }
 - (IBAction)PeriodoftimeAction:(id)sender {
     HistoryTimeVC *vc = [[HistoryTimeVC alloc]initWithNibName:@"HistoryTimeVC" bundle:nil];
+    vc.choosetime = begintime;
     [self.navigationController pushViewController:vc animated:YES];
 }
 @end
