@@ -36,7 +36,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
      user = [UserInfo shareObject];
-    user.isLogin = YES;//测试数据暂时填写
     // 设置导航控制器的代理为self
     self.navigationController.delegate = self;
 }

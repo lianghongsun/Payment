@@ -11,11 +11,14 @@
 #import "ChooseTimeVC.h"
 #import "GYZCityHeaderView.h"
 
-@interface MyBillVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface MyBillVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
 {
     NSString *begintime;
     NSString *enttime;
 }
+@property (nonatomic,strong) NSMutableArray *dataArr;
+@property (nonatomic,strong) NSMutableArray *newdataArr;
+
 @end
 
 NSString *const cityHeaderView = @"CityHeaderView";
@@ -25,6 +28,12 @@ NSString *const cityHeaderView = @"CityHeaderView";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我的账单";
+    self.dataArr = [NSMutableArray array];
+    [self.dataArr addObject:@"123"];
+    [self.dataArr addObject:@"1321"];
+    self.newdataArr = [NSMutableArray array];
+    [self.newdataArr addObject:@"123"];
+    [self.newdataArr addObject:@"1321"];
     
     enttime = [JCAUtility stringWithCurrentTime:@"yyyy年MM月dd日"];
     begintime = [JCAUtility getMonthBeginAndEndWith:enttime];
@@ -70,7 +79,8 @@ NSString *const cityHeaderView = @"CityHeaderView";
 }
 
 - (void)loadNewData {
-    [self.tableview reloadData];
+    [self.dataArr removeAllObjects];
+    [self.tableview cyl_reloadData];
     self.tableview.mj_footer.state = MJRefreshStateIdle;
     [self.tableview.mj_header endRefreshing];
 }
@@ -81,7 +91,8 @@ NSString *const cityHeaderView = @"CityHeaderView";
 }
 
 - (void)newloadNewData {
-    [self.newtableview reloadData];
+    [self.newdataArr removeAllObjects];
+    [self.newtableview cyl_reloadData];
     self.newtableview.mj_footer.state = MJRefreshStateIdle;
     [self.newtableview.mj_header endRefreshing];
 }
@@ -94,10 +105,10 @@ NSString *const cityHeaderView = @"CityHeaderView";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (tableView == self.tableview) {
-     return 2;
+     return self.dataArr.count;
     }
     else{
-        return 1;
+        return self.newdataArr.count;
     }
 }
 
@@ -253,6 +264,34 @@ NSString *const cityHeaderView = @"CityHeaderView";
         [view.layer addSublayer:layer];
     }
 }
+
+#pragma mark - CYLTableViewPlaceHolderDelegate Method 没有数据界面显示
+
+- (UIView *)makePlaceHolderView {
+    
+    
+    UIView *weChatStyle = [self weChatStylePlaceHolder];
+    weChatStyle.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    return weChatStyle;
+}
+
+
+- (UIView *)weChatStylePlaceHolder {
+    WeChatStylePlaceHolder *weChatStylePlaceHolder = [[WeChatStylePlaceHolder alloc] initWithFrame:self.tableview.frame];
+    weChatStylePlaceHolder.delegate = self;
+    
+    weChatStylePlaceHolder.imageName = @"emty_icon";
+    weChatStylePlaceHolder.title = @"您还没有账单哦";
+    weChatStylePlaceHolder.content = @"快去使用吧!";
+    
+    return weChatStylePlaceHolder;
+    
+}
+
+- (void)emptyOverlayClicked:(id)sender {
+    
+}
+
 
 
 @end

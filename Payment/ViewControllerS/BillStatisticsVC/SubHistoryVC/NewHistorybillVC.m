@@ -10,7 +10,8 @@
 #import "collectionCell.h"
 #import "GYZCityHeaderView.h"
 
-@interface NewHistorybillVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface NewHistorybillVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
+@property (nonatomic,strong) NSMutableArray *dataArr;
 
 @end
 
@@ -21,6 +22,9 @@ NSString *const hisnewHeaderView = @"hisnewHeaderView";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = self.titleStr;
+    self.dataArr = [NSMutableArray array];
+    [self.dataArr addObject:@"123"];
+    [self.dataArr addObject:@"1321"];
     
     self.backgrView.backgroundColor = ThemeColor;
     self.todayLab.backgroundColor = ThemeColor;
@@ -49,7 +53,8 @@ NSString *const hisnewHeaderView = @"hisnewHeaderView";
 }
 
 - (void)loadNewData {
-    [self.tableview reloadData];
+    [self.dataArr removeAllObjects];
+    [self.tableview cyl_reloadData];
     self.tableview.mj_footer.state = MJRefreshStateIdle;
     [self.tableview.mj_header endRefreshing];
 }
@@ -62,7 +67,7 @@ NSString *const hisnewHeaderView = @"hisnewHeaderView";
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return self.dataArr.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -126,6 +131,32 @@ NSString *const hisnewHeaderView = @"hisnewHeaderView";
 - (void)setUidata{
     self.allgetpriceLab.text = [NSString stringWithFormat:@"¥%@",@"8888.00"];
     self.billnumLab.text = [NSString stringWithFormat:@"%@笔",@"3"];
+}
+
+#pragma mark - CYLTableViewPlaceHolderDelegate Method 没有数据界面显示
+
+- (UIView *)makePlaceHolderView {
+    
+    
+    UIView *weChatStyle = [self weChatStylePlaceHolder];
+    weChatStyle.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    return weChatStyle;
+}
+
+- (UIView *)weChatStylePlaceHolder {
+    WeChatStylePlaceHolder *weChatStylePlaceHolder = [[WeChatStylePlaceHolder alloc] initWithFrame:self.tableview.frame];
+    weChatStylePlaceHolder.delegate = self;
+    
+    weChatStylePlaceHolder.imageName = @"emty_icon";
+    weChatStylePlaceHolder.title = @"您还没有历史账单信息哦";
+    weChatStylePlaceHolder.content = @"快去使用吧!";
+    
+    return weChatStylePlaceHolder;
+    
+}
+
+- (void)emptyOverlayClicked:(id)sender {
+    
 }
 
 

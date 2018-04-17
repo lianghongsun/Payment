@@ -12,8 +12,8 @@
 #import "ConfirmPaymentVC.h"
 #import "CraditRecordVC.h"
 
-@interface CreditCardVC ()<UITableViewDelegate,UITableViewDataSource>
-
+@interface CreditCardVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
+@property (nonatomic,strong) NSMutableArray *dataArr;
 @end
 
 @implementation CreditCardVC
@@ -21,6 +21,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"信用卡还款";
+    self.dataArr = [NSMutableArray array];
+    [self.dataArr addObject:@"123"];
+    [self.dataArr addObject:@"1321"];
+    
     self.tableview.separatorStyle = UITableViewCellSelectionStyleNone;
 
     [self.tableview registerNib:[UINib nibWithNibName:@"AddYHKCell" bundle:nil] forCellReuseIdentifier:@"AddYHKCell"];
@@ -45,7 +49,9 @@
 }
 
 - (void)loadNewData {
-    [self.tableview reloadData];
+    [self.dataArr removeAllObjects];
+    
+    [self.tableview cyl_reloadData];
     self.tableview.mj_footer.state = MJRefreshStateIdle;
     [self.tableview.mj_header endRefreshing];
 }
@@ -77,7 +83,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   
-    return 3;
+    return self.dataArr.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -136,5 +142,32 @@
 
 - (IBAction)bindingAction:(id)sender {
 }
+
+#pragma mark - CYLTableViewPlaceHolderDelegate Method 没有数据界面显示
+
+- (UIView *)makePlaceHolderView {
+    
+    
+    UIView *weChatStyle = [self weChatStylePlaceHolder];
+    weChatStyle.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    return weChatStyle;
+}
+
+- (UIView *)weChatStylePlaceHolder {
+    WeChatStylePlaceHolder *weChatStylePlaceHolder = [[WeChatStylePlaceHolder alloc] initWithFrame:self.tableview.frame];
+    weChatStylePlaceHolder.delegate = self;
+
+    weChatStylePlaceHolder.imageName = @"emty_icon";
+    weChatStylePlaceHolder.title = @"您还没有添加信用卡哦";
+    weChatStylePlaceHolder.content = @"快去添加吧!";
+    return weChatStylePlaceHolder;
+    
+}
+
+- (void)emptyOverlayClicked:(id)sender {
+   
+}
+
+
 
 @end

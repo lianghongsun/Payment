@@ -9,7 +9,9 @@
 #import "MessageVC.h"
 #import "MessSystemCell.h"
 
-@interface MessageVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface MessageVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
+@property (nonatomic,strong) NSMutableArray *dataArr;
+@property (nonatomic,strong) NSMutableArray *newdataArr;
 
 @end
 
@@ -18,6 +20,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"消息";
+    self.dataArr = [NSMutableArray array];
+    [self.dataArr addObject:@"123"];
+    [self.dataArr addObject:@"1321"];
+    self.newdataArr = [NSMutableArray array];
+    [self.newdataArr addObject:@"123"];
+    [self.newdataArr addObject:@"1321"];
     
     [self setcollfirstLab:self.systemmes secLab:self.activitymes viewColour:ThemeColor Labcolur:[UIColor blackColor]];
     [self setBorderWithView:self.systemmes top:NO left:NO bottom:YES right:NO borderColor:ThemeColor borderWidth:2];
@@ -58,7 +66,8 @@
 }
 
 - (void)loadNewData {
-    [self.tableview reloadData];
+    [self.dataArr removeAllObjects];
+    [self.tableview cyl_reloadData];
     self.tableview.mj_footer.state = MJRefreshStateIdle;
     [self.tableview.mj_header endRefreshing];
 }
@@ -69,7 +78,8 @@
 }
 
 - (void)newloadNewData {
-    [self.newtableview reloadData];
+    [self.newdataArr removeAllObjects];
+    [self.newtableview cyl_reloadData];
     self.newtableview.mj_footer.state = MJRefreshStateIdle;
     [self.newtableview.mj_header endRefreshing];
 }
@@ -90,10 +100,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.tableview) {
-        return 18;
+        return self.dataArr.count;
     }
     else{
-        return 5;
+        return self.newdataArr.count;
     }
 }
 
@@ -198,6 +208,34 @@
         [view.layer addSublayer:layer];
     }
 }
+
+#pragma mark - CYLTableViewPlaceHolderDelegate Method 没有数据界面显示
+
+- (UIView *)makePlaceHolderView {
+    
+    
+    UIView *weChatStyle = [self weChatStylePlaceHolder];
+    weChatStyle.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    return weChatStyle;
+}
+
+- (UIView *)weChatStylePlaceHolder {
+    WeChatStylePlaceHolder *weChatStylePlaceHolder = [[WeChatStylePlaceHolder alloc] initWithFrame:self.tableview.frame];
+    weChatStylePlaceHolder.delegate = self;
+    
+    weChatStylePlaceHolder.imageName = @"emty_icon";
+    weChatStylePlaceHolder.title = @"您还没有消息哦";
+    weChatStylePlaceHolder.content = @"快去看看别的吧!";
+    
+    return weChatStylePlaceHolder;
+    
+}
+
+- (void)emptyOverlayClicked:(id)sender {
+    
+}
+
+
 
 
 @end

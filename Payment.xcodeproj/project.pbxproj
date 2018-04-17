@@ -170,6 +170,7 @@
 		4F931C762084A2B000BBE236 /* ForgetGesturesPassVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F931C742084A2B000BBE236 /* ForgetGesturesPassVC.xib */; };
 		4F931C7A2084AEB500BBE236 /* iconfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F931C792084AEB400BBE236 /* iconfont.ttf */; };
 		4F931C7E2085A0E800BBE236 /* ITDatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F931C7D2085A0E800BBE236 /* ITDatePickerController.m */; };
+		4F931C8B2085FEA000BBE236 /* WeChatStylePlaceHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F931C8A2085FEA000BBE236 /* WeChatStylePlaceHolder.m */; };
 		4FAC85C12079C054009EDE41 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAC85C02079C054009EDE41 /* AudioToolbox.framework */; };
 		4FAC85C72079EE04009EDE41 /* ConstituteVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAC85C52079EE04009EDE41 /* ConstituteVC.m */; };
 		4FAC85C82079EE04009EDE41 /* ConstituteVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FAC85C62079EE04009EDE41 /* ConstituteVC.xib */; };
@@ -589,6 +590,8 @@
 		4F931C792084AEB400BBE236 /* iconfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iconfont.ttf; sourceTree = "<group>"; };
 		4F931C7C2085A0E800BBE236 /* ITDatePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITDatePickerController.h; sourceTree = "<group>"; };
 		4F931C7D2085A0E800BBE236 /* ITDatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITDatePickerController.m; sourceTree = "<group>"; };
+		4F931C892085FEA000BBE236 /* WeChatStylePlaceHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeChatStylePlaceHolder.h; sourceTree = "<group>"; };
+		4F931C8A2085FEA000BBE236 /* WeChatStylePlaceHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeChatStylePlaceHolder.m; sourceTree = "<group>"; };
 		4FAC85C02079C054009EDE41 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		4FAC85C42079EE04009EDE41 /* ConstituteVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstituteVC.h; sourceTree = "<group>"; };
 		4FAC85C52079EE04009EDE41 /* ConstituteVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConstituteVC.m; sourceTree = "<group>"; };
@@ -1344,6 +1347,15 @@
 			path = ITDatePickerController;
 			sourceTree = "<group>";
 		};
+		4F931C882085FEA000BBE236 /* WeChatStylePlaceHolder */ = {
+			isa = PBXGroup;
+			children = (
+				4F931C892085FEA000BBE236 /* WeChatStylePlaceHolder.h */,
+				4F931C8A2085FEA000BBE236 /* WeChatStylePlaceHolder.m */,
+			);
+			path = WeChatStylePlaceHolder;
+			sourceTree = "<group>";
+		};
 		4FAC85C22079ED79009EDE41 /* SubTrendVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -1863,6 +1875,7 @@
 		BBC0BE7B206FB5C900439D37 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4F931C882085FEA000BBE236 /* WeChatStylePlaceHolder */,
 				BB71F9D5206FC04600AD9C57 /* Navigation */,
 				BBC0BE7D206FB72300439D37 /* Defines */,
 				BB71F9D4206FBAD700AD9C57 /* PrefixHeader.pch */,
@@ -2132,6 +2145,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Payment/Pods-Payment-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/CYLTableViewPlaceHolder/CYLTableViewPlaceHolder.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
@@ -2142,6 +2156,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CYLTableViewPlaceHolder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
@@ -2307,6 +2322,7 @@
 				4F931C6720846ED900BBE236 /* ResetPayPassVC.m in Sources */,
 				4F7A9E75207AF88700072745 /* RefreshTokenBatchRequest.m in Sources */,
 				BB71FC262079137600AD9C57 /* AFURLResponseSerialization.m in Sources */,
+				4F931C8B2085FEA000BBE236 /* WeChatStylePlaceHolder.m in Sources */,
 				BB71FA702076418400AD9C57 /* TestDrawQrViewController.m in Sources */,
 				4F7A9E62207AF82F00072745 /* YTKBatchRequest.m in Sources */,
 				4F7A9F2F207AFDA900072745 /* PayStatusApi.m in Sources */,

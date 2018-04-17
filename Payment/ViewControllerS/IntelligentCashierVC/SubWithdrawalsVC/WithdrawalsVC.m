@@ -11,8 +11,8 @@
 #import "WithButtonCell.h"
 #import "WithdrawalSecondVC.h"
 
-@interface WithdrawalsVC ()<UITableViewDelegate,UITableViewDataSource>
-
+@interface WithdrawalsVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
+@property (nonatomic,strong) NSMutableArray *dataArr;
 @end
 
 @implementation WithdrawalsVC
@@ -20,7 +20,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"提款";
-//    self.tableview.separatorStyle = NO;
+    self.dataArr = [NSMutableArray array];
+    [self.dataArr addObject:@"123"];
+    [self.dataArr addObject:@"1321"];
     [self.tableview registerNib:[UINib nibWithNibName:@"WithdrawalsFirstCell" bundle:nil] forCellReuseIdentifier:@"WithdrawalsFirstCell"];
     [self.tableview registerNib:[UINib nibWithNibName:@"WithButtonCell" bundle:nil] forCellReuseIdentifier:@"WithButtonCell"];
     [self.tableview registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"header"];
@@ -46,7 +48,8 @@
 }
 
 - (void)loadNewData {
-    [self.tableview reloadData];
+    [self.dataArr removeAllObjects];
+    [self.tableview cyl_reloadData];
     self.tableview.mj_footer.state = MJRefreshStateIdle;
     [self.tableview.mj_header endRefreshing];
 }
@@ -58,7 +61,8 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    
+    return self.dataArr.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -149,6 +153,33 @@
     
     
 }
+
+#pragma mark - CYLTableViewPlaceHolderDelegate Method 没有数据界面显示
+
+- (UIView *)makePlaceHolderView {
+    
+    
+    UIView *weChatStyle = [self weChatStylePlaceHolder];
+    weChatStyle.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    return weChatStyle;
+}
+
+- (UIView *)weChatStylePlaceHolder {
+    WeChatStylePlaceHolder *weChatStylePlaceHolder = [[WeChatStylePlaceHolder alloc] initWithFrame:self.tableview.frame];
+    weChatStylePlaceHolder.delegate = self;
+    
+    weChatStylePlaceHolder.imageName = @"emty_icon";
+    weChatStylePlaceHolder.title = @"您还没有提款哦";
+    weChatStylePlaceHolder.content = @"快去提款吧!";
+    
+    return weChatStylePlaceHolder;
+    
+}
+
+- (void)emptyOverlayClicked:(id)sender {
+    
+}
+
 
 
 @end

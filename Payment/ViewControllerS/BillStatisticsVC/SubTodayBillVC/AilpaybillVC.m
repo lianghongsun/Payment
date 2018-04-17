@@ -9,7 +9,9 @@
 #import "AilpaybillVC.h"
 #import "collectionCell.h"
 
-@interface AilpaybillVC ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>
+@interface AilpaybillVC ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,WeChatStylePlaceHolderDelegate>
+
+@property (nonatomic,strong) NSMutableArray *dataArr;
 
 @end
 
@@ -25,6 +27,10 @@
     [super viewDidLoad];
     self.navititle.text = self.titleStr;
 
+    self.dataArr = [NSMutableArray array];
+    [self.dataArr addObject:@"123"];
+    [self.dataArr addObject:@"1321"];
+    
     if (@available(iOS 11.0, *)) {
         
         self.tableview.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
@@ -56,7 +62,8 @@
 }
 
 - (void)loadNewData {
-    [self.tableview reloadData];
+    [self.dataArr removeAllObjects];
+    [self.tableview cyl_reloadData];
     self.tableview.mj_footer.state = MJRefreshStateIdle;
     [self.tableview.mj_header endRefreshing];
 }
@@ -83,7 +90,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    return 3;
+    return self.dataArr.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -135,4 +142,33 @@
 - (IBAction)backAction:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+#pragma mark - CYLTableViewPlaceHolderDelegate Method 没有数据界面显示
+
+- (UIView *)makePlaceHolderView {
+    
+    
+    UIView *weChatStyle = [self weChatStylePlaceHolder];
+    weChatStyle.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    return weChatStyle;
+}
+
+- (UIView *)weChatStylePlaceHolder {
+    WeChatStylePlaceHolder *weChatStylePlaceHolder = [[WeChatStylePlaceHolder alloc] initWithFrame:self.tableview.frame];
+    weChatStylePlaceHolder.delegate = self;
+    
+    weChatStylePlaceHolder.imageName = @"emty_icon";
+    weChatStylePlaceHolder.title = @"您还没有今日账单哦";
+    weChatStylePlaceHolder.content = @"快去使用吧!";
+    
+    return weChatStylePlaceHolder;
+    
+}
+
+- (void)emptyOverlayClicked:(id)sender {
+    
+}
+
+
+
 @end

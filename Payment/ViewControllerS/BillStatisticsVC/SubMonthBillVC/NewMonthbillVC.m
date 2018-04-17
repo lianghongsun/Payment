@@ -10,8 +10,8 @@
 #import "collectionCell.h"
 #import "GYZCityHeaderView.h"
 
-@interface NewMonthbillVC ()<UITableViewDelegate,UITableViewDataSource>
-
+@interface NewMonthbillVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
+@property (nonatomic,strong) NSMutableArray *dataArr;
 @end
 
 NSString *const newHeaderView = @"newHeaderView";
@@ -25,6 +25,10 @@ NSString *const newHeaderView = @"newHeaderView";
     self.backgrView.backgroundColor = ThemeColor;
     self.todayLab.backgroundColor = ThemeColor;
     [self setUidata];
+    self.dataArr = [NSMutableArray array];
+    [self.dataArr addObject:@"123"];
+    [self.dataArr addObject:@"1321"];
+    
     [self.tableview registerNib:[UINib nibWithNibName:@"collectionCell" bundle:nil] forCellReuseIdentifier:@"collectionCell"];
     
     [self.tableview registerClass:[GYZCityHeaderView class] forHeaderFooterViewReuseIdentifier:newHeaderView];
@@ -47,7 +51,8 @@ NSString *const newHeaderView = @"newHeaderView";
 }
 
 - (void)loadNewData {
-    [self.tableview reloadData];
+    [self.dataArr removeAllObjects];
+    [self.tableview cyl_reloadData];
     self.tableview.mj_footer.state = MJRefreshStateIdle;
     [self.tableview.mj_header endRefreshing];
 }
@@ -60,7 +65,7 @@ NSString *const newHeaderView = @"newHeaderView";
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return self.dataArr.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -125,6 +130,33 @@ NSString *const newHeaderView = @"newHeaderView";
     self.allgetpriceLab.text = [NSString stringWithFormat:@"¥%@",@"8888.00"];
     self.billnumLab.text = [NSString stringWithFormat:@"%@笔",@"3"];
 }
+
+#pragma mark - CYLTableViewPlaceHolderDelegate Method 没有数据界面显示
+
+- (UIView *)makePlaceHolderView {
+    
+    
+    UIView *weChatStyle = [self weChatStylePlaceHolder];
+    weChatStyle.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    return weChatStyle;
+}
+
+- (UIView *)weChatStylePlaceHolder {
+    WeChatStylePlaceHolder *weChatStylePlaceHolder = [[WeChatStylePlaceHolder alloc] initWithFrame:self.tableview.frame];
+    weChatStylePlaceHolder.delegate = self;
+    
+    weChatStylePlaceHolder.imageName = @"emty_icon";
+    weChatStylePlaceHolder.title = @"您还没有当月账单信息哦";
+    weChatStylePlaceHolder.content = @"快去使用吧!";
+    
+    return weChatStylePlaceHolder;
+    
+}
+
+- (void)emptyOverlayClicked:(id)sender {
+    
+}
+
 
 
 @end
