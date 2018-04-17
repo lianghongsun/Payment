@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BindingYHKVC">
+            <connections>
+                <outlet property="addYHKbtn" destination="jhQ-Gd-09G" id="lc8-M2-PKE"/>
+                <outlet property="tableview" destination="APt-xI-Eot" id="pKU-9N-NyQ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qe3-3S-JJ5">
+                    <rect key="frame" x="10" y="20" width="355" height="140"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="addcardbj" translatesAutoresizingMaskIntoConstraints="NO" id="Mam-FD-tWd">
+                            <rect key="frame" x="0.0" y="0.0" width="355" height="140"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhQ-Gd-09G">
+                            <rect key="frame" x="0.0" y="0.0" width="355" height="140"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="+  添加信用卡">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="addYHKAction:" destination="-1" eventType="touchUpInside" id="Kh5-G4-8wF"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="jhQ-Gd-09G" firstAttribute="leading" secondItem="Qe3-3S-JJ5" secondAttribute="leading" id="1b9-D8-MeH"/>
+                        <constraint firstItem="Mam-FD-tWd" firstAttribute="top" secondItem="Qe3-3S-JJ5" secondAttribute="top" id="HFS-j8-Wtg"/>
+                        <constraint firstItem="jhQ-Gd-09G" firstAttribute="top" secondItem="Qe3-3S-JJ5" secondAttribute="top" id="Uxy-Ds-EWJ"/>
+                        <constraint firstItem="Mam-FD-tWd" firstAttribute="leading" secondItem="Qe3-3S-JJ5" secondAttribute="leading" id="YIU-Sc-nWL"/>
+                        <constraint firstAttribute="height" constant="140" id="a4h-jc-BMh"/>
+                        <constraint firstAttribute="bottom" secondItem="Mam-FD-tWd" secondAttribute="bottom" id="bnM-VS-heV"/>
+                        <constraint firstAttribute="bottom" secondItem="jhQ-Gd-09G" secondAttribute="bottom" id="bnf-Tr-DNU"/>
+                        <constraint firstAttribute="trailing" secondItem="Mam-FD-tWd" secondAttribute="trailing" id="cHR-Xi-cpf"/>
+                        <constraint firstAttribute="trailing" secondItem="jhQ-Gd-09G" secondAttribute="trailing" id="ziP-mM-8uB"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="APt-xI-Eot">
+                    <rect key="frame" x="0.0" y="160" width="375" height="507"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Qe3-3S-JJ5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="FcS-1x-pNq"/>
+                <constraint firstAttribute="bottom" secondItem="APt-xI-Eot" secondAttribute="bottom" id="NGj-zu-C5g"/>
+                <constraint firstItem="APt-xI-Eot" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PDc-WH-EiB"/>
+                <constraint firstAttribute="trailing" secondItem="APt-xI-Eot" secondAttribute="trailing" id="SVX-8z-kOR"/>
+                <constraint firstItem="APt-xI-Eot" firstAttribute="top" secondItem="Qe3-3S-JJ5" secondAttribute="bottom" id="jAP-tE-Ojk"/>
+                <constraint firstItem="Qe3-3S-JJ5" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="kBh-TG-zzl"/>
+                <constraint firstAttribute="trailing" secondItem="Qe3-3S-JJ5" secondAttribute="trailing" constant="10" id="se3-Nh-KU7"/>
+            </constraints>
+            <point key="canvasLocation" x="33.5" y="110.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="addcardbj" width="716" height="226"/>
+    </resources>
+</document>

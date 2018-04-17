@@ -12,6 +12,17 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property (strong,nonatomic) UINavigationController *intelligentNavController;
+@property (strong,nonatomic) UINavigationController *billStatisticsNavController;
+@property (strong,nonatomic) UINavigationController *messageNavController;
+@property (strong,nonatomic) UINavigationController *personalCenterNavController;
+
+/**
+ *  自定义的 tabbar
+ */
+@property (nonatomic, strong) UITabBarController *tabController;
+
++ (AppDelegate*)App;
 
 @end
 

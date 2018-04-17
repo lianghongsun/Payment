@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BindingYHKVC">
+            <connections>
+                <outlet property="addYHKbtn" destination="jhQ-Gd-09G" id="lc8-M2-PKE"/>
+                <outlet property="tableview" destination="APt-xI-Eot" id="pKU-9N-NyQ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cdH-TM-pPZ">
+                    <rect key="frame" x="30" y="587" width="137.5" height="40"/>
+                    <color key="backgroundColor" red="0.0" green="0.68235294117647061" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="ANc-cb-nE2"/>
+                    </constraints>
+                    <state key="normal" title="设为默认">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="setdefaultAction:" destination="-1" eventType="touchUpInside" id="CH3-uh-t8H"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58X-Og-q9q">
+                    <rect key="frame" x="207.5" y="587" width="137.5" height="40"/>
+                    <color key="backgroundColor" red="0.0" green="0.68235294117647061" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Ak9-Tq-NIH"/>
+                    </constraints>
+                    <state key="normal" title="解除绑定">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="bindingAction:" destination="-1" eventType="touchUpInside" id="FQl-w1-DaE"/>
+                    </connections>
+                </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="APt-xI-Eot">
+                    <rect key="frame" x="0.0" y="160" width="375" height="417"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9RL-eq-wmc">
+                    <rect key="frame" x="10" y="20" width="355" height="140"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="addcardbj" translatesAutoresizingMaskIntoConstraints="NO" id="eOI-tg-PcY">
+                            <rect key="frame" x="0.0" y="0.0" width="355" height="140"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhQ-Gd-09G">
+                            <rect key="frame" x="0.0" y="0.0" width="355" height="140"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="+添加收款借记卡">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="addYHKAction:" destination="-1" eventType="touchUpInside" id="Kh5-G4-8wF"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="eOI-tg-PcY" secondAttribute="bottom" id="7RQ-Za-7ry"/>
+                        <constraint firstItem="eOI-tg-PcY" firstAttribute="top" secondItem="9RL-eq-wmc" secondAttribute="top" id="81f-JT-BVl"/>
+                        <constraint firstItem="jhQ-Gd-09G" firstAttribute="leading" secondItem="9RL-eq-wmc" secondAttribute="leading" id="EHp-Y1-qNq"/>
+                        <constraint firstAttribute="bottom" secondItem="jhQ-Gd-09G" secondAttribute="bottom" id="I9r-ae-rl9"/>
+                        <constraint firstItem="eOI-tg-PcY" firstAttribute="leading" secondItem="9RL-eq-wmc" secondAttribute="leading" id="JJd-k2-KBd"/>
+                        <constraint firstAttribute="height" constant="140" id="OHb-o2-qvI"/>
+                        <constraint firstItem="jhQ-Gd-09G" firstAttribute="top" secondItem="9RL-eq-wmc" secondAttribute="top" id="UWr-rv-gWr"/>
+                        <constraint firstAttribute="trailing" secondItem="jhQ-Gd-09G" secondAttribute="trailing" id="phr-Vr-BUE"/>
+                        <constraint firstAttribute="trailing" secondItem="eOI-tg-PcY" secondAttribute="trailing" id="tpv-T2-idB"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="9RL-eq-wmc" secondAttribute="trailing" constant="10" id="0P5-uT-2N9"/>
+                <constraint firstItem="APt-xI-Eot" firstAttribute="top" secondItem="9RL-eq-wmc" secondAttribute="bottom" id="9BI-GR-Ahr"/>
+                <constraint firstItem="9RL-eq-wmc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="CuU-Ly-jJ5"/>
+                <constraint firstItem="58X-Og-q9q" firstAttribute="height" secondItem="cdH-TM-pPZ" secondAttribute="height" id="IRe-Fq-N2v"/>
+                <constraint firstItem="58X-Og-q9q" firstAttribute="width" secondItem="cdH-TM-pPZ" secondAttribute="width" id="L6J-UV-Goi"/>
+                <constraint firstItem="APt-xI-Eot" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PDc-WH-EiB"/>
+                <constraint firstAttribute="trailing" secondItem="APt-xI-Eot" secondAttribute="trailing" id="SVX-8z-kOR"/>
+                <constraint firstAttribute="trailing" secondItem="58X-Og-q9q" secondAttribute="trailing" constant="30" id="Sg3-9B-0xj"/>
+                <constraint firstItem="cdH-TM-pPZ" firstAttribute="top" secondItem="APt-xI-Eot" secondAttribute="bottom" constant="10" id="bPj-fM-TNl"/>
+                <constraint firstItem="cdH-TM-pPZ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="gnJ-i9-MvH"/>
+                <constraint firstItem="58X-Og-q9q" firstAttribute="leading" secondItem="cdH-TM-pPZ" secondAttribute="trailing" constant="40" id="ijG-9d-Zhr"/>
+                <constraint firstAttribute="bottom" secondItem="cdH-TM-pPZ" secondAttribute="bottom" constant="40" id="kMo-Gg-xNi"/>
+                <constraint firstAttribute="bottom" secondItem="58X-Og-q9q" secondAttribute="bottom" constant="40" id="rTR-mp-NvY"/>
+                <constraint firstItem="9RL-eq-wmc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="sCE-pm-r0c"/>
+            </constraints>
+            <point key="canvasLocation" x="33.5" y="110.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="addcardbj" width="716" height="226"/>
+    </resources>
+</document>

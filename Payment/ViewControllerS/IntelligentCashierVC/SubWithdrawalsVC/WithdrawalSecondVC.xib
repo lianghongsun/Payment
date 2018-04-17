@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WithdrawalSecondVC">
+            <connections>
+                <outlet property="priceLab" destination="FSk-bQ-tJR" id="goq-3U-ObM"/>
+                <outlet property="tableview" destination="QaM-nm-AWz" id="jmI-Xd-vRd"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ANC-CE-Mnx">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="账户余额：" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nV5-dF-bhn">
+                            <rect key="frame" x="110.5" y="21" width="76.5" height="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8888" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSk-bQ-tJR">
+                            <rect key="frame" x="188" y="21" width="37.5" height="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" red="0.0" green="0.68235294120000001" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PIy-se-4ag">
+                            <rect key="frame" x="187" y="0.0" width="1" height="60"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="1" id="wtg-be-B38"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="PIy-se-4ag" firstAttribute="top" secondItem="ANC-CE-Mnx" secondAttribute="top" id="4aP-AP-Got"/>
+                        <constraint firstItem="nV5-dF-bhn" firstAttribute="centerY" secondItem="ANC-CE-Mnx" secondAttribute="centerY" id="9iG-qO-GKY"/>
+                        <constraint firstItem="PIy-se-4ag" firstAttribute="centerX" secondItem="ANC-CE-Mnx" secondAttribute="centerX" id="Cmb-Rd-acD"/>
+                        <constraint firstItem="FSk-bQ-tJR" firstAttribute="centerY" secondItem="nV5-dF-bhn" secondAttribute="centerY" id="Etr-vW-Era"/>
+                        <constraint firstAttribute="height" constant="60" id="VhN-iK-3ao"/>
+                        <constraint firstItem="FSk-bQ-tJR" firstAttribute="leading" secondItem="PIy-se-4ag" secondAttribute="trailing" id="btY-av-0PS"/>
+                        <constraint firstAttribute="bottom" secondItem="PIy-se-4ag" secondAttribute="bottom" id="jBB-X9-gWk"/>
+                        <constraint firstItem="PIy-se-4ag" firstAttribute="leading" secondItem="nV5-dF-bhn" secondAttribute="trailing" id="zgx-Cp-xtL"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="QaM-nm-AWz">
+                    <rect key="frame" x="0.0" y="60" width="375" height="607"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ANC-CE-Mnx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2b4-ra-S5U"/>
+                <constraint firstItem="ANC-CE-Mnx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8aJ-9S-znc"/>
+                <constraint firstAttribute="bottom" secondItem="QaM-nm-AWz" secondAttribute="bottom" id="9gK-PK-Myd"/>
+                <constraint firstAttribute="trailing" secondItem="ANC-CE-Mnx" secondAttribute="trailing" id="AbH-6v-eRn"/>
+                <constraint firstItem="QaM-nm-AWz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Hdd-PE-26l"/>
+                <constraint firstItem="QaM-nm-AWz" firstAttribute="top" secondItem="ANC-CE-Mnx" secondAttribute="bottom" id="S3U-NS-9sN"/>
+                <constraint firstAttribute="trailing" secondItem="QaM-nm-AWz" secondAttribute="trailing" id="kEm-mR-Rfl"/>
+            </constraints>
+            <point key="canvasLocation" x="34.5" y="85.5"/>
+        </view>
+    </objects>
+</document>
