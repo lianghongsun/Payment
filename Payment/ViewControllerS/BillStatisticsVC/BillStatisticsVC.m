@@ -15,6 +15,7 @@
 #import "MonthBillVC.h"
 #import "HistoryBillVC.h"
 #import "ConstituteVC.h"
+#import "ThendVC.h"
 
 @interface BillStatisticsVC ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -152,6 +153,13 @@ static NSString * const identifier = @"FXCyclePagerViewCell";
     }
     else if (indexPath.section == 1){
         switch (indexPath.row) {
+            case 0:
+            {
+                ThendVC *vc = [[ThendVC alloc]initWithNibName:@"ThendVC" bundle:nil];
+                vc.hidesBottomBarWhenPushed = YES;  // 设置B
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
             case 1:
             {
                 ConstituteVC *vc = [[ConstituteVC alloc]initWithNibName:@"ConstituteVC" bundle:nil];

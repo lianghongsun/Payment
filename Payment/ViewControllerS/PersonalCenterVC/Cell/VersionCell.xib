@@ -19,9 +19,8 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IUz-Uc-f2b">
-                        <rect key="frame" x="20" y="12.5" width="100" height="20"/>
+                        <rect key="frame" x="20" y="12.5" width="37.5" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="100" id="RbT-x3-HnO"/>
                             <constraint firstAttribute="height" constant="20" id="nAK-sC-B58"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -29,7 +28,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i2k-Bc-1Ip">
-                        <rect key="frame" x="120" y="12.5" width="185" height="20"/>
+                        <rect key="frame" x="269.5" y="12.5" width="35.5" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="ofa-Yz-dW8"/>
                         </constraints>
@@ -39,7 +38,6 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="i2k-Bc-1Ip" firstAttribute="leading" secondItem="IUz-Uc-f2b" secondAttribute="trailing" id="JW8-VQ-idN"/>
                     <constraint firstAttribute="trailing" secondItem="i2k-Bc-1Ip" secondAttribute="trailing" constant="15" id="KNB-cq-szD"/>
                     <constraint firstItem="IUz-Uc-f2b" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="c9M-Yr-VBI"/>
                     <constraint firstItem="i2k-Bc-1Ip" firstAttribute="centerY" secondItem="IUz-Uc-f2b" secondAttribute="centerY" id="xF2-p5-WB3"/>

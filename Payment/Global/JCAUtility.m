@@ -408,6 +408,18 @@ static CGRect oldframe;
     return dateStr;
 }
 
+// 获取当前时间
++(NSString *)stringLastWithCurrentTime:(NSString *)formatstr{
+    //转换当前时间的格式为 XXXX-XX-XX
+    NSDate *dateNow = [NSDate date];
+    NSDate *lastDay = [NSDate dateWithTimeInterval:-24*60*60 sinceDate:dateNow];//前一天
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:formatstr];
+    NSString *lastdateStr = [formatter stringFromDate:lastDay];
+    return lastdateStr;
+}
+
+
 // 获取当前月份第一天
 +(NSString *)getMonthBeginAndEndWith:(NSString *)dateStr {
     NSDateFormatter *format=[[NSDateFormatter alloc] init];
@@ -429,6 +441,49 @@ static CGRect oldframe;
     NSDateFormatter *myDateFormatter = [[NSDateFormatter alloc] init];
     [myDateFormatter setDateFormat:@"YYYY年MM月dd日"];
      return  [myDateFormatter stringFromDate:beginDate];
+}
+
+// 获取上个月第一天
++ (NSString *)getLastMonthBeginWith:(NSString *)dateStr Formatstr:(NSString *)formatstr{
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:formatstr];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *lastMonthComps = [[NSDateComponents alloc] init];
+    [lastMonthComps setMonth:-1];
+    NSDate *newdate = [calendar dateByAddingComponents:lastMonthComps toDate:currentDate options:0];
+    double interval = 0;
+    NSDate *beginDate = nil;
+    [calendar setFirstWeekday:2];//设定周一为周首日
+    BOOL ok = [calendar rangeOfUnit:NSCalendarUnitMonth startDate:&beginDate interval:&interval forDate:newdate];
+    //分别修改为 NSDayCalendarUnit NSWeekCalendarUnit NSYearCalendarUnit
+    return  [formatter stringFromDate:beginDate];
+}
+// 获取上个月最后一天
++ (NSString *)getLastMonthEndWith:(NSString *)dateStr Formatstr:(NSString *)formatstr{
+    
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:formatstr];
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *lastMonthComps = [[NSDateComponents alloc] init];
+    
+    [lastMonthComps setMonth:-1];
+    NSDate *newdate = [calendar dateByAddingComponents:lastMonthComps toDate:currentDate options:0];
+    double interval = 0;
+    NSDate *beginDate = nil;
+    NSDate *endDate = nil;
+    
+    [calendar setFirstWeekday:2];//设定周一为周首日
+    BOOL ok = [calendar rangeOfUnit:NSCalendarUnitMonth startDate:&beginDate interval:&interval forDate:newdate];
+    //分别修改为 NSDayCalendarUnit NSWeekCalendarUnit NSYearCalendarUnit
+    if (ok) {
+        endDate = [beginDate dateByAddingTimeInterval:interval-1];
+    }else {
+        return @"";
+    }
+    return  [formatter stringFromDate:endDate];
 }
 
 + (NSInteger)compareDate:(NSString*)aDate withDate:(NSString*)bDate

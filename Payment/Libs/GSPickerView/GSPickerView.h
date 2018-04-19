@@ -27,7 +27,7 @@ typedef enum : NSUInteger {
  *  sure 确定的事件(GSDatePicker时 path为-1)
  *  cancle 取消的事件
  */
-- (void)appearWithTitle:(NSString *)title pickerType:(GSPickerType)pickerType minimumDate:(NSDate *)minimumDate subTitles:(NSArray *)subTitles selectedStr:(NSString *)selectedStr sureAction:(void(^)(NSInteger path,NSString *pathStr))sure cancleAction:(void(^)(void))cancle;
+- (void)appearWithTitle:(NSString *)title pickerType:(GSPickerType)pickerType minimumDate:(NSDate *)minimumDate maxmumDate:(NSDate *)maxmumDate subTitles:(NSArray *)subTitles selectedStr:(NSString *)selectedStr sureAction:(void(^)(NSInteger path,NSString *pathStr))sure cancleAction:(void(^)(void))cancle;
 
 - (void)disAppear;
 @end

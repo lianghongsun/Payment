@@ -35,14 +35,18 @@
 - (IBAction)startAction:(id)sender {
     LRWeakSelf(self);
     NSDate *mindata;
-    
+    NSDate *maxdata;
     if (self.ismonth) {
-        mindata = [JCAUtility DataWithTimestr:self.begintime formatStr:@"yyyy年MM月dd日"];
+        NSString *datastr = [JCAUtility getMonthBeginAndEndWith:[JCAUtility stringLastWithCurrentTime:@"yyyy年MM月dd日"]];
+        
+        mindata = [JCAUtility DataWithTimestr:datastr formatStr:@"yyyy年MM月dd日"];
+        maxdata = [JCAUtility DataWithTimestr:[JCAUtility stringLastWithCurrentTime:@"yyyy年MM月dd日"] formatStr:@"yyyy年MM月dd日"];
     }
     else{
         mindata = nil;
+        maxdata = [NSDate date];
     }
-    [self.pickerView appearWithTitle:@"开始时间" pickerType:GSPickerTypeDatePicker minimumDate:mindata subTitles:nil selectedStr:self.begintime sureAction:^(NSInteger path, NSString *pathStr) {
+    [self.pickerView appearWithTitle:@"开始时间" pickerType:GSPickerTypeDatePicker minimumDate:mindata maxmumDate:maxdata subTitles:nil selectedStr:self.begintime sureAction:^(NSInteger path, NSString *pathStr) {
         weakself.starttimeLab.text = pathStr;
         weakself.begintime = pathStr;
     } cancleAction:^{
@@ -53,20 +57,27 @@
 
 - (IBAction)endtimeAction:(id)sender {
      LRWeakSelf(self);
-    NSDate *mindata;
     
+    NSDate *mindata;
+    NSDate *maxdata;
     if (self.ismonth) {
-        mindata = [JCAUtility DataWithTimestr:self.begintime formatStr:@"yyyy年MM月dd日"];
+        NSString *datastr = [JCAUtility getMonthBeginAndEndWith:[JCAUtility stringLastWithCurrentTime:@"yyyy年MM月dd日"]];
+        
+        mindata = [JCAUtility DataWithTimestr:datastr formatStr:@"yyyy年MM月dd日"];
+        maxdata = [JCAUtility DataWithTimestr:[JCAUtility stringLastWithCurrentTime:@"yyyy年MM月dd日"] formatStr:@"yyyy年MM月dd日"];
     }
     else{
         mindata = nil;
+        maxdata = [NSDate date];
     }
-    [self.pickerView appearWithTitle:@"结束时间" pickerType:GSPickerTypeDatePicker minimumDate:mindata subTitles:nil selectedStr:self.enttime sureAction:^(NSInteger path, NSString *pathStr) {
+    [self.pickerView appearWithTitle:@"开始时间" pickerType:GSPickerTypeDatePicker minimumDate:mindata maxmumDate:maxdata subTitles:nil selectedStr:self.begintime sureAction:^(NSInteger path, NSString *pathStr) {
         weakself.endtimeLab.text = pathStr;
         weakself.enttime = pathStr;
     } cancleAction:^{
         
     }];
+    
+    
     
 }
 

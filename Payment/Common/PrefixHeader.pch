@@ -28,6 +28,7 @@
 #import "MJRefresh.h"
 #import "WeChatStylePlaceHolder.h"
 #import "CYLTableViewPlaceHolder.h"
+#import "AAGlobalMacro.h"
 
 //头文件
 //#import "CommonUse.h"

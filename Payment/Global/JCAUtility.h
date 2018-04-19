@@ -90,10 +90,15 @@
 // 获取当前时间
 +(NSString *)stringWithCurrentTime:(NSString *)formatstr;
 
+// 获取当前时间前一天
++(NSString *)stringLastWithCurrentTime:(NSString *)formatstr;
+
 // 获取当前月份第一天
 +(NSString *)getMonthBeginAndEndWith:(NSString *)dateStr;
-
-
+// 获取上个月第一天
++ (NSString *)getLastMonthBeginWith:(NSString *)dateStr Formatstr:(NSString *)formatstr;
+// 获取上个月最后一天
++ (NSString *)getLastMonthEndWith:(NSString *)dateStr Formatstr:(NSString *)formatstr;
 
 //比较两个日期的大小  日期格式为2016-08-14 08：46：20
 + (NSInteger)compareDate:(NSString*)aDate withDate:(NSString*)bDate;

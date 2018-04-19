@@ -27,6 +27,7 @@
 @property (nonatomic,assign)NSInteger selectedRow;
 
 @property (nonatomic,strong)NSDate *minimumDate;
+@property (nonatomic,strong)NSDate *maxmumDate;
 
 @end
 
@@ -100,8 +101,7 @@
         _datePicker.datePickerMode = UIDatePickerModeDate;
         _datePicker.locale = [NSLocale localeWithLocaleIdentifier:@"zh"];
         _datePicker.minimumDate = self.minimumDate;
-        NSDate *currentDate = [NSDate date];
-        _datePicker.maximumDate = currentDate;
+        _datePicker.maximumDate = self.maxmumDate;
     }
     return _datePicker;
 }
@@ -137,9 +137,10 @@
     }
     return self;
 }
-- (void)appearWithTitle:(NSString *)title pickerType:(GSPickerType)pickerType minimumDate:(NSDate *)minimumDate subTitles:(NSArray *)subTitles selectedStr:(NSString *)selectedStr sureAction:(void(^)(NSInteger path,NSString *pathStr))sure cancleAction:(void(^)(void))cancle{
+- (void)appearWithTitle:(NSString *)title pickerType:(GSPickerType)pickerType minimumDate:(NSDate *)minimumDate maxmumDate:(NSDate *)maxmumDate subTitles:(NSArray *)subTitles selectedStr:(NSString *)selectedStr sureAction:(void(^)(NSInteger path,NSString *pathStr))sure cancleAction:(void(^)(void))cancle{
     _titleLabel.text = title;
     _minimumDate = minimumDate;
+    _maxmumDate = maxmumDate;
     _pickerType = pickerType;
     _subTitles = subTitles;
     _sure = sure;

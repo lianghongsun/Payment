@@ -38,6 +38,8 @@
      user = [UserInfo shareObject];
     // 设置导航控制器的代理为self
     self.navigationController.delegate = self;
+    [self.tableview.mj_header beginRefreshing];
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -57,7 +59,6 @@
     
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
-    [self.tableview.mj_header beginRefreshing];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -363,7 +364,7 @@
 - (void)gologin {
     LoginVC *vc = [[LoginVC alloc]initWithNibName:@"LoginVC" bundle:nil];
     vc.loginBlock = ^(LoginVC *vc) {
-        [self.tableview.mj_header beginRefreshing];
+        
     };
     UINavigationController *naiv = [[UINavigationController alloc]initWithRootViewController:vc];
     
