@@ -51,6 +51,7 @@
         } else {
             
             CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
+            vc.ispopRoot = YES;
             [self.navigationController pushViewController:vc animated:YES];
             LxPrintf(@"扫描结果：%@",result);
             

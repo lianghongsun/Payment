@@ -41,6 +41,7 @@
 }
 - (IBAction)reimbursementAction:(id)sender {
     CreditSucc *vc = [[CreditSucc alloc]initWithNibName:@"CreditSucc" bundle:nil];
+    vc.ispopRoot = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 @end

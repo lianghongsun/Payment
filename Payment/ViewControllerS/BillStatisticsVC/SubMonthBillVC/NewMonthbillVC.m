@@ -9,6 +9,7 @@
 #import "NewMonthbillVC.h"
 #import "collectionCell.h"
 #import "GYZCityHeaderView.h"
+#import "CollectionSuccVC.h"
 
 @interface NewMonthbillVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
 @property (nonatomic,strong) NSMutableArray *dataArr;
@@ -121,7 +122,9 @@ NSString *const newHeaderView = @"newHeaderView";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
+    vc.ispopRoot = NO;
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

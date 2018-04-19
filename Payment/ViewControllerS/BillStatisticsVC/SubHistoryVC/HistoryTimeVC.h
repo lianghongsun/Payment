@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class HistoryTimeVC;
+typedef void (^ChoosetimeBlock) (NSString *begintime);
+
 @interface HistoryTimeVC : BaseViewController
 @property (weak, nonatomic) IBOutlet UILabel *starttimeLab;
 @property (copy, nonatomic) NSString *choosetime;
 
 - (IBAction)startAction:(id)sender;
 - (IBAction)queryAction:(id)sender;
+
+//选中的回调
+@property(nonatomic,copy)ChoosetimeBlock choosetimeBlock;
+
 @end

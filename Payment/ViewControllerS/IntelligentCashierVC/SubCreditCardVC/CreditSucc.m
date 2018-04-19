@@ -126,11 +126,19 @@
         
     }
     else{
-        
+        LRWeakSelf(self)
         static NSString *identifier1 = @"WithDetermineBtnCell";
         WithDetermineBtnCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         cell.determineBlockoBlock = ^(WithDetermineBtnCell *cell) {
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            if (self.ispopRoot) {
+                 [weakself.navigationController popToRootViewControllerAnimated:YES];
+                return ;
+            }
+            else{
+                [weakself.navigationController popViewControllerAnimated:YES];
+                return;
+            }
+            
         };
         
         cell.accessoryType = UITableViewCellAccessoryNone;

@@ -104,15 +104,15 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         return cell;
     }
-    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    [[ZZYPhotoHelper shareHelper] showImageViewSelcteWithResultBlock:^(id data) {
-        userimg = (UIImage *)data;
-        NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:0];
-        [self.tableview reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-    }];
+    if (indexPath.section == 0) {
+        [[ZZYPhotoHelper shareHelper] showImageViewSelcteWithResultBlock:^(id data) {
+            userimg = (UIImage *)data;
+            NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:0];
+            [self.tableview reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        }];
+    }
 }
 @end

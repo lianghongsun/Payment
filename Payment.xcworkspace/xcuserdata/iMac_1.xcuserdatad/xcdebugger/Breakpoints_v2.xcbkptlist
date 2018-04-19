@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/IntelligentCashierVC/SubScanVC/ScanVC.m"
-            timestampString = "545810519.359637"
+            timestampString = "545823658.665053"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "44"
@@ -42,7 +42,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/IntelligentCashierVC/SubSmartCodeVC/SmartCodeVC.m"
-            timestampString = "545810519.36008"
+            timestampString = "545823658.665424"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "22"
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/IntelligentCashierVC/RealnameauthenticationVC/RealNameSecondVC.m"
-            timestampString = "545810519.36048"
+            timestampString = "545823658.665678"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "73"
@@ -74,12 +74,12 @@
                   moduleName = "Payment"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/nahuasuan/Desktop/Payment/Payment/ViewControllerS/IntelligentCashierVC/RealnameauthenticationVC/RealNameSecondVC.m"
-                  timestampString = "545810522.645663"
+                  timestampString = "545815810.467402"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "73"
                   endingLineNumber = "73"
-                  offsetFromSymbolStart = "48">
+                  offsetFromSymbolStart = "68">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -89,12 +89,12 @@
                   moduleName = "Payment"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/nahuasuan/Desktop/Payment/Payment/ViewControllerS/IntelligentCashierVC/RealnameauthenticationVC/RealNameSecondVC.m"
-                  timestampString = "545810522.647347"
+                  timestampString = "545815810.469349"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "73"
                   endingLineNumber = "73"
-                  offsetFromSymbolStart = "16">
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -138,7 +138,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/LoginVC/RegisteredVC.m"
-            timestampString = "545810519.360953"
+            timestampString = "545823658.666069"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "73"
@@ -154,7 +154,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/LoginVC/ForgetPasswordVC.m"
-            timestampString = "545810519.3612649"
+            timestampString = "545823658.666322"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "80"
@@ -170,7 +170,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/LoginVC/ForgetPassSecondVC.m"
-            timestampString = "545810519.361564"
+            timestampString = "545823658.666625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "59"
@@ -186,7 +186,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/LoginVC/LoginVC.m"
-            timestampString = "545810519.361859"
+            timestampString = "545823658.666891"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "110"
@@ -201,24 +201,8 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Payment/ViewControllerS/LoginVC/LoginVC.m"
-            timestampString = "545810519.362195"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "-LoginAPI"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/LoginVC/ForgetPasswordVC.m"
-            timestampString = "545810519.362345"
+            timestampString = "545823658.6671669"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "97"
@@ -250,7 +234,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/LoginVC/ForgetPassSecondVC.m"
-            timestampString = "545810519.36256"
+            timestampString = "545823658.667315"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "77"
@@ -266,7 +250,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/PersonalCenterVC/Model/CodeView/CodeView.m"
-            timestampString = "545810519.362731"
+            timestampString = "545823658.667407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "197"
@@ -282,7 +266,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/PersonalCenterVC/Model/CodeView/CodeView.m"
-            timestampString = "545810519.363026"
+            timestampString = "545823658.667708"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "146"
@@ -298,7 +282,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/PersonalCenterVC/SubAccountSecurityVC/SettingGesturesPassVC.m"
-            timestampString = "545810519.3631589"
+            timestampString = "545823658.6678081"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "121"
@@ -314,7 +298,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/ViewControllerS/PersonalCenterVC/Model/SetGestureLock/ChangeGestureLockViewController.m"
-            timestampString = "545810519.363494"
+            timestampString = "545823658.668147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "163"
@@ -330,12 +314,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Payment/Libs/GSPickerView/GSPickerView.m"
-            timestampString = "545810519.3637969"
+            timestampString = "545823658.6684279"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "183"
             endingLineNumber = "183"
             landmarkName = "-singleTap:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Payment/Global/JCAUtility.m"
+            timestampString = "545823658.668752"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "513"
+            endingLineNumber = "513"
+            landmarkName = "+compareDate:withDate:Formatstr:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Payment/Global/JCAUtility.m"
+            timestampString = "545823658.668965"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "508"
+            endingLineNumber = "508"
+            landmarkName = "+compareDate:withDate:Formatstr:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

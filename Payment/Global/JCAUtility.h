@@ -101,7 +101,7 @@
 + (NSString *)getLastMonthEndWith:(NSString *)dateStr Formatstr:(NSString *)formatstr;
 
 //比较两个日期的大小  日期格式为2016-08-14 08：46：20
-+ (NSInteger)compareDate:(NSString*)aDate withDate:(NSString*)bDate;
++ (NSInteger)compareDate:(NSString*)aDate withDate:(NSString*)bDate Formatstr:(NSString *)formatstr;
 
 //判断是否为空
 + (BOOL)isBlankString:(id)object;

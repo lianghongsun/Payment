@@ -382,7 +382,7 @@ UIPickerViewDataSource>
 - (void)confirmButtonOnClicked:(UIButton *)sender {
     
     if ([self.delegate respondsToSelector:@selector(datePickerController:didSelectedDate:dateString:)]) {
-        NSString *dateString = [NSString stringWithFormat:@"%ld.%02ld", self.selectedYear, self.selectedMonth];
+        NSString *dateString = [NSString stringWithFormat:@"%ld年%02ld月", self.selectedYear, self.selectedMonth];
         NSDate *selectedDate = [self.dateFormatter dateFromString:dateString];
         if (self.selectedYear == self.thisYear &&
             self.selectedMonth == self.thisMonth &&
@@ -405,8 +405,8 @@ UIPickerViewDataSource>
 - (void)initDatePickerView {
     
     [self initThisDate];
-    self.maximumDate = [self.dateFormatter dateFromString:@"2100.12"];
-    self.minimumDate = [self.dateFormatter dateFromString:@"1900.01"];
+    self.maximumDate = [self.dateFormatter dateFromString:@"2100年12月"];
+    self.minimumDate = [self.dateFormatter dateFromString:@"2010年01月"];
     
     _showToday = YES;
     _monthCount = 12;
@@ -597,7 +597,7 @@ UIPickerViewDataSource>
 - (void)setMaximumDate:(NSDate *)maximumDate {
     
     if (maximumDate == nil) {
-        maximumDate = [self.dateFormatter dateFromString:@"2100.12"];
+        maximumDate = [self.dateFormatter dateFromString:@"2100年12月"];
     }
     _maximumDate = [maximumDate copy];
     
@@ -612,7 +612,7 @@ UIPickerViewDataSource>
 - (void)setMinimumDate:(NSDate *)minimumDate {
     
     if (minimumDate == nil) {
-        minimumDate = [self.dateFormatter dateFromString:@"1900.01"];
+        minimumDate = [self.dateFormatter dateFromString:@"2010年1月"];
     }
     
     _minimumDate = [minimumDate copy];
@@ -654,7 +654,7 @@ UIPickerViewDataSource>
 - (NSDateFormatter *)dateFormatter {
     if (!_dateFormatter) {
         _dateFormatter = [[NSDateFormatter alloc] init];
-        _dateFormatter.dateFormat = @"yyyy.MM";
+        _dateFormatter.dateFormat = @"yyyy年MM月";
     }
     return _dateFormatter;
 }

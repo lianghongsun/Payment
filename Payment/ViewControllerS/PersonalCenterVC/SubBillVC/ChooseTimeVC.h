@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class ChooseTimeVC;
+typedef void (^ChoosetimeBlock) (NSString *begintime ,NSString *enttime);
+
 @interface ChooseTimeVC : BaseViewController
 @property (nonatomic,copy)NSString *begintime;
 @property (nonatomic,copy)NSString *enttime;
@@ -19,4 +22,8 @@
 - (IBAction)startAction:(id)sender;
 - (IBAction)endtimeAction:(id)sender;
 - (IBAction)queryAction:(id)sender;
+
+//选中的回调
+@property(nonatomic,copy)ChoosetimeBlock choosetimeBlock;
+
 @end

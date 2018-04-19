@@ -102,6 +102,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     CreditSucc *vc = [[CreditSucc alloc]initWithNibName:@"CreditSucc" bundle:nil];
+    vc.ispopRoot = NO;
     [self.navigationController pushViewController:vc animated:YES];
     
     

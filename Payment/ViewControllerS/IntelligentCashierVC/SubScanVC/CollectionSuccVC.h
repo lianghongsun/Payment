@@ -10,5 +10,5 @@
 
 @interface CollectionSuccVC : BaseViewController
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
-
+@property (nonatomic,assign)BOOL ispopRoot;
 @end

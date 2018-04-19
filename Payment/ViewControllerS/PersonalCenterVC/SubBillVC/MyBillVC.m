@@ -10,11 +10,14 @@
 #import "collectionCell.h"
 #import "ChooseTimeVC.h"
 #import "GYZCityHeaderView.h"
+#import "CollectionSuccVC.h"
+#import "CreditSucc.h"
+#import "WithdrawalSucc.h"
 
 @interface MyBillVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
 {
-    NSString *begintime;
-    NSString *enttime;
+    NSString *mybegintime;
+    NSString *myenttime;
 }
 @property (nonatomic,strong) NSMutableArray *dataArr;
 @property (nonatomic,strong) NSMutableArray *newdataArr;
@@ -35,9 +38,9 @@ NSString *const cityHeaderView = @"CityHeaderView";
     [self.newdataArr addObject:@"123"];
     [self.newdataArr addObject:@"1321"];
     
-    enttime = [JCAUtility stringWithCurrentTime:@"yyyy年MM月dd日"];
-    begintime = [JCAUtility getMonthBeginAndEndWith:enttime];
-    self.PeriodtimeLab.text = [NSString stringWithFormat:@"%@-%@",begintime,enttime];
+    myenttime = [JCAUtility stringWithCurrentTime:@"yyyy年MM月dd日"];
+    mybegintime = [JCAUtility getMonthBeginAndEndWith:myenttime];
+    self.PeriodtimeLab.text = [NSString stringWithFormat:@"%@-%@",mybegintime,myenttime];
   
     [self setcollviewbackg:self.collectpriceLab firstLab:self.collectnameLab secLab:self.collectpriceLab viewColour:ThemeColor Labcolur:ThemeColor];
     [self setcollviewbackg:self.spendingpriceLab firstLab:self.spendingnameLab secLab:self.spendingpriceLab viewColour:[UIColor whiteColor] Labcolur:[UIColor blackColor]];
@@ -51,7 +54,8 @@ NSString *const cityHeaderView = @"CityHeaderView";
     [self.newtableview registerNib:[UINib nibWithNibName:@"collectionCell" bundle:nil] forCellReuseIdentifier:@"collectionCell"];
     [self.newtableview registerClass:[GYZCityHeaderView class] forHeaderFooterViewReuseIdentifier:cityHeaderView];
     
-  
+    [self setrefreshHeaderOrFooter];
+    
     [self.newtableview setHidden:YES];
     [self.tableview setHidden:NO];
     
@@ -79,7 +83,7 @@ NSString *const cityHeaderView = @"CityHeaderView";
 }
 
 - (void)loadNewData {
-    [self.dataArr removeAllObjects];
+    [self.dataArr addObject:@"1321"];
     [self.tableview cyl_reloadData];
     self.tableview.mj_footer.state = MJRefreshStateIdle;
     [self.tableview.mj_header endRefreshing];
@@ -91,7 +95,7 @@ NSString *const cityHeaderView = @"CityHeaderView";
 }
 
 - (void)newloadNewData {
-    [self.newdataArr removeAllObjects];
+    [self.newdataArr addObject:@"1321"];
     [self.newtableview cyl_reloadData];
     self.newtableview.mj_footer.state = MJRefreshStateIdle;
     [self.newtableview.mj_header endRefreshing];
@@ -123,7 +127,6 @@ NSString *const cityHeaderView = @"CityHeaderView";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    
     return 40;
 }
 
@@ -138,7 +141,6 @@ NSString *const cityHeaderView = @"CityHeaderView";
 
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-   
     GYZCityHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:cityHeaderView];
     headerView.contentView.backgroundColor = [UIColor whiteColor];
     NSString *title;
@@ -185,7 +187,22 @@ NSString *const cityHeaderView = @"CityHeaderView";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (tableView == self.tableview) {
+        CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
+        vc.ispopRoot = NO;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
+    else{
+        CreditSucc *vc = [[CreditSucc alloc]initWithNibName:@"CreditSucc" bundle:nil];
+        vc.ispopRoot = NO;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+//        WithdrawalSucc *vc = [[WithdrawalSucc alloc]initWithNibName:@"WithdrawalSucc" bundle:nil];
+//        vc.ispopRoot = NO;
+//        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
     
 }
 
@@ -194,48 +211,39 @@ NSString *const cityHeaderView = @"CityHeaderView";
     
     [self.newtableview setHidden:YES];
     [self.tableview setHidden:NO];
-    
     [self setBorderWithView:self.collectpriceLab top:NO left:NO bottom:YES right:NO borderColor:ThemeColor borderWidth:2];
     [self setBorderWithView:self.spendingpriceLab top:NO left:NO bottom:YES right:NO borderColor:[UIColor whiteColor] borderWidth:2];
-    
     [self setcollviewbackg:self.collectpriceLab firstLab:self.collectnameLab secLab:self.collectpriceLab viewColour:ThemeColor Labcolur:ThemeColor];
-    
     [self setcollviewbackg:self.spendingpriceLab firstLab:self.spendingnameLab secLab:self.spendingpriceLab viewColour:[UIColor whiteColor] Labcolur:[UIColor blackColor]];
-    
-    
 }
+
 - (IBAction)spendingAction:(id)sender {
      [self.tableview setHidden:YES];
     [self.newtableview setHidden:NO];
-   
-    
     [self setBorderWithView:self.spendingpriceLab top:NO left:NO bottom:YES right:NO borderColor:ThemeColor borderWidth:2];
     [self setBorderWithView:self.collectpriceLab top:NO left:NO bottom:YES right:NO borderColor:[UIColor whiteColor] borderWidth:2];
-    
-    
     [self setcollviewbackg:self.spendingpriceLab firstLab:self.spendingnameLab secLab:self.spendingpriceLab viewColour:ThemeColor Labcolur:ThemeColor];
-    
     [self setcollviewbackg:self.collectpriceLab firstLab:self.collectnameLab secLab:self.collectpriceLab viewColour:[UIColor whiteColor] Labcolur:[UIColor blackColor]];
-    
 }
 
 - (IBAction)PeriodoftimeAction:(id)sender {
     ChooseTimeVC *vc = [[ChooseTimeVC alloc]initWithNibName:@"ChooseTimeVC" bundle:nil];
-    vc.begintime = begintime;
-    vc.enttime = enttime;
+    vc.begintime = mybegintime;
+    vc.enttime = myenttime;
+    vc.choosetimeBlock = ^(NSString *begintime, NSString *enttime) {
+        self.PeriodtimeLab.text = [NSString stringWithFormat:@"%@-%@",begintime,enttime];
+        mybegintime = begintime;
+        myenttime = enttime;
+        [self.tableview.mj_header beginRefreshing];
+         [self.newtableview.mj_header beginRefreshing];
+    };
     [self.navigationController pushViewController:vc animated:YES];
-    
-    
 }
 
 - (void)setcollviewbackg:(UIView *)view firstLab:(UILabel *)label secLab:(UILabel *)seclab viewColour:(UIColor *)viewcolour Labcolur:(UIColor *)labcolour{
-    
     label.textColor = labcolour;
     seclab.textColor = labcolour;
-    
-    
 }
-
 
 - (void)setBorderWithView:(UILabel *)view top:(BOOL)top left:(BOOL)left bottom:(BOOL)bottom right:(BOOL)right borderColor:(UIColor *)color borderWidth:(CGFloat)width
 {
@@ -268,30 +276,22 @@ NSString *const cityHeaderView = @"CityHeaderView";
 #pragma mark - CYLTableViewPlaceHolderDelegate Method 没有数据界面显示
 
 - (UIView *)makePlaceHolderView {
-    
-    
     UIView *weChatStyle = [self weChatStylePlaceHolder];
     weChatStyle.backgroundColor = [UIColor groupTableViewBackgroundColor];
     return weChatStyle;
 }
 
-
 - (UIView *)weChatStylePlaceHolder {
     WeChatStylePlaceHolder *weChatStylePlaceHolder = [[WeChatStylePlaceHolder alloc] initWithFrame:self.tableview.frame];
     weChatStylePlaceHolder.delegate = self;
-    
     weChatStylePlaceHolder.imageName = @"emty_icon";
     weChatStylePlaceHolder.title = @"您还没有账单哦";
     weChatStylePlaceHolder.content = @"快去使用吧!";
-    
     return weChatStylePlaceHolder;
-    
 }
 
 - (void)emptyOverlayClicked:(id)sender {
     
 }
-
-
 
 @end

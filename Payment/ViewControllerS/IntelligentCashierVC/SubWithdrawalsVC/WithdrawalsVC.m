@@ -10,6 +10,7 @@
 #import "WithdrawalsFirstCell.h"
 #import "WithButtonCell.h"
 #import "WithdrawalSecondVC.h"
+#import "WithdrawalSucc.h"
 
 @interface WithdrawalsVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
 @property (nonatomic,strong) NSMutableArray *dataArr;
@@ -48,7 +49,6 @@
 }
 
 - (void)loadNewData {
-    [self.dataArr removeAllObjects];
     [self.tableview cyl_reloadData];
     self.tableview.mj_footer.state = MJRefreshStateIdle;
     [self.tableview.mj_header endRefreshing];
@@ -149,7 +149,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.section == 0) {
+        WithdrawalSucc *vc = [[WithdrawalSucc alloc]initWithNibName:@"WithdrawalSucc" bundle:nil];
+        vc.ispopRoot = NO;
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    }
     
     
 }

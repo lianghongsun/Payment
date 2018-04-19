@@ -45,8 +45,10 @@
 }
 
 - (IBAction)queryAction:(id)sender {
+    if (self.choosetimeBlock) {
+        self.choosetimeBlock(self.starttimeLab.text);
+    }
     [self.navigationController popViewControllerAnimated:YES];
-    
 }
 
 #pragma mark - ITDatePickerControllerDelegate

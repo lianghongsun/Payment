@@ -9,6 +9,7 @@
 #import "NewHistorybillVC.h"
 #import "collectionCell.h"
 #import "GYZCityHeaderView.h"
+#import "CollectionSuccVC.h"
 
 @interface NewHistorybillVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
 @property (nonatomic,strong) NSMutableArray *dataArr;
@@ -123,7 +124,9 @@ NSString *const hisnewHeaderView = @"hisnewHeaderView";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
+    vc.ispopRoot = NO;
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

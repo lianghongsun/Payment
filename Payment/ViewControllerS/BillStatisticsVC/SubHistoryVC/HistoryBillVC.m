@@ -11,7 +11,7 @@
 #import "HistoryTimeVC.h"
 @interface HistoryBillVC ()
 {
-    NSString *begintime;
+    NSString *mybegintime;
 }
 @end
 
@@ -20,20 +20,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"历史账单";
-    begintime = [JCAUtility stringWithCurrentTime:@"yyyy年MM月"];
-    self.PeriodtimeLab.text = begintime;
+    mybegintime = [JCAUtility stringWithCurrentTime:@"yyyy年MM月"];
+    self.PeriodtimeLab.text = [NSString stringWithFormat:@"%@账单",mybegintime];
     self.backgrView.backgroundColor = ThemeColor;
-   self.allgetLab.layer.borderWidth = 1;
-   self.allgetLab.layer.cornerRadius = self.allgetLab.frame.size.height/2;
-    self.allgetLab.layer.masksToBounds = YES;
-    self.allgetLab.layer.borderColor = [[UIColor whiteColor] CGColor];
-    
-    self.allgetnumLab.layer.borderWidth = 1;
-    self.allgetnumLab.layer.cornerRadius = self.ailpaynumLab.frame.size.height/2;
-    self.allgetnumLab.layer.masksToBounds = YES;
-    self.allgetnumLab.layer.borderColor = [[UIColor whiteColor] CGColor];
-    
-
     [self setUidata];
     
     
@@ -69,7 +58,11 @@
 }
 - (IBAction)PeriodoftimeAction:(id)sender {
     HistoryTimeVC *vc = [[HistoryTimeVC alloc]initWithNibName:@"HistoryTimeVC" bundle:nil];
-    vc.choosetime = begintime;
+    vc.choosetime = mybegintime;
+    vc.choosetimeBlock = ^(NSString *begintime) {
+        mybegintime = begintime;
+        self.PeriodtimeLab.text = [NSString stringWithFormat:@"%@账单",begintime];
+    };
     [self.navigationController pushViewController:vc animated:YES];
 }
 @end

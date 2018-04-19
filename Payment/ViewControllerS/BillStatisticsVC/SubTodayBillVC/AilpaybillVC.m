@@ -8,6 +8,7 @@
 
 #import "AilpaybillVC.h"
 #import "collectionCell.h"
+#import "CollectionSuccVC.h"
 
 @interface AilpaybillVC ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,WeChatStylePlaceHolderDelegate>
 
@@ -128,8 +129,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
+    CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
+    vc.ispopRoot = NO;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

@@ -8,10 +8,11 @@
 
 #import "ConstituteVC.h"
 #import "AAChartKit.h"
+#import "HistoryTimeVC.h"
 
 @interface ConstituteVC ()
 {
-    
+    NSString *mybegintime;
     NSMutableArray  *_array;
 }
 @property (nonatomic, strong) AAChartModel *aaChartModel;
@@ -23,6 +24,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"收款构成";
+    
+    mybegintime = [JCAUtility stringWithCurrentTime:@"yyyy年MM月"];
+    self.timeLab.text = [NSString stringWithFormat:@"%@份",mybegintime];
+    
     _array = [NSMutableArray array];
     [_array addObject:@"90"];
     [_array addObject:@"10"];
@@ -91,5 +96,13 @@
 
 
 - (IBAction)choosetimeAction:(id)sender {
+    HistoryTimeVC *vc = [[HistoryTimeVC alloc]initWithNibName:@"HistoryTimeVC" bundle:nil];
+    vc.choosetime = mybegintime;
+    vc.choosetimeBlock = ^(NSString *begintime) {
+        mybegintime = begintime;
+        self.timeLab.text = [NSString stringWithFormat:@"%@份",begintime];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 @end

@@ -145,6 +145,7 @@
         WithDetermineBtnCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         cell.determineBlockoBlock = ^(WithDetermineBtnCell *cell) {
             WithdrawalSucc *vc = [[WithdrawalSucc alloc]initWithNibName:@"WithdrawalSucc" bundle:nil];
+            vc.ispopRoot = YES;
             [self.navigationController pushViewController:vc animated:YES];
         };
         

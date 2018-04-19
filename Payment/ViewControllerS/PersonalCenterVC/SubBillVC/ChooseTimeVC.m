@@ -70,7 +70,7 @@
         mindata = nil;
         maxdata = [NSDate date];
     }
-    [self.pickerView appearWithTitle:@"开始时间" pickerType:GSPickerTypeDatePicker minimumDate:mindata maxmumDate:maxdata subTitles:nil selectedStr:self.begintime sureAction:^(NSInteger path, NSString *pathStr) {
+    [self.pickerView appearWithTitle:@"开始时间" pickerType:GSPickerTypeDatePicker minimumDate:mindata maxmumDate:maxdata subTitles:nil selectedStr:self.enttime sureAction:^(NSInteger path, NSString *pathStr) {
         weakself.endtimeLab.text = pathStr;
         weakself.enttime = pathStr;
     } cancleAction:^{
@@ -82,6 +82,14 @@
 }
 
 - (IBAction)queryAction:(id)sender {
+    if ([JCAUtility compareDate:self.begintime withDate:self.enttime Formatstr:@"yyyy年MM月dd日"]==-1) {
+        [self showTipViewWithMessage:@"开始时间不能大于结束时间，请重新选择" andTitles:@"温馨提示"];
+        return;
+    }
+    
+    if (self.choosetimeBlock) {
+        self.choosetimeBlock(self.begintime, self.enttime);
+    }
     [self.navigationController popViewControllerAnimated:YES];
     
 }

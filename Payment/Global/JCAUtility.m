@@ -486,7 +486,7 @@ static CGRect oldframe;
     return  [formatter stringFromDate:endDate];
 }
 
-+ (NSInteger)compareDate:(NSString*)aDate withDate:(NSString*)bDate
++ (NSInteger)compareDate:(NSString*)aDate withDate:(NSString*)bDate Formatstr:(NSString *)formatstr
 {
     
     
@@ -499,7 +499,7 @@ static CGRect oldframe;
     
     [formatter setTimeStyle:NSDateFormatterShortStyle];
     
-    [formatter setDateFormat:@"yyyy-MM-dd"];
+    [formatter setDateFormat:formatstr];
     
     NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
     

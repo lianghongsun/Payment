@@ -11,8 +11,8 @@
 #import "ChooseTimeVC.h"
 @interface MonthBillVC ()
 {
-    NSString *begintime;
-    NSString *enttime;
+    NSString *mybegintime;
+    NSString *myenttime;
 }
 @end
 
@@ -24,9 +24,9 @@
     self.backgrView.backgroundColor = ThemeColor;
    
     [self setUidata];
-    enttime = [JCAUtility stringLastWithCurrentTime:@"yyyy年MM月dd日"];
-    begintime = [JCAUtility getMonthBeginAndEndWith:enttime];
-    self.PeriodtimeLab.text = [NSString stringWithFormat:@"%@-%@",begintime,enttime];
+    myenttime = [JCAUtility stringLastWithCurrentTime:@"yyyy年MM月dd日"];
+    mybegintime = [JCAUtility getMonthBeginAndEndWith:myenttime];
+    self.PeriodtimeLab.text = [NSString stringWithFormat:@"%@-%@",mybegintime,myenttime];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,9 +59,15 @@
 }
 - (IBAction)PeriodoftimeAction:(id)sender {
     ChooseTimeVC *vc = [[ChooseTimeVC alloc]initWithNibName:@"ChooseTimeVC" bundle:nil];
-    vc.begintime = begintime;
-    vc.enttime = enttime;
+    vc.begintime = mybegintime;
+    vc.enttime = myenttime;
     vc.ismonth = YES;
+    vc.choosetimeBlock = ^(NSString *begintime, NSString *enttime) {
+        self.PeriodtimeLab.text = [NSString stringWithFormat:@"%@-%@",begintime,enttime];
+        mybegintime = begintime;
+        myenttime = enttime;
+        
+    };
     [self.navigationController pushViewController:vc animated:YES];
 }
 @end
