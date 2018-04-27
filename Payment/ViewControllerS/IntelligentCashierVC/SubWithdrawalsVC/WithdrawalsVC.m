@@ -18,6 +18,11 @@
 
 @implementation WithdrawalsVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.balanceLab.text = [NSString stringWithFormat:@"%@元",self.balancenum];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"提款";
@@ -137,6 +142,7 @@
         [cell.withdarBtn setTitle:@"我要提款" forState:UIControlStateNormal];
         cell.withdrawalstoBlock = ^(WithButtonCell *cell){
             WithdrawalSecondVC *vc = [[WithdrawalSecondVC alloc]initWithNibName:@"WithdrawalSecondVC" bundle:nil];
+            vc.balancenum = self.balancenum;
             [weakself.navigationController pushViewController:vc animated:YES];
         };
         

@@ -112,7 +112,6 @@
             self.tipLabel.textColor = TextColor;
             self.tipLabel.text = @"手势密码设置成功";
             [self SaveLockPath:path];
-            user.oldgestures = path;
             if (self.serpassBlock) {
                 self.serpassBlock(self);
             }
@@ -144,6 +143,7 @@
 - (void)SaveLockPath:(NSString *)path{
     NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
     [userDef setObject:path forKey:@"LockPath"];
+    [userDef setObject:@"关闭" forKey:@"isLockPath"];
     [userDef synchronize];
 }
 @end

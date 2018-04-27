@@ -10,7 +10,7 @@
  #import<AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-@interface BaseViewController ()
+@interface BaseViewController ()<UIImagePickerControllerDelegate>
 
 @end
 
@@ -333,21 +333,97 @@
     return YES;
 }
 
+#pragma mark-- 判断身份证是否合法
+-(BOOL)checkUserID:(NSString *)userID
+{
+    //长度不为18的都排除掉
+    if (userID.length!=18) {
+        return NO;
+    }
+    
+    //校验格式
+    NSString *regex2 = @"^(^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$)|(^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])((\\d{4})|\\d{3}[Xx])$)$";
+    NSPredicate *identityCardPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex2];
+    BOOL flag = [identityCardPredicate evaluateWithObject:userID];
+    
+    if (!flag) {
+        return flag;    //格式错误
+    }else {
+        //格式正确在判断是否合法
+        
+        //将前17位加权因子保存在数组里
+        NSArray * idCardWiArray = @[@"7", @"9", @"10", @"5", @"8", @"4", @"2", @"1", @"6", @"3", @"7", @"9", @"10", @"5", @"8", @"4", @"2"];
+        
+        //这是除以11后，可能产生的11位余数、验证码，也保存成数组
+        NSArray * idCardYArray = @[@"1", @"0", @"10", @"9", @"8", @"7", @"6", @"5", @"4", @"3", @"2"];
+        
+        //用来保存前17位各自乖以加权因子后的总和
+        NSInteger idCardWiSum = 0;
+        for(int i = 0;i < 17;i++)
+        {
+            NSInteger subStrIndex = [[userID substringWithRange:NSMakeRange(i, 1)] integerValue];
+            NSInteger idCardWiIndex = [[idCardWiArray objectAtIndex:i] integerValue];
+            
+            idCardWiSum+= subStrIndex * idCardWiIndex;
+            
+        }
+        
+        //计算出校验码所在数组的位置
+        NSInteger idCardMod=idCardWiSum%11;
+        
+        //得到最后一位身份证号码
+        NSString * idCardLast= [userID substringWithRange:NSMakeRange(17, 1)];
+        
+        //如果等于2，则说明校验码是10，身份证号码最后一位应该是X
+        if(idCardMod==2)
+        {
+            if([idCardLast isEqualToString:@"X"]||[idCardLast isEqualToString:@"x"])
+            {
+                return YES;
+            }else
+            {
+                return NO;
+            }
+        }else{
+            //用计算出的验证码与最后一位身份证号码匹配，如果一致，说明通过，否则是无效的身份证号码
+            if([idCardLast isEqualToString: [idCardYArray objectAtIndex:idCardMod]])
+            {
+                return YES;
+            }
+            else
+            {
+                return NO;
+            }
+        }
+    }
+}
+
+
+
 #pragma mark 合成语音
 - (void)syntheticVoice:(NSString *)string {
     
-    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);  // 震动
-    AudioServicesPlaySystemSound(1007);
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *name = [userDefault objectForKey:@"allMessnoti"];
+    NSString *voice = [userDefault objectForKey:@"voiceMessnoti"];
+    NSString *vibration = [userDefault objectForKey:@"vibrationMess"];
     
-    //  语音合成
-    AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc] init];
-    AVSpeechUtterance *speechUtterance = [AVSpeechUtterance speechUtteranceWithString:string];
-    //设置语言类别（不能被识别，返回值为nil）
-    speechUtterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-CN"];
-    //设置语速快慢
-    speechUtterance.rate = 0.5;
-    //语音合成器会生成音频
-    [ synthesizer speakUtterance:speechUtterance];
+    if ([name isEqualToString:@"开启"]&&[vibration isEqualToString:@"开启"]) {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);  // 震动
+        AudioServicesPlaySystemSound(1007);
+    }
+    
+    if ([name isEqualToString:@"开启"]&&[voice isEqualToString:@"开启"]) {
+        //  语音合成
+        AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc] init];
+        AVSpeechUtterance *speechUtterance = [AVSpeechUtterance speechUtteranceWithString:string];
+        //设置语言类别（不能被识别，返回值为nil）
+        speechUtterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-CN"];
+        //设置语速快慢
+        speechUtterance.rate = 0.5;
+        //语音合成器会生成音频
+        [ synthesizer speakUtterance:speechUtterance];
+    }
 }
 
 - (void)showMessage:(NSString*)message viewHeight:(float)height;
@@ -436,6 +512,9 @@
    
 }
 
+- (void)goimageImagePicker {
+    
+}
 
 
 @end

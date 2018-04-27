@@ -32,6 +32,9 @@
     self.againpasswordText.delegate = self;
     self.verificationText.delegate = self;
     
+    [self.passwordText setSecureTextEntry:YES];
+    [self.againpasswordText setSecureTextEntry:YES];
+    
     self.nameimg.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e65a", 40, RGB(153, 153, 153))];
     self.passimg.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e62a", 40, RGB(153, 153, 153))];
     self.againpassimg.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e62a", 40, RGB(153, 153, 153))];
@@ -84,23 +87,23 @@
         return;
     }
     if ([self.passwordText.text length]<6) {
-        [self showMessage:@"密码为6位数以上数字或字母" viewHeight:100];
+        [self showMessage:@"密码为6位数以上数字或字母" viewHeight:0];
         return;
     }
     if ([self.againpasswordText.text length]<6) {
-        [self showMessage:@"密码为6位数以上数字或字母" viewHeight:100];
+        [self showMessage:@"密码为6位数以上数字或字母" viewHeight:0];
         return;
     }
     if (![self.againpasswordText.text isEqualToString:self.passwordText.text]) {
-        [self showMessage:@"两次输入的密码不一致" viewHeight:100];
+        [self showMessage:@"两次输入的密码不一致" viewHeight:0];
         return;
     }
     if (self.verificationText.text.length < 1) {
-        [self showMessage:@"请输入验证码" viewHeight:100];
+        [self showMessage:@"请输入验证码" viewHeight:0];
         return;
     }
     if (!isagerr) {
-        [self showMessage:@"请勾选同意用户协议" viewHeight:100];
+        [self showMessage:@"请勾选同意用户协议" viewHeight:0];
     }
     
     [self RegisterPI];
@@ -125,13 +128,13 @@
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    [self showMessage:@"验证码发送成功，请查看短信" viewHeight:100];
+                    [self showMessage:@"验证码发送成功，请查看短信" viewHeight:0];
                 }
                     break;
                 default:
                 {
                     NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
-                    [self showMessage:mesgStr viewHeight:100];
+                    [self showMessage:mesgStr viewHeight:0];
                 }
                     break;
             }
@@ -154,13 +157,13 @@
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    [self showMessage:@"注册成功" viewHeight:100];
+                    [self showMessage:@"注册成功" viewHeight:0];
                 }
                     break;
                 default:
                 {
                     NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
-                    [self showMessage:mesgStr viewHeight:100];
+                    [self showMessage:mesgStr viewHeight:0];
                 }
                     break;
             }

@@ -20,6 +20,8 @@
     self.title = @"忘记密码";
     self.newpasswordText.delegate = self;
     self.againnewpassText.delegate = self;
+    [self.newpasswordText setSecureTextEntry:YES];
+    [self.againnewpassText setSecureTextEntry:YES];
     
     self.passImg.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e62a", 40, RGB(153, 153, 153))];
     self.againpassImg.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e62a", 40, RGB(153, 153, 153))];
@@ -34,15 +36,15 @@
 - (IBAction)determineAction:(id)sender {
     
     if ([self.newpasswordText.text length]<6) {
-        [self showMessage:@"密码为6位数以上数字或字母" viewHeight:100];
+        [self showMessage:@"密码为6位数以上数字或字母" viewHeight:0];
         return;
     }
     if ([self.againnewpassText.text length]<6) {
-        [self showMessage:@"密码为6位数以上数字或字母" viewHeight:100];
+        [self showMessage:@"密码为6位数以上数字或字母" viewHeight:0];
         return;
     }
     if (![self.againnewpassText.text isEqualToString:self.newpasswordText.text]) {
-        [self showMessage:@"两次输入的密码不一致" viewHeight:100];
+        [self showMessage:@"两次输入的密码不一致" viewHeight:0];
         return;
     }
     [self PassportAPI];
@@ -61,14 +63,14 @@
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    [self showMessage:@"密码重置成功" viewHeight:100];
+                    [self showMessage:@"密码重置成功" viewHeight:0];
                     [self.navigationController popToRootViewControllerAnimated:YES];
                 }
                     break;
                 default:
                 {
                     NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
-                    [self showMessage:mesgStr viewHeight:100];
+                    [self showMessage:mesgStr viewHeight:0];
                 }
                     break;
             }

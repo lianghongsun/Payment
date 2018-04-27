@@ -408,7 +408,7 @@ static CGRect oldframe;
     return dateStr;
 }
 
-// 获取当前时间
+// 获取前一天时间
 +(NSString *)stringLastWithCurrentTime:(NSString *)formatstr{
     //转换当前时间的格式为 XXXX-XX-XX
     NSDate *dateNow = [NSDate date];

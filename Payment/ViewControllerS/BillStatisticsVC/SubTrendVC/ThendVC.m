@@ -9,28 +9,56 @@
 #import "ThendVC.h"
 #import "AAChartKit.h"
 #import "VersionCell.h"
+#import "YearHistoryBillApi.h"
+#import "YHKModel.h"
 
 @interface ThendVC ()<UITableViewDataSource,UITableViewDelegate,WeChatStylePlaceHolderDelegate>
 {
     NSInteger indexnum;
+    UserInfo *user;
+    NSString *lastmonth;
+    NSString *firstmonth;
+    NSString *secondmonth;
+    NSString *threemonth;
+    NSString *fourmonth;
+    NSString *fivetmonth;
+    NSString *sixtmonth;
+    
+    float lastmoney;
+    float firstmoney;
+    float secondmoney;
+    float threemoney;
+    float fourmoney;
+    float fivetmoney;
+    float sixtmoney;
+    
+    NSInteger  lastpen;
+    NSInteger firstpen;
+    NSInteger secondpen;
+    NSInteger threepen;
+    NSInteger fourpen;
+    NSInteger fivetpen;
+    NSInteger sixtpen;
+    
 }
 @property (nonatomic, strong) AAChartModel *aaChartModel;
 @property (nonatomic, strong) AAChartView  *aaChartView;
-@property (nonatomic,strong) NSMutableArray *dataArr;
+@property (nonatomic,strong) NSMutableArray *listdataArr;
 
 @end
 
 @implementation ThendVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"收款趋势";
-    self.dataArr = [NSMutableArray array];
-    [self.dataArr addObject:@"123"];
-    [self.dataArr addObject:@"1321"];
-    
-    [self setUpTheAAChartViewWithChartType:AAChartTypeSpline];
-    
+    self.listdataArr = [NSMutableArray array];
+    user = [UserInfo shareObject];
+    [self YearHistoryBillApi:user.uid];
     [self setBtntitleColour:self.timeBtn1 OtheroneBtn:self.timeBtn2 OthertwoBtn:self.timeBtn3 OtherthreeBtn:self.timeBtn4 OtherfourBtn:self.timeBtn5 OthertfiveBtn:self.timeBtn6 FirstColour:[UIColor whiteColor] OtherColour:RGB(195, 224, 246)];
     indexnum = 1;
     [self.tableview registerNib:[UINib nibWithNibName:@"VersionCell" bundle:nil] forCellReuseIdentifier:@"VersionCell"];
@@ -56,7 +84,8 @@
     [self.tableview.mj_header endRefreshing];
 }
 
-- (void)setUpTheAAChartViewWithChartType:(AAChartType)chartType {
+- (void)setUpTheAAChartViewWithChartType:(AAChartType)chartType
+{
     
     self.aaChartView = [[AAChartView alloc]init];
     self.aaChartView.frame = CGRectMake(0, 0, SCREEN_W, 160);
@@ -78,7 +107,7 @@
     .titleFontColorSet(@"#FFFFFF")
     .subtitleSet(@"")//图表副标题
     .yAxisVisibleSet(false)//设置 Y 轴是否可见
-    .categoriesSet(@[@"2018.01",@"2018.02",@"2018.03",@"2018.04", @"2018.05",@"2018.06"])//图表横轴的内容
+    .categoriesSet(@[firstmonth,secondmonth,threemonth,fourmonth, fivetmonth,sixtmonth])//图表横轴的内容
     .xAxisVisibleSet(false)//设置 X 轴是否可见
     .colorsThemeSet(@[@"#FFFFFF",@"#FFFFFF",@"#FFFFFF",@"#FFFFFF"])//设置主体颜色数组
     .yAxisTitleSet(@"")//设置 Y 轴标题
@@ -90,7 +119,7 @@
     .seriesSet(@[
                  AAObject(AASeriesElement)
                  .nameSet(@"金额")
-                 .dataSet(@[@1000, @3000, @10000, @4000, @180, @2000]),
+                 .dataSet(@[[NSNumber numberWithFloat:firstmoney], [NSNumber numberWithFloat:secondmoney], [NSNumber numberWithFloat:threemoney], [NSNumber numberWithFloat:fourmoney], [NSNumber numberWithFloat:fivetmoney], [NSNumber numberWithFloat:sixtmoney]]),
                  AAObject(AASeriesElement)
                  .nameSet(@"金额")
                  .dataSet(@[]),
@@ -99,7 +128,7 @@
                  .dataSet(@[]),
                  AAObject(AASeriesElement)
                  .nameSet(@"笔数")
-                 .dataSet(@[@3900, @5000, @6200, @8000, @9000, @4000])
+                 .dataSet(@[[NSNumber numberWithInteger:firstpen], [NSNumber numberWithInteger:secondpen], [NSNumber numberWithInteger:threepen], [NSNumber numberWithInteger:fourpen], [NSNumber numberWithInteger:fivetpen], [NSNumber numberWithInteger:sixtpen]])
                  ]
                );
     
@@ -118,9 +147,41 @@
  *
  **/
 - (void)configureTheYAxisPlotLineForAAChartView {
+    NSMutableArray *array = [NSMutableArray array];
+    [array addObject:[NSNumber numberWithFloat:firstmoney]];
+    [array addObject:[NSNumber numberWithFloat:secondmoney]];
+    [array addObject:[NSNumber numberWithFloat:threemoney]];
+    [array addObject:[NSNumber numberWithFloat:fourmoney]];
+    [array addObject:[NSNumber numberWithFloat:fivetmoney]];
+    [array addObject:[NSNumber numberWithFloat:sixtmoney]];
     
-    NSInteger numvue = 10000/4;
-    _aaChartModel.yAxisMaxSet(@(10000))//Y轴最大值
+    for (int i = 1; i < array.count; i++) {
+        for (int j = 0; j < array.count - i; j++) {
+            if ([array[j] compare:array[j+1]] == NSOrderedDescending) {
+                [array exchangeObjectAtIndex:j withObjectAtIndex:j+1];
+            }
+            printf("排序中:");
+        }
+    }
+    
+    int biggestnum = [array[array.count-1]intValue];
+    NSInteger newbiggsnum = 0;
+    if (biggestnum<=100) {
+        newbiggsnum = 100;
+    }
+    else if (biggestnum<=1000){
+        newbiggsnum = 1000;
+    }
+    else if (biggestnum<=10000){
+        newbiggsnum = 10000;
+    }
+    else {
+        newbiggsnum = 100000;
+    }
+    
+    
+    NSInteger numvue = newbiggsnum/4;
+    _aaChartModel.yAxisMaxSet(@(newbiggsnum))//Y轴最大值
     .yAxisMinSet(@(1))//Y轴最小值
     .yAxisAllowDecimalsSet(NO)//是否允许Y轴坐标值小数
     .yAxisTickPositionsSet(@[@(0),@(numvue*1),@(numvue*2),@(numvue*3),@(numvue*4)])//指定y轴坐标
@@ -220,7 +281,10 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.dataArr.count;
+    if (self.listdataArr.count>0) {
+      return 2;
+    }
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -247,28 +311,55 @@
     
     static NSString *identifier1 = @"VersionCell";
     VersionCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+    YearlistBillFirstModel *model = self.listdataArr[indexnum];
+    
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            cell.versioLab.text = @"2018-02收款金额";
-            cell.subLab.text = @"¥1888.00";
+            cell.versioLab.text = [NSString stringWithFormat:@"%@收款金额",model.monthDate];
+            cell.subLab.text = [NSString stringWithFormat:@"¥%.2f",model.totalAmount];
         }
         else{
             cell.versioLab.text = @"环比增长";
-            cell.subLab.text = @"20%";
+            if (indexPath.row == 0) {
+                if (lastmoney <=0) {
+                    cell.subLab.text = @"上月无数据";
+                }
+                else{
+                    float pricenum = (model.totalAmount-lastmoney )/lastmoney ;
+                    cell.subLab.text = [NSString stringWithFormat:@"%.2f%@",pricenum,@"%"];
+                }
+            }
+            else{
+                YearlistBillFirstModel *mode3 = self.listdataArr[indexnum-1];
+                if (mode3.totalAmount <=0) {
+                    cell.subLab.text = @"上月无数据";
+                }
+                else{
+                    float pricenum = (model.totalAmount-mode3.totalAmount )/mode3.totalAmount ;
+                    cell.subLab.text = [NSString stringWithFormat:@"%.2f%@",pricenum,@"%"];
+                }
+                
+            }
         }
     }
     else{
         if (indexPath.row == 0) {
-            cell.versioLab.text = @"2018-02收款笔数";
-            cell.subLab.text = @"20笔";
+            cell.versioLab.text = [NSString stringWithFormat:@"%@收款笔数",model.monthDate];
+            cell.subLab.text = [NSString stringWithFormat:@"%ld笔",(long)model.totalCount];
         }
         else{
-            cell.versioLab.text = @"¥1888.00";
-            cell.subLab.text = @"30%";
+            YearlistBillFirstModel *mode3 = self.listdataArr[indexnum-1];
+            if (mode3.totalCount <=0) {
+                cell.subLab.text = @"上月无数据";
+            }
+            else{
+                float pricenum = (model.totalCount-mode3.totalCount )/mode3.totalCount ;
+                cell.subLab.text = [NSString stringWithFormat:@"%.2f%@",pricenum,@"%"];
+            }
         }
     }
     [cell.subLab setHidden:NO];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = UITableViewCellAccessoryNone;
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
     
@@ -300,6 +391,81 @@
     
 }
 
-
+- (void)YearHistoryBillApi:(NSString *)uid {
+    [self showLoding:@"请稍后"];
+    YearHistoryBillApi *monbill = [[YearHistoryBillApi alloc]initWithUid:uid];
+    [monbill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            [self closeLoding];
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    
+                    [self.listdataArr addObjectsFromArray:[YearlistBillFirstModel mj_objectArrayWithKeyValuesArray:datadic ]];
+                    
+                    
+                    
+                    YearlistBillFirstModel *model1 = self.listdataArr[0];
+                    YearlistBillFirstModel *model2 = self.listdataArr[1];
+                    YearlistBillFirstModel *model3 = self.listdataArr[2];
+                    YearlistBillFirstModel *model4 = self.listdataArr[3];
+                    YearlistBillFirstModel *model5 = self.listdataArr[4];
+                    YearlistBillFirstModel *model6 = self.listdataArr[5];
+                    YearlistBillFirstModel *model7 = self.listdataArr[6];
+                    lastmonth = model1.monthDate;
+                    lastmoney = model1.totalAmount;
+                    lastpen  = model1.totalCount;
+                    
+                    firstmonth = model2.monthDate;
+                    firstmoney = model2.totalAmount;
+                    firstpen  = model2.totalCount;
+                    [self.timeBtn1 setTitle:model2.monthDate forState:UIControlStateNormal];
+                    
+                    secondmonth = model3.monthDate;
+                    secondmoney = model3.totalAmount;
+                    secondpen  = model3.totalCount;
+                    [self.timeBtn2 setTitle:model3.monthDate forState:UIControlStateNormal];
+                    
+                    threemonth = model4.monthDate;
+                    threemoney = model4.totalAmount;
+                    threepen  = model4.totalCount;
+                    [self.timeBtn3 setTitle:model4.monthDate forState:UIControlStateNormal];
+                    
+                    fourmonth = model5.monthDate;
+                    fourmoney = model5.totalAmount;
+                    fourpen  = model5.totalCount;
+                    [self.timeBtn4 setTitle:model5.monthDate forState:UIControlStateNormal];
+                    
+                    fivetmonth = model6.monthDate;
+                    fivetmoney = model6.totalAmount;
+                    fivetpen  = model6.totalCount;
+                    [self.timeBtn5 setTitle:model6.monthDate forState:UIControlStateNormal];
+                    
+                    sixtmonth = model7.monthDate;
+                    sixtmoney = model7.totalAmount;
+                    sixtpen  = model7.totalCount;
+                   [self.timeBtn6 setTitle:model7.monthDate forState:UIControlStateNormal];
+                    
+                     [self setUpTheAAChartViewWithChartType:AAChartTypeSpline];
+                    [self.tableview.mj_header beginRefreshing];
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        
+        
+    }];
+}
 
 @end

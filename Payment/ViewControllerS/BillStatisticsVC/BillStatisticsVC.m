@@ -16,9 +16,21 @@
 #import "HistoryBillVC.h"
 #import "ConstituteVC.h"
 #import "ThendVC.h"
+#import "TodayBillApi.h"
+#import "EverydayBillApi.h"
 
 @interface BillStatisticsVC ()<UITableViewDelegate,UITableViewDataSource>
-
+{
+    UserInfo *user;
+    NSString *todayAllbill;
+    NSString *todayailbill;
+    NSString *todayweixinbill;
+    NSString *tomoAllBill;
+    NSString *tomoailBill;
+    NSString *tomoweixinBill;
+    
+    NSString *myenttime;
+}
 @property (nonatomic, strong) NSArray *datas;
 
 @end
@@ -26,6 +38,17 @@
 @implementation BillStatisticsVC
 
 static NSString * const identifier = @"FXCyclePagerViewCell";
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    user = [UserInfo shareObject];
+    
+    myenttime = [JCAUtility stringWithCurrentTime:@"yyyy-MM-dd"];
+    
+    [self TodayBillApi:user.uid StartDate:[JCAUtility stringWithCurrentTime:@"yyyy-MM-dd"] ];
+    [self EverydayBillApi:user.uid StartDate:[JCAUtility stringLastWithCurrentTime:@"yyyy-MM-dd"] EndDate:[JCAUtility stringLastWithCurrentTime:@"yyyy-MM-dd"]];
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -49,11 +72,6 @@ static NSString * const identifier = @"FXCyclePagerViewCell";
 }
 
 - (void)setassignment {
-    self.todaypriceLab.text = [NSString stringWithFormat:@"¥%@",@"99999.00"];
-    self.todaynumLab.text = [NSString stringWithFormat:@"合计%@笔",@"6"];
-    self.tomopriceLab.text = [NSString stringWithFormat:@"¥%@",@"8888.00"];
-    self.tomonumLab.text = [NSString stringWithFormat:@"合计%@笔",@"9"];
-    
     
 }
 #pragma mark - UITableViewDataSource
@@ -171,10 +189,72 @@ static NSString * const identifier = @"FXCyclePagerViewCell";
             default:
                 break;
         }
-        
-        
     }
-    
-    
 }
+
+- (void)TodayBillApi:(NSString *)mid StartDate:(NSString *)startDate{
+    [self showLoding:@"请稍后"];
+    TodayBillApi *todaybill = [[TodayBillApi alloc]initWithUid:mid StartDate:startDate];
+    [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            [self closeLoding];
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {   
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    
+                        self.todaypriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
+                        self.todaynumLab.text = [NSString stringWithFormat:@"合计%@笔",[datadic objectForKey:@"totalRow"]];
+                    
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        
+        
+    }];
+}
+
+- (void)EverydayBillApi:(NSString *)mid StartDate:(NSString *)startDate EndDate:(NSString *)endDate{
+    [self showLoding:@"请稍后"];
+    EverydayBillApi *todaybill = [[EverydayBillApi alloc]initWithUid:mid StartDate:startDate EndDate:endDate];
+    [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            [self closeLoding];
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                        self.tomopriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
+                        self.tomonumLab.text = [NSString stringWithFormat:@"合计%@笔",[datadic objectForKey:@"totalRow"]];
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        
+        
+    }];
+}
+
+
 @end

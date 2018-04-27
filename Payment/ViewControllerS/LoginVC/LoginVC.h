@@ -20,6 +20,7 @@ typedef void (^LoginBlock) (LoginVC *);
 @property (weak, nonatomic) IBOutlet UIImageView *usernameImg;
 @property (weak, nonatomic) IBOutlet UIImageView *passwordImg;
 
+@property (nonatomic,assign)BOOL isloginout;
 @property(nonatomic, copy) LoginBlock loginBlock;
 
 @end

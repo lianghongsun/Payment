@@ -11,7 +11,7 @@
 
 @interface ShopCerifiSecoendVC ()
 {
-    NSString *storestr;
+    NSString *storetype;
 }
 @end
 
@@ -31,7 +31,7 @@
 }
 
 - (IBAction)havecarAction:(id)sender {
-    storestr = @"有证个体户";
+    storetype = @"1";
     [self setbackgrBtn:self.havecardBtn backgColour:ThemeColor titlecolour:[UIColor whiteColor] lincolour:[UIColor clearColor] Boll:YES ];
     [self setbackgrBtn:self.nocardBtn backgColour:[UIColor whiteColor] titlecolour:[UIColor blackColor] lincolour:[UIColor lightGrayColor] Boll:YES];
     [self setbackgrBtn:self.enterpriseBtn backgColour:[UIColor whiteColor] titlecolour:[UIColor blackColor] lincolour:[UIColor lightGrayColor] Boll:YES];
@@ -41,7 +41,7 @@
 }
 
 - (IBAction)nocarAction:(id)sender {
-    storestr = @"无证个体户";
+    storetype = @"2";
     [self setbackgrBtn:self.havecardBtn backgColour:[UIColor whiteColor] titlecolour:[UIColor blackColor] lincolour:[UIColor lightGrayColor] Boll:YES];
     [self setbackgrBtn:self.nocardBtn backgColour:ThemeColor titlecolour:[UIColor whiteColor] lincolour:[UIColor clearColor] Boll:YES ];
     [self setbackgrBtn:self.enterpriseBtn backgColour:[UIColor whiteColor] titlecolour:[UIColor blackColor] lincolour:[UIColor lightGrayColor] Boll:YES];
@@ -50,7 +50,7 @@
 }
 
 - (IBAction)enterpriseAction:(id)sender {
-    storestr = @"企业商户";
+    storetype = @"3";
     [self setbackgrBtn:self.havecardBtn backgColour:[UIColor whiteColor] titlecolour:[UIColor blackColor] lincolour:[UIColor lightGrayColor] Boll:YES];
     [self setbackgrBtn:self.nocardBtn backgColour:[UIColor whiteColor] titlecolour:[UIColor blackColor] lincolour:[UIColor lightGrayColor] Boll:YES];
     [self setbackgrBtn:self.enterpriseBtn backgColour:ThemeColor titlecolour:[UIColor whiteColor] lincolour:[UIColor clearColor] Boll:YES ];
@@ -60,7 +60,7 @@
 
 - (IBAction)nextAction:(id)sender {
     ShopCerifiThreeVC *vc = [[ShopCerifiThreeVC alloc]initWithNibName:@"ShopCerifiThreeVC" bundle:nil];
-    vc.storestr = storestr;
+    vc.storetype = storetype;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -70,8 +70,6 @@
     button.layer.borderWidth = 1;
     button.layer.borderColor = [lincolours CGColor];
     button.userInteractionEnabled = isuse;
-    
-    
 }
 
 

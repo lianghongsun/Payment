@@ -21,6 +21,7 @@ pod 'MJRefresh', '~> 3.1.9’
 pod 'YYModel'
 pod 'Masonry'
 pod 'CYLTableViewPlaceHolder'
- 
+pod 'Qiniu', '~> 7.1.0.1’
+
 
 end

@@ -10,6 +10,6 @@
 
 @interface BaseinfoAPI : BaseAccessTokenAPIRequest
 
-- (id)initWith;;
+- (id)initWith;
 
 @end

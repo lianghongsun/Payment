@@ -12,4 +12,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *priceLab;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
+@property (nonatomic,copy)NSString *balancenum;
+
 @end

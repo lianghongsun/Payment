@@ -9,11 +9,17 @@
 #import "ConstituteVC.h"
 #import "AAChartKit.h"
 #import "HistoryTimeVC.h"
+#import "PercentBillApi.h"
+#import "YHKModel.h"
 
 @interface ConstituteVC ()
 {
     NSString *mybegintime;
+    NSString *mymonthtime;
     NSMutableArray  *_array;
+    UserInfo *user;
+    float weixinmoney;
+    float ailmoney;
 }
 @property (nonatomic, strong) AAChartModel *aaChartModel;
 @property (nonatomic, strong) AAChartView  *aaChartView;
@@ -24,15 +30,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"收款构成";
-    
+    user = [UserInfo shareObject];
     mybegintime = [JCAUtility stringWithCurrentTime:@"yyyy年MM月"];
+    mymonthtime = [JCAUtility stringWithCurrentTime:@"yyyy-MM"];
     self.timeLab.text = [NSString stringWithFormat:@"%@份",mybegintime];
+    
+    [self PercentBillApi:user.uid Monthdata:[JCAUtility stringWithCurrentTime:@"yyyy-MM"]];
     
     _array = [NSMutableArray array];
     [_array addObject:@"90"];
     [_array addObject:@"10"];
-    
-   [self setUpTheAAChartViewWithChartType:AAChartTypePie];
     
 }
 
@@ -79,8 +86,8 @@
                  .allowPointSelectSet(true)//是否允许在点击数据点标记(扇形图点击选中的块发生位移)
                  .dataSet(
                           @[
-                            @[@"Firefox",   @500],
-                            @[@"IE",        @100],
+                            @[@"Firefox",   [NSNumber numberWithFloat:ailmoney]],
+                            @[@"IE",        [NSNumber numberWithFloat:weixinmoney]],
 
                             ]
                           ),
@@ -98,11 +105,74 @@
 - (IBAction)choosetimeAction:(id)sender {
     HistoryTimeVC *vc = [[HistoryTimeVC alloc]initWithNibName:@"HistoryTimeVC" bundle:nil];
     vc.choosetime = mybegintime;
-    vc.choosetimeBlock = ^(NSString *begintime) {
+    vc.startDate = [JCAUtility DataWithTimestr:mybegintime formatStr:@"yyyy年MM月"];
+    vc.choosetimeBlock = ^(NSString *begintime,NSDate *choosedata ) {
         mybegintime = begintime;
         self.timeLab.text = [NSString stringWithFormat:@"%@份",begintime];
+        mybegintime = [JCAUtility stringWithData:choosedata formatStr:@"yyyy年MM月"];
+        mymonthtime = [JCAUtility stringWithData:choosedata formatStr:@"yyyy-MM"];
+        [self PercentBillApi:user.uid Monthdata:[JCAUtility stringWithData:choosedata formatStr:@"yyyy-MM"]];
     };
     [self.navigationController pushViewController:vc animated:YES];
     
 }
+
+
+- (void)PercentBillApi:(NSString *)uid Monthdata:(NSString *)monthdata{
+    [self showLoding:@"请稍后"];
+    PercentBillApi *monbill = [[PercentBillApi alloc]initWithUid:uid MonthDate:monthdata];
+    [monbill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            [self closeLoding];
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    
+                    NSMutableArray*listarr = [NSMutableArray array];
+                    [listarr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[dic objectForKey:@"data"]]];
+                    
+                    TodayBillFirstModel *model1 = listarr[0];
+                    TodayBillFirstModel *model2 = listarr[1];
+                    
+                    self.totalrevenueLab.text = [NSString stringWithFormat:@"¥%.2f",[model1.totalAmount floatValue]+[model2.totalAmount floatValue]];
+
+                    if ([model1.platformId isEqualToString:@"100"]) {
+                        self.weixinincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
+                        weixinmoney = [model1.totalAmount floatValue];
+                    }
+                    else{
+                        self.ailpayincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
+                        ailmoney = [model1.totalAmount floatValue];
+                    }
+
+                    if ([model2.platformId isEqualToString:@"100"]) {
+                        self.weixinincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
+                        weixinmoney = [model2.totalAmount floatValue];
+                    }
+                    else{
+                        self.ailpayincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
+                        ailmoney = [model2.totalAmount floatValue];
+                    }
+                    
+                    [self setUpTheAAChartViewWithChartType:AAChartTypePie];
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        
+        
+    }];
+}
+
+
 @end

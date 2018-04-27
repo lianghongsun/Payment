@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ForgetGesturesPassVC : UIViewController
+@interface ForgetGesturesPassVC : BaseViewController
 @property (weak, nonatomic) IBOutlet UITextField *loginpassTx;
 - (IBAction)determineAction:(id)sender;
 

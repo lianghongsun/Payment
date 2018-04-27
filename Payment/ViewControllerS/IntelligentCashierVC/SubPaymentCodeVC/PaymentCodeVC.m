@@ -83,7 +83,18 @@
                 break;
             case 13:
             {
+                if([weakself.moneyTF.text length]<=1){
+                    [self showMessage:@"输入金额不能为空" viewHeight:0];
+                    return ;
+                }
+                if ([weakself.moneyTF.text isEqualToString:@"¥0"]||[weakself.moneyTF.text isEqualToString:@"¥0.0"]||[weakself.moneyTF.text isEqualToString:@"¥0."]) {
+                    [self showMessage:@"输入金额不能为0" viewHeight:0];
+                    return ;
+                }
+                
+                NSString *pric = [weakself.moneyTF.text substringFromIndex:1];
                 ChooeseThree *vc = [[ChooeseThree alloc]initWithNibName:@"ChooesePayment" bundle:nil];
+                vc.pricenum = [NSString stringWithFormat:@"%.2f",[pric floatValue]];
                 [self.navigationController pushViewController:vc animated:YES];
             }
                 break;

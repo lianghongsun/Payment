@@ -19,17 +19,25 @@
 @interface ChangeGestureLockViewController ()<GestureLockViewDelegate>
 {
     UserInfo *user;
+    NSString * isLockPath;
+    BOOL ischeckoldpass;
 }
 
 @property(nonatomic, weak)UILabel *tipLabel;
 @property(nonatomic, weak)GestureLockView *gestureLockView;
 @property(nonatomic, strong)UIButton *resetButton;
-@property(nonatomic, copy)NSString *oldLockPath;
 @property(nonatomic, copy)NSString *firstLockPath;
 @property(nonatomic, copy)NSString *secondLockPath;
 @end
 
 @implementation ChangeGestureLockViewController
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    isLockPath = [userDefault objectForKey:@"LockPath"];
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -37,16 +45,11 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self SetupSubviews];
     user = [UserInfo shareObject];
+    ischeckoldpass = NO;
 }
 
 - (void)SetupSubviews{
     CGFloat mainViewW = self.view.frame.size.width;
-    CGFloat mainViewH = self.view.frame.size.height;
-    
-    CGFloat smallLockViewW = 100.0f;
-    CGFloat smallLockViewH = 100.0f;
-    CGFloat smallLockViewX = (mainViewW - smallLockViewW)/2.0f;
-    CGFloat smallLockViewY = 40.0f;
     
     
     CGFloat tipLabelH = 20.0f;
@@ -106,7 +109,7 @@
 - (void)lockView:(GestureLockView *)lockView BeganTouch:(NSSet *)touchs
 {
     self.tipLabel.textColor = TextColor;
-    if (self.oldLockPath) {
+    if (ischeckoldpass) {
         if (self.firstLockPath) {
            self.tipLabel.text = @"请再次设置解锁图案";
         }
@@ -127,13 +130,12 @@
         self.tipLabel.text = @"请连接至少4个点";
         return ;
     }
-    if (self.oldLockPath) {
+    if (ischeckoldpass) {
         if (self.firstLockPath.length) {
             if ([path isEqualToString:self.firstLockPath]) {
                 self.tipLabel.textColor = TextColor;
-                self.tipLabel.text = @"手势密码设置成功";
+                self.tipLabel.text = @"手势密码修改成功";
                 [self SaveLockPath:path];
-                user.oldgestures = path;
                 if (self.serpassBlock) {
                     self.serpassBlock(self);
                 }
@@ -159,13 +161,13 @@
         }
     }
     else{
-        if (![[path copy]isEqualToString:user.oldgestures]) {
+        if (![[path copy]isEqualToString:isLockPath]) {
             self.tipLabel.textColor = [UIColor redColor];;
             self.tipLabel.text = @"与旧密码不一致";
             return ;
         }
         else{
-         self.oldLockPath = [path copy];
+            ischeckoldpass = YES;
             self.tipLabel.textColor = TextColor;
             self.tipLabel.text = @"请设置解锁图案";
         }

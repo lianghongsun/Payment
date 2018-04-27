@@ -10,6 +10,7 @@
 
 @interface NewHistorybillVC : BaseViewController
 @property (nonatomic,copy)NSString *titleStr;
+@property (nonatomic,copy)NSString *monthStr;
 @property (weak, nonatomic) IBOutlet UIView *backgrView;
 @property (weak, nonatomic) IBOutlet UILabel *allgetLab;
 @property (weak, nonatomic) IBOutlet UILabel *allgetnumLab;

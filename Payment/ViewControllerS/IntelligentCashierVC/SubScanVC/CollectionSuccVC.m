@@ -17,6 +17,11 @@
 
 @implementation CollectionSuccVC
 
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    // 设置导航控制器的代理为self
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"账单详情";
@@ -92,15 +97,15 @@
         WithSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         if (indexPath.row == 0) {
             cell.titleLab.text = @"订单金额";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"¥%@",@"888.00"];
+            cell.subtitleLab.text = self.model.totalAmount;
         }
         else if (indexPath.row == 1){
             cell.titleLab.text = @"实收金额";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"¥%@",@"888.00"];
+            cell.subtitleLab.text = self.model.arrivalAmount;
         }
         else{
             cell.titleLab.text = @"付款账号";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"15467677663"];
+            cell.subtitleLab.text = self.model.authcode;
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -112,22 +117,32 @@
         
         if (indexPath.row == 0){
             cell.titleLab.text = @"交易时间";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"2018年03月27日 09:18:34"];
+            cell.subtitleLab.text = self.model.completed;
         }
         else if (indexPath.row == 1){
+            NSString *status;
+            if ([self.model.orderState isEqualToString:@"0"]) {
+                status = @"收款失败";
+            }
+            else if ([self.model.orderState isEqualToString:@"1"]){
+                status = @"收款成功";
+            }
+            else{
+                status = @"收款失败";
+            }
             cell.titleLab.text = @"交易状态";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"收款成功"];
+            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",status];
         }
         else if (indexPath.row == 2){
             cell.titleLab.text = @"交易单号";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"20180312837337747383"];
+            cell.subtitleLab.text = self.model.platOrderNo;
         }
         else if (indexPath.row == 3){
             cell.titleLab.text = @"订单编号";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"000123837473737737"];
+            cell.subtitleLab.text = self.model.orderNo;
         }else{
             cell.titleLab.text = @"备注";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"我想花钱了"];
+            cell.subtitleLab.text = self.model.remark;
         }
         cell.accessoryType = UITableViewCellAccessoryNone;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -138,7 +153,7 @@
         static NSString *identifier1 = @"WithSuccCell";
         WithSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         cell.titleLab.text = @"收银员";
-        cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"张无忌"];
+        cell.subtitleLab.text = self.model.cashierName;
         cell.accessoryType = UITableViewCellAccessoryNone;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         return cell;

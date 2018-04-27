@@ -17,23 +17,50 @@
 #import "MyBillVC.h"
 #import "SettingMessVC.h"
 #import "LoginVC.h"
+#import "GestureLockLogin.h"
 #import "UIImageView+WebCache.h"
 
 @interface PersonalCenterVC ()<UITableViewDelegate,UITableViewDataSource>
 {
     NSArray *titleArr;
     NSArray *imageArr;
+    UserInfo *user;
 }
 @end
 
 @implementation PersonalCenterVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    user = [UserInfo shareObject];
+    switch (user.type) {
+        case 1:
+        {
+            titleArr = @[@"账户安全",@"信息认证"];
+            imageArr = @[@"user-ic-security",@"user-ic-message",@"user-ic-bankcard"];
+        }
+            break;
+        case 2:
+        {
+            titleArr = @[@"账户安全",@"信息认证",@"绑定银行卡",@"我的账单"];
+            imageArr = @[@"user-ic-security",@"user-ic-message",@"user-ic-bankcard",@"user-ic-bill"];
+        }break;
+        case 3:
+        {
+            titleArr = @[];
+            imageArr = @[];
+        }break;
+            
+        default:
+            break;
+    }
+    [self.tableview reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"个人中心";
     
-    titleArr = @[@"账户安全",@"信息认证",@"绑定银行卡",@"我的账单"];
-    imageArr = @[@"user-ic-security",@"user-ic-message",@"user-ic-bankcard",@"user-ic-bill"];
     [self.tableview registerNib:[UINib nibWithNibName:@"UsernameCell" bundle:nil] forCellReuseIdentifier:@"UsernameCell"];
     [self.tableview registerNib:[UINib nibWithNibName:@"MyCell" bundle:nil] forCellReuseIdentifier:@"MyCell"];
     [self.tableview registerNib:[UINib nibWithNibName:@"LoginOutCell" bundle:nil] forCellReuseIdentifier:@"LoginOutCell"];
@@ -59,7 +86,7 @@
         return 1;
     }
     else if (section == 1){
-        return 4;
+        return titleArr.count;
     }
     else if (section == 2){
         return 2;
@@ -91,10 +118,16 @@
     if (indexPath.section == 0) {
         static NSString *identifier1 = @"UsernameCell";
         UsernameCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
-    
-        [cell.userImg sd_setImageWithURL:@"" placeholderImage:[UIImage imageNamed:@"userporfile-pic"]];
-        cell.usernameLab.text = @"张三李四";
-        cell.usernumLab.text = @"账号:1020002939";
+        [cell.userImg sd_setImageWithURL:[user.detail objectForKey:@"headPath"]  placeholderImage:[UIImage imageNamed:@"userporfile-pic"]];
+        NSString *namestr;
+        if ([[user.detail objectForKey:@"realName"]length]>0) {
+            namestr = [user.detail objectForKey:@"realName"];
+        }
+        else{
+            namestr = user.username;
+        }
+        cell.usernameLab.text = namestr;
+        cell.usernumLab.text = user.username;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         return cell;
@@ -162,15 +195,29 @@
             }break;
             case 2:
             {
+                if (!(user.identityAuthed==1)) {
+                    [self showMessage:@"请先进行实名认证" viewHeight:0];
+                    return;
+                }
+                if (!(user.merchantAuthed==1)) {
+                    [self showMessage:@"请先进行店铺认证" viewHeight:0];
+                    return;
+                }
+                
                 BindingYHKVC *vc = [[BindingYHKVC alloc]initWithNibName:@"BindingYHKVC" bundle:nil];
                 vc.hidesBottomBarWhenPushed = YES;  // 设置B
                 [self.navigationController pushViewController:vc animated:YES];
             }break;
             case 3:
             {
-                MyBillVC *vc = [[MyBillVC alloc]initWithNibName:@"MyBillVC" bundle:nil];
-                vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                [self.navigationController pushViewController:vc animated:YES];
+                if (user.type == 2) {
+                    MyBillVC *vc = [[MyBillVC alloc]initWithNibName:@"MyBillVC" bundle:nil];
+                    vc.hidesBottomBarWhenPushed = YES;  // 设置B
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                else{
+                    
+                }
             }break;
  
             default:{
@@ -190,20 +237,30 @@
     }
     else{
         
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        //移除UserDefaults中存储的用户信息
-        [userDefaults removeObjectForKey:@"name"];
-        [userDefaults removeObjectForKey:@"password"];
         UserInfo *user = [UserInfo shareObject];
-        user.type = 0;
-        user.userName = nil;
         user.isLogin = false;
+        
         LoginVC *vc = [[LoginVC alloc]initWithNibName:@"LoginVC" bundle:nil];
+        vc.isloginout = YES;
         UINavigationController *naiv = [[UINavigationController alloc]initWithRootViewController:vc];
-        //             vc.hidesBottomBarWhenPushed = YES;  // 设置B
-        [self presentViewController:naiv animated:YES completion:nil];
+        
+        GestureLockLogin *vcs = [[GestureLockLogin alloc]init];
+        vcs.isloginout = YES;
+        UINavigationController *naivs = [[UINavigationController alloc]initWithRootViewController:vcs];
+        
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        NSString *LockPath = [userDefault objectForKey:@"LockPath"];
+        NSString *isLockPath = [userDefault objectForKey:@"isLockPath"];
+        NSString *name = [userDefault objectForKey:@"name"];
+        NSString *password = [userDefault objectForKey:@"password"];
+        self.tabBarController.selectedIndex = 0;
+        if ([LockPath length]>0&&[isLockPath isEqualToString:@"开启"]&&[name length]>0&&[password length]>0) {
+            [self presentViewController:naivs animated:YES completion:nil];
+        }
+        else{
+            [self presentViewController:naiv animated:YES completion:nil];
+        }
     }
-    
 }
 
 

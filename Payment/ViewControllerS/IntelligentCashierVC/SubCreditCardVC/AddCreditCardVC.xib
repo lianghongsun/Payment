@@ -39,7 +39,7 @@
                                 <constraint firstAttribute="height" constant="1" id="wDB-PO-T5h"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="信用卡卡号" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFS-sx-FKM">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="发卡行" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFS-sx-FKM">
                             <rect key="frame" x="20" y="0.0" width="75" height="49"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="75" id="t08-JW-STb"/>
@@ -57,7 +57,7 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入信用卡卡号" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ftf-0A-UZl">
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入发卡行" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ftf-0A-UZl">
                             <rect key="frame" x="115" y="0.0" width="250" height="49"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>

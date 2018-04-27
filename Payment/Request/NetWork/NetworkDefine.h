@@ -97,13 +97,20 @@ typedef NS_ENUM(NSInteger, RequestStatus) {
 #ifdef           PRODUCT_SITUATION
 
 #define HTTPHEAD  @"http://payapi.tj.com"//
+//七牛
+#define QI_NIU_HOST    @""
 
-
+//获取七牛的token
+#define     Qiniu_Token_Get     @""
 
 
 #else
 #define HTTPHEAD  @"http://payapi.tj.com"//
+//七牛
+#define QI_NIU_HOST             @""
 
+//获取七牛的token
+#define     Qiniu_Token_Get     @""
 
 #endif
 

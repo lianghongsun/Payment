@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OrderModel.h"
 
 @interface CollectionSuccVC : BaseViewController
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (nonatomic,assign)BOOL ispopRoot;
+@property (nonatomic,strong)OrderModel *model;
 @end

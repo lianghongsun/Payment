@@ -10,6 +10,7 @@
 
 @interface WithdrawalsVC : BaseViewController
 
+@property (nonatomic,copy)NSString *balancenum;
 @property (weak, nonatomic) IBOutlet UILabel *balanceLab;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @end

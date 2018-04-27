@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MerchantFailureVC">
+            <connections>
+                <outlet property="titleLab" destination="ctF-Pw-foa" id="2zs-yl-tMi"/>
+                <outlet property="topBtn" destination="4pq-hu-t5G" id="rJE-jD-5Or"/>
+                <outlet property="uploadBtn" destination="gSj-Dq-XW2" id="UIi-Cl-c8I"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mSC-Py-LMv">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iug-To-wth">
+                            <rect key="frame" x="0.0" y="69" width="375" height="1"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="k4S-6f-kg3"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4pq-hu-t5G">
+                            <rect key="frame" x="179.5" y="23.5" width="16" height="22"/>
+                            <state key="normal" image="iconfont-xuanze">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="4pq-hu-t5G" firstAttribute="centerX" secondItem="mSC-Py-LMv" secondAttribute="centerX" id="6zD-k5-Xer"/>
+                        <constraint firstAttribute="height" constant="70" id="AFI-dc-SWY"/>
+                        <constraint firstAttribute="bottom" secondItem="Iug-To-wth" secondAttribute="bottom" id="n1a-0i-LEz"/>
+                        <constraint firstItem="Iug-To-wth" firstAttribute="leading" secondItem="mSC-Py-LMv" secondAttribute="leading" id="p97-uX-3zp"/>
+                        <constraint firstAttribute="trailing" secondItem="Iug-To-wth" secondAttribute="trailing" id="umY-ue-Bgj"/>
+                        <constraint firstItem="4pq-hu-t5G" firstAttribute="centerY" secondItem="mSC-Py-LMv" secondAttribute="centerY" id="xkN-Dj-dMC"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uHL-DY-Msu">
+                    <rect key="frame" x="0.0" y="70" width="375" height="60"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="未通过原因" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ivH-Jn-vYO">
+                            <rect key="frame" x="20" y="0.0" width="76.5" height="60"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctF-Pw-foa">
+                            <rect key="frame" x="360" y="0.0" width="0.0" height="60"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="2AG-oG-Mag"/>
+                        <constraint firstItem="ctF-Pw-foa" firstAttribute="top" secondItem="uHL-DY-Msu" secondAttribute="top" id="55R-El-n14"/>
+                        <constraint firstAttribute="bottom" secondItem="ctF-Pw-foa" secondAttribute="bottom" id="6Na-YN-Ner"/>
+                        <constraint firstAttribute="bottom" secondItem="ivH-Jn-vYO" secondAttribute="bottom" id="Khk-ad-MCh"/>
+                        <constraint firstItem="ivH-Jn-vYO" firstAttribute="leading" secondItem="uHL-DY-Msu" secondAttribute="leading" constant="20" id="YN5-f3-HgE"/>
+                        <constraint firstAttribute="trailing" secondItem="ctF-Pw-foa" secondAttribute="trailing" constant="15" id="dfR-aq-tFF"/>
+                        <constraint firstItem="ivH-Jn-vYO" firstAttribute="top" secondItem="uHL-DY-Msu" secondAttribute="top" id="vZt-Pz-sHG"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gSj-Dq-XW2">
+                    <rect key="frame" x="30" y="160" width="315" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="9uM-5z-kGh"/>
+                    </constraints>
+                    <state key="normal" title="重新上传">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="uploadAgainAction:" destination="-1" eventType="touchUpInside" id="MBh-MW-pjg"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="gSj-Dq-XW2" firstAttribute="top" secondItem="uHL-DY-Msu" secondAttribute="bottom" constant="30" id="8qW-Vk-gXs"/>
+                <constraint firstItem="mSC-Py-LMv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PK1-rw-6DY"/>
+                <constraint firstItem="mSC-Py-LMv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="RIM-fi-JRz"/>
+                <constraint firstAttribute="trailing" secondItem="mSC-Py-LMv" secondAttribute="trailing" id="SMz-X5-nCk"/>
+                <constraint firstAttribute="trailing" secondItem="uHL-DY-Msu" secondAttribute="trailing" id="TY9-r5-1MI"/>
+                <constraint firstItem="gSj-Dq-XW2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="jed-Qc-D70"/>
+                <constraint firstItem="uHL-DY-Msu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kGY-fO-lp5"/>
+                <constraint firstItem="uHL-DY-Msu" firstAttribute="top" secondItem="mSC-Py-LMv" secondAttribute="bottom" id="mlj-vi-nz5"/>
+                <constraint firstAttribute="trailing" secondItem="gSj-Dq-XW2" secondAttribute="trailing" constant="30" id="wPw-tG-hlo"/>
+            </constraints>
+            <point key="canvasLocation" x="33.5" y="85.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="iconfont-xuanze" width="16" height="16"/>
+    </resources>
+</document>

@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ChooeseThree : BaseViewController
+
+@property (nonatomic,copy)NSString *pricenum;
+
 - (IBAction)weixinAction:(id)sender;
 
 - (IBAction)ailpayAction:(id)sender;

@@ -29,7 +29,7 @@
 #import "WeChatStylePlaceHolder.h"
 #import "CYLTableViewPlaceHolder.h"
 #import "AAGlobalMacro.h"
-
+#import "QiniuSDK.h"
 //头文件
 //#import "CommonUse.h"
 //Block 弱引用

@@ -23,5 +23,6 @@
 - (IBAction)getcodeAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *getcodeBtn;
 
+- (IBAction)submitAction:(id)sender;
 
 @end

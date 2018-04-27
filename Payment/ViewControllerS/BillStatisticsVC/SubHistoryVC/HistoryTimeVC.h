@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class HistoryTimeVC;
-typedef void (^ChoosetimeBlock) (NSString *begintime);
+typedef void (^ChoosetimeBlock) (NSString *begintime,NSDate * choosedata);
 
 @interface HistoryTimeVC : BaseViewController
 @property (weak, nonatomic) IBOutlet UILabel *starttimeLab;
 @property (copy, nonatomic) NSString *choosetime;
+@property (strong, nonatomic) NSDate *startDate;
 
 - (IBAction)startAction:(id)sender;
 - (IBAction)queryAction:(id)sender;

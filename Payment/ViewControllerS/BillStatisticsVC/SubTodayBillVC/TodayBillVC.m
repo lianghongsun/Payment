@@ -8,7 +8,14 @@
 
 #import "TodayBillVC.h"
 #import "AilpaybillVC.h"
+#import "TodayBillApi.h"
+#import "YHKModel.h"
+
 @interface TodayBillVC ()<UINavigationControllerDelegate>
+{
+    UserInfo *user;
+}
+@property (nonatomic,strong) NSMutableArray *listdataArr;
 
 @end
 
@@ -18,6 +25,9 @@
     [super viewWillAppear:animated];
     // 设置导航控制器的代理为self
     self.navigationController.delegate = self;
+    user = [UserInfo shareObject];
+    [self TodayBillApi:user.uid StartDate:[JCAUtility stringWithCurrentTime:@"yyyy-MM-dd"]];
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -42,12 +52,7 @@
 }
 
 - (void)setUidata{
-    self.allgetpriceLab.text = [NSString stringWithFormat:@"¥%@",@"8888.00"];
-    self.billnumLab.text = [NSString stringWithFormat:@"%@笔",@"6"];
-    self.ailPaypriceLab.text = [NSString stringWithFormat:@"%@",@"888.00"];
-    self.weixinpriceLab.text = [NSString stringWithFormat:@"%@",@"888.00"];
-    self.ailpaynumLab.text = [NSString stringWithFormat:@"%@笔",@"3"];
-    self.weixinnumLab.text = [NSString stringWithFormat:@"%@笔",@"3"];
+    
     
 }
 
@@ -68,4 +73,61 @@
     
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+- (void)TodayBillApi:(NSString *)mid StartDate:(NSString *)startDate{
+    [self showLoding:@"请稍后"];
+    TodayBillApi *todaybill = [[TodayBillApi alloc]initWithUid:mid StartDate:startDate];
+    [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            [self closeLoding];
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    self.allgetpriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
+                    self.billnumLab.text = [NSString stringWithFormat:@"%@笔",[datadic objectForKey:@"totalRow"]];
+                   
+                    self.listdataArr = [NSMutableArray array];
+                    [self.listdataArr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"list"]]];
+                    if (self.listdataArr.count==2) {
+                        TodayBillFirstModel *model1 = self.listdataArr[0];
+                        TodayBillFirstModel *model2 = self.listdataArr[1];
+                        if ([model1.platformId isEqualToString:@"100"]) {
+                            self.weixinpriceLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
+                            self.weixinnumLab.text = [NSString stringWithFormat:@"%@笔",model1.totalRow];
+                        }
+                        else{
+                            self.ailPaypriceLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
+                            self.ailpaynumLab.text = [NSString stringWithFormat:@"%@笔",model1.totalRow];
+                        }
+                        
+                        
+                        if ([model2.platformId isEqualToString:@"100"]) {
+                            self.weixinpriceLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
+                            self.weixinnumLab.text = [NSString stringWithFormat:@"%@笔",model2.totalRow];
+                        }
+                        else{
+                            self.ailPaypriceLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
+                            self.ailpaynumLab.text = [NSString stringWithFormat:@"%@笔",model2.totalRow];
+                        }
+                    }
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        
+        
+    }];
+}
+
 @end

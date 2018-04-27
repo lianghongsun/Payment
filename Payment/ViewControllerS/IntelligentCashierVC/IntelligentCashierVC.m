@@ -23,10 +23,22 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "RealNamecation.h"
 #import "ShopCertifiVC.h"
+#import "BaseinfoAPI.h"
+#import "TodayBillApi.h"
+#import "YHKModel.h"
+#import "EverydayBillApi.h"
 
 @interface IntelligentCashierVC ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>
 {
     UserInfo *user;
+    NSString *todayAllbill;
+    NSString *todayailbill;
+    NSString *todayweixinbill;
+    NSString *tomoAllBill;
+    NSString *tomoailBill;
+    NSString *tomoweixinBill;
+    
+    NSString *myenttime;
 }
 
 @end
@@ -38,8 +50,11 @@
      user = [UserInfo shareObject];
     // 设置导航控制器的代理为self
     self.navigationController.delegate = self;
-    [self.tableview.mj_header beginRefreshing];
+    [self BaseinfoAPI];
+    myenttime = [JCAUtility stringWithCurrentTime:@"yyyy-MM-dd"];
     
+    [self TodayBillApi:user.uid StartDate:[JCAUtility stringWithCurrentTime:@"yyyy-MM-dd"]];
+    [self EverydayBillApi:user.uid StartDate:[JCAUtility stringLastWithCurrentTime:@"yyyy-MM-dd"] EndDate:[JCAUtility stringLastWithCurrentTime:@"yyyy-MM-dd"]];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -85,8 +100,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    
-    if (user.type == 1||user.type == 2) {
+    if (user.type == 2) {
         return 4;
     }
     return 3;
@@ -111,26 +125,26 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if (user.type == 1||user.type ==2) {
+    if (user.type ==2) {
         if (indexPath.section == 0) {
-            return 200;
+            return 175;
         }
         else if (indexPath.section == 1){
             return 50;
         }
         else if (indexPath.section == 2){
-            return 200;
+            return 160;
         }
-        return 135;
+        return 120;
     }
     else{
         if (indexPath.section == 0) {
-            return 200;
+            return 175;
         }
         else if (indexPath.section == 1){
-            return 200;
+            return 160;
         }
-        return 135;
+        return 120;
     }
     
 }
@@ -144,18 +158,25 @@
         cell.navititleLab.text = @"智能收银";
         cell.scantoBlock  = ^(HoemfirstCell *cell) {
             if (user.isLogin) {
-//                if (user.identityAuthed==0) {
-//                    [self showMessage:@"请先进行实名认证" viewHeight:100];
-//                    return;
-//                }
-//                if (user.merchantAuthed==0) {
-//                    [self showMessage:@"请先进行店铺认证" viewHeight:100];
-//                    return;
-//                }
-                ScanVC *vc = [[ScanVC alloc]initWithNibName:@"ScanVC" bundle:nil];
-                vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                [weakself.navigationController pushViewController:vc animated:YES];
-                
+                switch (user.type) {
+                    case 1:
+                    {
+                        [self checkgoscanVc];
+                    }
+                        break;
+                    case 2:
+                    {
+                       [self checkgoscanVc];
+                    }break;
+                    case 3:
+                    {
+                        ScanVC *vc = [[ScanVC alloc]initWithNibName:@"ScanVC" bundle:nil];
+                        vc.hidesBottomBarWhenPushed = YES;  // 设置B
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }break;
+                    default:
+                        break;
+                }
             }
             else{
                 [self gologin];
@@ -164,17 +185,26 @@
         
         cell.smarttoBlock = ^(HoemfirstCell *cell){
             if (user.isLogin) {
-//                if (user.identityAuthed==0) {
-//                    [self showMessage:@"请先进行实名认证" viewHeight:100];
-//                    return;
-//                }
-//                if (user.merchantAuthed==0) {
-//                    [self showMessage:@"请先进行店铺认证" viewHeight:100];
-//                    return;
-//                }
-                SmartCodeVC *vc = [[SmartCodeVC alloc]initWithNibName:@"SmartCodeVC" bundle:nil];
-                vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                [weakself.navigationController pushViewController:vc animated:YES];
+                switch (user.type) {
+                    case 1:
+                    {
+                        [self checkgosmartVc];
+                    }
+                        break;
+                    case 2:
+                    {
+                        [self checkgosmartVc];
+                    }break;
+                    case 3:
+                    {
+                        SmartCodeVC *vc = [[SmartCodeVC alloc]initWithNibName:@"SmartCodeVC" bundle:nil];
+                        vc.hidesBottomBarWhenPushed = YES;  // 设置B
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }break;
+                        
+                    default:
+                        break;
+                }
             }
             else{
                 [self gologin];
@@ -183,17 +213,25 @@
         
         cell.paymenttoBlock  = ^(HoemfirstCell *cell){
             if (user.isLogin) {
-//                if (user.identityAuthed==0) {
-//                    [self showMessage:@"请先进行实名认证" viewHeight:100];
-//                    return;
-//                }
-//                if (user.merchantAuthed==0) {
-//                    [self showMessage:@"请先进行店铺认证" viewHeight:100];
-//                    return;
-//                }
-                PaymentCodeVC *vc = [[PaymentCodeVC alloc]initWithNibName:@"PaymentCodeVC" bundle:nil];
-                vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                [weakself.navigationController pushViewController:vc animated:YES];
+                switch (user.type) {
+                    case 1:
+                    {
+                        [self checkgosmartVc];
+                    }
+                        break;
+                    case 2:
+                    {
+                        [self checkgosmartVc];
+                    }break;
+                    case 3:
+                    {
+                        PaymentCodeVC *vc = [[PaymentCodeVC alloc]initWithNibName:@"PaymentCodeVC" bundle:nil];
+                        vc.hidesBottomBarWhenPushed = YES;  // 设置B
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }break;
+                    default:
+                        break;
+                }
             }
             else{
                 [self gologin];
@@ -203,7 +241,7 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         return cell;
     }
-    if (user.type == 1||user.type == 2) {
+    if (user.type == 2) {
          if (indexPath.section == 1){
             static NSString *identifier1 = @"HomeBalanceCell";
             HomeBalanceCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
@@ -211,17 +249,7 @@
             cell.withdrawalstoBlock = ^(HomeBalanceCell *cell) {
                 
                 if (user.isLogin) {
-//                    if (user.identityAuthed==0) {
-//                        [self showMessage:@"请先进行实名认证" viewHeight:100];
-//                        return;
-//                    }
-//                    if (user.merchantAuthed==0) {
-//                        [self showMessage:@"请先进行店铺认证" viewHeight:100];
-//                        return;
-//                    }
-                    WithdrawalsVC *vc = [[WithdrawalsVC alloc]initWithNibName:@"WithdrawalsVC" bundle:nil];
-                    vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                    [weakself.navigationController pushViewController:vc animated:YES];
+                    [self  checkgoWithdrawalsVC];
                 }
                 else{
                     [self gologin];
@@ -237,17 +265,7 @@
             HomeCertificationCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
             cell.reimbursementoBlock  = ^(HomeCertificationCell *cell) {
                 if (user.isLogin) {
-//                    if (user.identityAuthed==0) {
-//                        [self showMessage:@"请先进行实名认证" viewHeight:100];
-//                        return;
-//                    }
-//                    if (user.merchantAuthed==0) {
-//                        [self showMessage:@"请先进行店铺认证" viewHeight:100];
-//                        return;
-//                    }
-                    CreditCardVC *vc = [[CreditCardVC alloc]initWithNibName:@"CreditCardVC" bundle:nil];
-                    vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                    [weakself.navigationController pushViewController:vc animated:YES];
+                    [self checkgoCreditCardVC];
                 }
                 else{
                     [self gologin];
@@ -255,9 +273,7 @@
             };
             cell.realnametoBlock = ^(HomeCertificationCell *cell){
                 if (user.isLogin) {
-                    RealNamecation *vc = [[RealNamecation alloc]initWithNibName:@"RealNamecation" bundle:nil];
-                    vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                    [self.navigationController pushViewController:vc animated:YES];
+                    [self checkgoRealNamecation];
                 }
                 else{
                     [self gologin];
@@ -267,9 +283,7 @@
             cell.storetolock  = ^(HomeCertificationCell *cell){
                 
                 if (user.isLogin) {
-                    ShopCertifiVC *vc = [[ShopCertifiVC alloc]initWithNibName:@"ShopCertifiVC" bundle:nil];
-                    vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                    [self.navigationController pushViewController:vc animated:YES];
+                    [self checkgoShopCertifiVC];
                 }
                 else{
                     [self gologin];
@@ -278,24 +292,12 @@
             
             cell.todaytoBlock  = ^(HomeCertificationCell *cell){
                 if (user.isLogin) {
-//                    if (user.identityAuthed==0) {
-//                        [self showMessage:@"请先进行实名认证" viewHeight:100];
-//                        return;
-//                    }
-//                    if (user.merchantAuthed==0) {
-//                        [self showMessage:@"请先进行店铺认证" viewHeight:100];
-//                        return;
-//                    }
-                    TodayBillVC *vc = [[TodayBillVC alloc]initWithNibName:@"TodayBillVC" bundle:nil];
-                    vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                    [weakself.navigationController pushViewController:vc animated:YES];
+                    [self checkgoTodayBillVC];
                 }
                 else{
                     [self gologin];
                 }
             };
-            
-            
             cell.accessoryType = UITableViewCellAccessoryNone;
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             return cell;
@@ -303,7 +305,12 @@
         else{
             static NSString *identifier1 = @"HomeDataStatisticsCell";
             HomeDataStatisticsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
-            
+            cell.alltodaypriceLab.text = todayAllbill;
+            cell.alltomopriceLab.text = tomoAllBill;
+            cell.alipaytodaypriceLab.text = todayailbill;
+            cell.ailpaytomopriceLab.text = tomoailBill;
+            cell.weixintodaypeiceLab.text = todayweixinbill;
+            cell.weixintomopriceLab.text = tomoweixinBill;
             cell.accessoryType = UITableViewCellAccessoryNone;
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             return cell;
@@ -316,27 +323,34 @@
             static NSString *identifier1 = @"HomeCertificationCell";
             HomeCertificationCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
             cell.reimbursementoBlock  = ^(HomeCertificationCell *cell) {
-                CreditCardVC *vc = [[CreditCardVC alloc]initWithNibName:@"CreditCardVC" bundle:nil];
-                vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                [weakself.navigationController pushViewController:vc animated:YES];
+                [self showMessage:@"您还没有权限使用此功能" viewHeight:0];
+                
             };
             cell.realnametoBlock = ^(HomeCertificationCell *cell){
-                RealNamecation *vc = [[RealNamecation alloc]initWithNibName:@"RealNamecation" bundle:nil];
-                vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                [self.navigationController pushViewController:vc animated:YES];
+                [self checkgoRealNamecation];
             };
             
             cell.storetolock  = ^(HomeCertificationCell *cell){
-                ShopCertifiVC *vc = [[ShopCertifiVC alloc]initWithNibName:@"ShopCertifiVC" bundle:nil];
-                vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                [self.navigationController pushViewController:vc animated:YES];
+                [self checkgoShopCertifiVC];
                 
             };
             
             cell.todaytoBlock  = ^(HomeCertificationCell *cell){
-                TodayBillVC *vc = [[TodayBillVC alloc]initWithNibName:@"TodayBillVC" bundle:nil];
-                vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                [weakself.navigationController pushViewController:vc animated:YES];
+                switch (user.type) {
+                    case 1:
+                    {
+                        [self checkgoTodayBillVC];
+                    }
+                        break;
+                    case 3:
+                    {
+                        TodayBillVC *vc = [[TodayBillVC alloc]initWithNibName:@"TodayBillVC" bundle:nil];
+                        vc.hidesBottomBarWhenPushed = YES;  // 设置B
+                        [weakself.navigationController pushViewController:vc animated:YES];
+                    }break;
+                    default:
+                        break;
+                }
             };
             
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -346,15 +360,17 @@
         else{
             static NSString *identifier1 = @"HomeDataStatisticsCell";
             HomeDataStatisticsCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
-            
+            cell.alltodaypriceLab.text = todayAllbill;
+            cell.alltomopriceLab.text = tomoAllBill;
+            cell.alipaytodaypriceLab.text = todayailbill;
+            cell.ailpaytomopriceLab.text = tomoailBill;
+            cell.weixintodaypeiceLab.text = todayweixinbill;
+            cell.weixintomopriceLab.text = tomoweixinBill;
             cell.accessoryType = UITableViewCellAccessoryNone;
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             return cell;
         }
     }
-    
-    
-    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -362,13 +378,259 @@
 }
 
 - (void)gologin {
-    LoginVC *vc = [[LoginVC alloc]initWithNibName:@"LoginVC" bundle:nil];
-    vc.loginBlock = ^(LoginVC *vc) {
-        
-    };
-    UINavigationController *naiv = [[UINavigationController alloc]initWithRootViewController:vc];
-    
-    [self presentViewController:naiv animated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (void)BaseinfoAPI {
+    BaseinfoAPI *basein = [[BaseinfoAPI alloc]initWith];
+    [basein startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    UserInfo *user = [UserInfo shareObject];
+                    [user mj_setKeyValues:dic];
+                    user.isLogin = YES;
+                     [self.tableview.mj_header beginRefreshing];
+                    
+                    
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        
+        
+    }];
+}
+
+#pragma mark -- 扫一扫
+- (void)checkgoscanVc {
+//    if (!(user.identityAuthed==1)) {
+//        [self showMessage:@"请先进行实名认证" viewHeight:0];
+//        return;
+//    }
+//    if (!(user.merchantAuthed==1)) {
+//        [self showMessage:@"请先进行店铺认证" viewHeight:0];
+//        return;
+//    }
+    ScanVC *vc = [[ScanVC alloc]initWithNibName:@"ScanVC" bundle:nil];
+    vc.hidesBottomBarWhenPushed = YES;  // 设置B
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark -- 智能码
+- (void)checkgosmartVc {
+    if (!(user.identityAuthed==1)) {
+        [self showMessage:@"请先进行实名认证" viewHeight:0];
+        return;
+    }
+    if (!(user.merchantAuthed==1)) {
+        [self showMessage:@"请先进行店铺认证" viewHeight:0];
+        return;
+    }
+    SmartCodeVC *vc = [[SmartCodeVC alloc]initWithNibName:@"SmartCodeVC" bundle:nil];
+    vc.hidesBottomBarWhenPushed = YES;  // 设置B
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)checkpaymentVc {
+    if (!(user.identityAuthed==1)) {
+        [self showMessage:@"请先进行实名认证" viewHeight:0];
+        return;
+    }
+    if (!(user.merchantAuthed==1)) {
+        [self showMessage:@"请先进行店铺认证" viewHeight:0];
+        return;
+    }
+    PaymentCodeVC *vc = [[PaymentCodeVC alloc]initWithNibName:@"PaymentCodeVC" bundle:nil];
+    vc.hidesBottomBarWhenPushed = YES;  // 设置B
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark -- 收款码
+- (void)checkgoWithdrawalsVC{
+    if (!(user.identityAuthed==1)) {
+        [self showMessage:@"请先进行实名认证" viewHeight:0];
+        return;
+    }
+    if (!(user.merchantAuthed==1)) {
+        [self showMessage:@"请先进行店铺认证" viewHeight:0];
+        return;
+    }
+    WithdrawalsVC *vc = [[WithdrawalsVC alloc]initWithNibName:@"WithdrawalsVC" bundle:nil];
+    vc.hidesBottomBarWhenPushed = YES;  // 设置B
+    vc.balancenum = [NSString stringWithFormat:@"%0.2f",[[user.accounts objectForKey:@"R"]floatValue]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark -- 提款
+- (void)checkgoCreditCardVC {
+    if (!(user.identityAuthed==1)) {
+        [self showMessage:@"请先进行实名认证" viewHeight:0];
+        return;
+    }
+    if (!(user.merchantAuthed==1)) {
+        [self showMessage:@"请先进行店铺认证" viewHeight:0];
+        return;
+    }
+    CreditCardVC *vc = [[CreditCardVC alloc]initWithNibName:@"CreditCardVC" bundle:nil];
+    vc.hidesBottomBarWhenPushed = YES;  // 设置B
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark --实名认证
+- (void)checkgoRealNamecation{
+    if (user.type==3) {
+        [self showMessage:@"您不要进行此步骤" viewHeight:0];
+        return;
+    }
+    RealNamecation *vc = [[RealNamecation alloc]initWithNibName:@"RealNamecation" bundle:nil];
+    vc.hidesBottomBarWhenPushed = YES;  // 设置B
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark -- 店铺认证
+- (void)checkgoShopCertifiVC {
+    if (user.type==3) {
+        [self showMessage:@"您不要进行此步骤" viewHeight:0];
+        return;
+    }
+    ShopCertifiVC *vc = [[ShopCertifiVC alloc]initWithNibName:@"ShopCertifiVC" bundle:nil];
+    vc.hidesBottomBarWhenPushed = YES;  // 设置B
+    [self.navigationController pushViewController:vc animated:YES];
+}
+#pragma mark --今日数据
+- (void)checkgoTodayBillVC {
+    if (!(user.identityAuthed==1)) {
+        [self showMessage:@"请先进行实名认证" viewHeight:0];
+        return;
+    }
+    if (!(user.merchantAuthed==1)) {
+        [self showMessage:@"请先进行店铺认证" viewHeight:0];
+        return;
+    }
+    TodayBillVC *vc = [[TodayBillVC alloc]initWithNibName:@"TodayBillVC" bundle:nil];
+    vc.hidesBottomBarWhenPushed = YES;  // 设置B
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+- (void)TodayBillApi:(NSString *)mid StartDate:(NSString *)startDate{
+    [self showLoding:@"请稍后"];
+    TodayBillApi *todaybill = [[TodayBillApi alloc]initWithUid:mid StartDate:startDate];
+    [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            [self closeLoding];
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSMutableArray*listarr = [NSMutableArray array];
+                    [listarr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"list"]]];
+                    
+                    TodayBillFirstModel *model1 = listarr[0];
+                    TodayBillFirstModel *model2 = listarr[1];
+                    
+                    
+                        todayAllbill = [NSString stringWithFormat:@"今日 %.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
+                        if ([model1.platformId isEqualToString:@"100"]) {
+                            todayweixinbill = [NSString stringWithFormat:@"今日 %.2f",[model1.totalAmount floatValue]];
+                        }
+                        else{
+                            todayweixinbill = [NSString stringWithFormat:@"今日 %.2f",[model1.totalAmount floatValue]];
+                        }
+                        
+                        if ([model2.platformId isEqualToString:@"100"]) {
+                            todayailbill = [NSString stringWithFormat:@"今日 %.2f",[model2.totalAmount floatValue]];
+                        }
+                        else{
+                            todayailbill = [NSString stringWithFormat:@"今日 %.2f",[model2.totalAmount floatValue]];
+                        }
+                    
+                    
+                    [self.tableview reloadData];
+                    
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        
+        
+    }];
+}
+
+- (void)EverydayBillApi:(NSString *)mid StartDate:(NSString *)startDate EndDate:(NSString *)endDate{
+    [self showLoding:@"请稍后"];
+    EverydayBillApi *todaybill = [[EverydayBillApi alloc]initWithUid:mid StartDate:startDate EndDate:endDate];
+    [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            [self closeLoding];
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSMutableArray*listarr = [NSMutableArray array];
+                    [listarr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"list"]]];
+                    
+                    TodayBillFirstModel *model1 = listarr[0];
+                    TodayBillFirstModel *model2 = listarr[1];
+                    
+                    
+                        tomoAllBill = [NSString stringWithFormat:@"昨日 %.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
+                        if ([model1.platformId isEqualToString:@"100"]) {
+                            tomoweixinBill = [NSString stringWithFormat:@"昨日 %.2f",[model1.totalAmount floatValue]];
+                        }
+                        else{
+                            tomoweixinBill = [NSString stringWithFormat:@"昨日 %.2f",[model1.totalAmount floatValue]];
+                        }
+                        
+                        if ([model2.platformId isEqualToString:@"100"]) {
+                            tomoailBill = [NSString stringWithFormat:@"昨日 %.2f",[model2.totalAmount floatValue]];
+                        }
+                        else{
+                            tomoailBill = [NSString stringWithFormat:@"昨日 %.2f",[model2.totalAmount floatValue]];
+                        }
+        
+                    [self.tableview reloadData];
+                    
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        
+        
+    }];
+}
+
+
 
 @end

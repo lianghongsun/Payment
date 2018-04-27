@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ConstituteVC : UIViewController
+@interface ConstituteVC : BaseViewController
 
 - (IBAction)choosetimeAction:(id)sender;
 

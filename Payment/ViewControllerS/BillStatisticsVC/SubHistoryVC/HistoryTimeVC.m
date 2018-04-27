@@ -11,7 +11,7 @@
 
 @interface HistoryTimeVC ()<ITDatePickerControllerDelegate>
 
-@property (strong, nonatomic) NSDate *startDate;
+
 
 @end
 
@@ -46,7 +46,7 @@
 
 - (IBAction)queryAction:(id)sender {
     if (self.choosetimeBlock) {
-        self.choosetimeBlock(self.starttimeLab.text);
+        self.choosetimeBlock(self.starttimeLab.text,self.startDate);
     }
     [self.navigationController popViewControllerAnimated:YES];
 }

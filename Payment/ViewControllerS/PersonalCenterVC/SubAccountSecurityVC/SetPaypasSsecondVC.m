@@ -8,10 +8,13 @@
 
 #import "SetPaypasSsecondVC.h"
 #import "CodeView.h"
+#import "SetPayPassApi.h"
+#import "ModifyPayPassAPI.h"
 
 @interface SetPaypasSsecondVC ()
 {
     NSString *againPassstr;
+    UserInfo *user;
 }
 @end
 
@@ -20,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = self.titleStr;;
-    
+    user = [UserInfo shareObject];
     if ([self.titleStr isEqualToString:@"设置支付密码"]) {
         self.tipLabel.text = @"请再次输入6位新支付密码";
         [self.nextBtn setTitle:@"确定" forState:UIControlStateNormal];
@@ -62,28 +65,84 @@
     
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 - (IBAction)nextAction:(id)sender {
-    if ([againPassstr length] == 6) {
-        if ([againPassstr isEqualToString:self.passStr]) {
-            [self.navigationController popToRootViewControllerAnimated:YES];
+    if ([againPassstr length]<6||[againPassstr length]>6) {
+        [self showMessage:@"请输入6位支付密码" viewHeight:0];
+        return;
+    }
+    if (user.paypasswdAuthed == 0) {
+        if (![againPassstr isEqualToString:self.passStr]) {
+            [self showMessage:@"两次输入的支付密码不一致" viewHeight:0];
+            return;
         }
-        else{
-           [self showMessage:@"两次输入的支付密码不一致" viewHeight:100];
-        }
+    }
+    if (user.paypasswdAuthed == 1) {
+        [self ModifyPayPassAPI];
     }
     else{
-        [self showMessage:@"请输入6位支付密码" viewHeight:100];
+        [self SetPayPassApi];
     }
-    
+}
+
+- (void) SetPayPassApi {
+    [self showLoding:@"请稍后"];
+    SetPayPassApi *paypass = [[SetPayPassApi alloc]initWithUid:user.uid PayPasswd:[JUtility md5:self.passStr] NewSecondPassword:[JUtility md5:againPassstr]];
+    [paypass startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    [self showMessage:@"支付密码设置成功" viewHeight:0];
+                    user.paypasswdAuthed = 1;
+                    NSInteger index=[[self.navigationController viewControllers]indexOfObject:self];
+                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:index-2]animated:YES];
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        
+        [self closeLoding];
+    }];
+}
+
+- (void)ModifyPayPassAPI {
+    [self showLoding:@"请稍后"];
+    ModifyPayPassAPI *paypass = [[ModifyPayPassAPI alloc]initWithUid:user.uid PayPasswd:[JUtility md5:self.passStr] NewSecondPassword:[JUtility md5:againPassstr]];
+    [paypass startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    [self showMessage:@"支付密码修改成功" viewHeight:0];
+                    user.paypasswdAuthed = 1;
+                    NSInteger index=[[self.navigationController viewControllers]indexOfObject:self];
+                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:index-2]animated:YES];
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        
+        [self closeLoding];
+    }];
 }
 @end

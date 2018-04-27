@@ -15,11 +15,16 @@
 @interface UserPasswordVC ()<UITableViewDataSource,UITableViewDelegate>
 {
     NSArray *titleArr;
+    UserInfo *user;
 }
 @end
 
 @implementation UserPasswordVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    user = [UserInfo shareObject];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -83,6 +88,15 @@
             break;
         case 1:
         {
+            if (!(user.identityAuthed==1)) {
+            [self showMessage:@"请先进行实名认证" viewHeight:0];
+            return;
+            }
+            if (!(user.merchantAuthed==1)) {
+            [self showMessage:@"请先进行店铺认证" viewHeight:0];
+            return;
+            }
+            
             SettingPayVC *vc = [[SettingPayVC alloc]initWithNibName:@"SettingPayVC" bundle:nil];
             [self.navigationController pushViewController:vc animated:YES];
             

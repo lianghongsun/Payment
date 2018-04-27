@@ -91,6 +91,8 @@
 #pragma mark-- 判断手机号是否合法
 -(BOOL)phoneisMatchWith:(NSString*)phonenum;
 
+#pragma mark-- 判断身份证号码是否合法
+-(BOOL)checkUserID:(NSString *)userID;
 #pragma mark 合成语音
 - (void)syntheticVoice:(NSString *)string;
 //MD5加密
@@ -103,4 +105,5 @@
 -(void)showMessage:(NSString*)message viewHeight:(float)height;
 - (void)showWinMessage:(NSString*)message viewHeight:(float)height;
 
+- (void)goimageImagePicker;
 @end

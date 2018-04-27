@@ -10,15 +10,15 @@
 
 @interface ShopCerifiThreeVC : BaseViewController
 
-@property (nonatomic,copy)NSString *storestr;
+@property (nonatomic,copy)NSString *storetype;
 @property (weak, nonatomic) IBOutlet UITextField *nameTx;
-@property (weak, nonatomic) IBOutlet UITextField *provinceTx;
-@property (weak, nonatomic) IBOutlet UITextField *cityTx;
-@property (weak, nonatomic) IBOutlet UITextField *countyTx;
 @property (weak, nonatomic) IBOutlet UITextField *adreeTx;
-@property (weak, nonatomic) IBOutlet UITextField *categoryTx;
 @property (weak, nonatomic) IBOutlet UIButton *agreeBtn;
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
 - (IBAction)nextAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *cityBtn;
+- (IBAction)cityAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *categoryBtn;
+- (IBAction)categoryAction:(id)sender;
 
 @end

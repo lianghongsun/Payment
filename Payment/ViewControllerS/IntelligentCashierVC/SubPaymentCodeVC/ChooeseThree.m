@@ -46,7 +46,7 @@
     
     CollectionVC *vc = [[CollectionVC alloc]initWithNibName:@"CollectionVC" bundle:nil];
     vc.methods = @"微信收款";
-    vc.price = @"0.09";
+    vc.price = self.pricenum;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
@@ -59,7 +59,7 @@
     
     CollectionVC *vc = [[CollectionVC alloc]initWithNibName:@"CollectionVC" bundle:nil];
     vc.methods = @"支付宝收款";
-    vc.price = @"0.08";
+    vc.price = self.pricenum;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

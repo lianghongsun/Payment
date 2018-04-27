@@ -10,11 +10,16 @@
 
 @interface ConfirmPaymentVC : BaseViewController
 
+
 @property (weak, nonatomic) IBOutlet UILabel *cardnumLab;
 
 @property (weak, nonatomic) IBOutlet UILabel *cardnameLab;
 @property (weak, nonatomic) IBOutlet UIImageView *cardlogImg;
 @property (weak, nonatomic) IBOutlet UITextField *priceText;
+
+@property (nonatomic,copy)NSString *realname;
+@property (nonatomic,copy)NSString *bankNo;
+@property (nonatomic,copy)NSString *bankName;
 
 - (IBAction)reimbursementAction:(id)sender;
 @end

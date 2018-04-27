@@ -16,12 +16,17 @@
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import "YTKNetworkConfig.h"
 #import "TBCityIconFont.h"
-
+#import <CoreLocation/CoreLocation.h>
 #import "AFNetworkReachabilityManager.h"
 #import "AFNetworkActivityIndicatorManager.h"
-#import "BaseinfoAPI.h"
-#import "LoginAPI.h"
-@interface AppDelegate ()
+#import "LoginVC.h"
+#import "GestureLockLogin.h"
+#import "ViewController.h"
+
+@interface AppDelegate ()<CLLocationManagerDelegate>
+
+@property (nonatomic,strong ) CLLocationManager *locationManager;//定位服务
+@property (nonatomic,copy)    NSString *currentCity;//城市
 
 @end
 
@@ -58,11 +63,35 @@
     AFNetworkActivityIndicatorManager *indicMa = [AFNetworkActivityIndicatorManager sharedManager];
     [indicMa setEnabled:YES];//设置状态栏网络指示器可见
     
+    
+    [self locatemap];
+    
+    
+    LoginVC *vc = [[LoginVC alloc]initWithNibName:@"LoginVC" bundle:nil];
+    UINavigationController *naiv = [[UINavigationController alloc]initWithRootViewController:vc];
+    
+    GestureLockLogin *vcs = [[GestureLockLogin alloc]init];
+    UINavigationController *naivs = [[UINavigationController alloc]initWithRootViewController:vcs];
+    
+    
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *LockPath = [userDefault objectForKey:@"LockPath"];
+    NSString *isLockPath = [userDefault objectForKey:@"isLockPath"];
     NSString *name = [userDefault objectForKey:@"name"];
-    if ([name length]>0) {
-        [self LoginAPI];
-    }
+    NSString *password = [userDefault objectForKey:@"password"];
+    
+    
+        if ([LockPath length]>0&&[isLockPath isEqualToString:@"开启"]&&[name length]>0&&[password length]>0) {
+            self.window.rootViewController=naivs;
+        }
+        else{
+            self.window.rootViewController=naiv;
+        }
+    
+    
+    
+    
+    
     
     
     /**
@@ -70,7 +99,6 @@
      *
      */
     _tabController=[[UITabBarController alloc] init];
-    self.window.rootViewController=_tabController;
     
     IntelligentCashierVC *cashierVC = [[IntelligentCashierVC alloc] initWithNibName:@"IntelligentCashierVC" bundle:nil];
     cashierVC.tabBarItem.title=@"智能收银";
@@ -144,72 +172,76 @@
     return (AppDelegate*)[UIApplication sharedApplication].delegate;
 }
 
-
-
-- (void) LoginAPI {
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    NSString *name = [userDefault objectForKey:@"name"];
-    NSString *password = [userDefault objectForKey:@"password"];
+#pragma mark - 定位
+- (void)locatemap{
     
-    LoginAPI *login = [[LoginAPI alloc]initWithUsername:name password:[JUtility md5:password]];
-    [login startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
-        
-        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
-            switch (responseCode) {
-                case RequestStatusSuccess:
-                {
-                    UserInfo *user = [UserInfo shareObject];
-                    user.datatoken = [NSString stringWithFormat:@"%@",[dic objectForKey:@"token"]];
-                    user.type = [[dic objectForKey:@"type"]integerValue];
-                    [self BaseinfoAPI];
-                    
-                }
-                    break;
-                default:
-                {
-                    
-                }
-                    break;
-            }
-        }
-    } failure:^(YTKBaseRequest *request) {
-        
-        
-        
-    }];
-    
+    if ([CLLocationManager locationServicesEnabled]) {
+        _locationManager = [[CLLocationManager alloc]init];
+        _locationManager.delegate = self;
+        [_locationManager requestAlwaysAuthorization];
+        _currentCity = [[NSString alloc]init];
+        [_locationManager requestWhenInUseAuthorization];
+        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        _locationManager.distanceFilter = 0.0;
+        [_locationManager startUpdatingLocation];
+    }
 }
 
-- (void)BaseinfoAPI {
-    BaseinfoAPI *basein = [[BaseinfoAPI alloc]initWith];
-    [basein startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
-        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
-            switch (responseCode) {
-                case RequestStatusSuccess:
-                {
-                    UserInfo *user = [UserInfo shareObject];
-                    [user mj_setKeyValues:dic];
-                    user.isLogin = YES;
-                   
-                    
-                }
-                    break;
-                default:
-                {
-                }
-                    break;
-            }
-        }
-    } failure:^(YTKBaseRequest *request) {
-        
-        
-    }];
+#pragma mark - 定位失败
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     
-    
+    UIAlertView *vc = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请在设置中打开定位" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"打开定位", nil];
+    [vc show];
 }
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+    
+    }
+    else{
+        NSURL *settingURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        [[UIApplication sharedApplication]openURL:settingURL];
+    }
+}
+
+#pragma mark - 定位成功
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
+    
+    CLLocation *currentLocation = [locations lastObject];
+    CLGeocoder *geoCoder = [[CLGeocoder alloc]init];
+    //当前的经纬度
+    NSLog(@"当前的经纬度 %f,%f",currentLocation.coordinate.latitude,currentLocation.coordinate.longitude);
+    //这里的代码是为了判断didUpdateLocations调用了几次 有可能会出现多次调用 为了避免不必要的麻烦 在这里加个if判断 如果大于1.0就return
+    NSTimeInterval locationAge = -[currentLocation.timestamp timeIntervalSinceNow];
+    if (locationAge > 1.0){//如果调用已经一次，不再执行
+        return;
+    }
+    //地理反编码 可以根据坐标(经纬度)确定位置信息(街道 门牌等)
+    [geoCoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        if (placemarks.count >0) {
+            CLPlacemark *placeMark = placemarks[0];
+            _currentCity = placeMark.locality;
+            [_locationManager stopUpdatingLocation];
+            if (!_currentCity) {
+                _currentCity = @"无法定位当前城市";
+            }
+            //看需求定义一个全局变量来接收赋值
+            NSLog(@"当前国家 - %@",placeMark.country);//当前国家
+//            NSLog(@"当前城市 - %@",_currentCity);//当前城市
+//            NSLog(@"当前位置 - %@",placeMark.subLocality);//当前位置
+//            NSLog(@"当前街道 - %@",placeMark.thoroughfare);//当前街道
+//            NSLog(@"具体地址 - %@",placeMark.name);//具体地址
+        }else if (error == nil && placemarks.count){
+            
+            NSLog(@"NO location and error return");
+        }else if (error){
+            
+            NSLog(@"loction error:%@",error);
+        }
+    }];
+}
+
+
 
 @end

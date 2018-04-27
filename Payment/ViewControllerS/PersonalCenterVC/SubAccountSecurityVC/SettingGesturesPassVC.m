@@ -17,24 +17,31 @@
 {
     UserInfo *user;
     NSArray *titleArr;
+    NSString *isLockPath;
 }
 @end
 
 @implementation SettingGesturesPassVC
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
-}
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.title = @"手势密码";
-    user = [UserInfo shareObject];
-    if ([user.oldgestures length]>0) {
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *LockPath = [userDefault objectForKey:@"LockPath"];
+    isLockPath = [userDefault objectForKey:@"isLockPath"];
+    if ([LockPath length]>0) {
         titleArr = @[@"修改手势密码",@"忘记手势密码"];
     }else{
         titleArr = @[@"设置手势密码"];
     }
+    [self.tableview reloadData];
+    
+}
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"手势密码";
+   
     [self.tableview registerNib:[UINib nibWithNibName:@"GesturesCell" bundle:nil] forCellReuseIdentifier:@"GesturesCell"];
     [self.tableview registerNib:[UINib nibWithNibName:@"VersionCell" bundle:nil] forCellReuseIdentifier:@"VersionCell"];
     self.tableview.delegate = self;
@@ -84,7 +91,12 @@
         GesturesCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         cell.gestureLab.text = @"手势密码";
         cell.gestureSwitch.onTintColor = ThemeColor;
-        [cell.gestureSwitch setOn:YES];
+        if ([isLockPath isEqualToString:@"开启"]) {
+            [cell.gestureSwitch setOn:YES];
+        }
+        else{
+            [cell.gestureSwitch setOn:NO];
+        }
         [cell.gestureSwitch addTarget:self action:@selector(noticeAction:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryType = UITableViewCellAccessoryNone;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -112,13 +124,13 @@
         if (titleArr.count == 1) {
             SetGestureLockViewController *setLockVc = [[SetGestureLockViewController alloc] init];
             setLockVc.serpassBlock = ^(SetGestureLockViewController *setLockVc) {
-                if ([user.oldgestures length]>0) {
-                    titleArr = @[@"修改手势密码",@"忘记手势密码"];
-                }else{
-                    titleArr = @[@"设置手势密码"];
-                }
-                
-                [self.tableview reloadData];
+//                if ([user.oldgestures length]>0) {
+//                    titleArr = @[@"修改手势密码",@"忘记手势密码"];
+//                }else{
+//                    titleArr = @[@"设置手势密码"];
+//                }
+//
+//                [self.tableview reloadData];
             };
             [self.navigationController pushViewController:setLockVc animated:YES];
         }
@@ -147,13 +159,16 @@
 
 -(void)noticeAction:(id)sender
 {
+    NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
     UISwitch *switchButton = (UISwitch*)sender;
     BOOL isButtonOn = [switchButton isOn];
     if (isButtonOn) {
-        LxPrintf(@"通知打开了");
+        [userDef setObject:@"开启" forKey:@"isLockPath"];
     }else {
-        LxPrintf(@"通知关闭了");
+        [userDef setObject:@"关闭" forKey:@"isLockPath"];
     }
+    [userDef synchronize];
+    
 }
 
 

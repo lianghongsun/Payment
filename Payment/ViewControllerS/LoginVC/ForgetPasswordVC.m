@@ -56,7 +56,7 @@
     }
     
     if (self.codeText.text.length < 1) {
-        [self showMessage:@"请输入验证码" viewHeight:100];
+        [self showMessage:@"请输入验证码" viewHeight:0];
         return;
     }
     ForgetPassSecondVC *vc = [[ForgetPassSecondVC alloc]initWithNibName:@"ForgetPassSecondVC" bundle:nil];
@@ -82,13 +82,13 @@
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    [self showMessage:@"验证码发送成功，请查看短信" viewHeight:100];
+                    [self showMessage:@"验证码发送成功，请查看短信" viewHeight:0];
                 }
                     break;
                 default:
                 {
                     NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
-                    [self showMessage:mesgStr viewHeight:100];
+                    [self showMessage:mesgStr viewHeight:0];
                 }
                     break;
             }

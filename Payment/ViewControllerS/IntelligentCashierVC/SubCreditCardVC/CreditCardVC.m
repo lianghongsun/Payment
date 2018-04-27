@@ -11,20 +11,28 @@
 #import "AddCreditCardVC.h"
 #import "ConfirmPaymentVC.h"
 #import "CraditRecordVC.h"
+#import "QueryBankcardApi.h"
+#import "YHKModel.h"
+#import "DelBankcardApi.h"
+#import "SetDefaultBankcardApi.h"
 
 @interface CreditCardVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
-@property (nonatomic,strong) NSMutableArray *dataArr;
+
+@property (nonatomic,strong) NSMutableArray *listdataArr;
+
 @end
 
 @implementation CreditCardVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableview.mj_header beginRefreshing];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"信用卡还款";
-    self.dataArr = [NSMutableArray array];
-    [self.dataArr addObject:@"123"];
-    [self.dataArr addObject:@"1321"];
-    
+    self.listdataArr = [NSMutableArray array];
     self.tableview.separatorStyle = UITableViewCellSelectionStyleNone;
 
     [self.tableview registerNib:[UINib nibWithNibName:@"AddYHKCell" bundle:nil] forCellReuseIdentifier:@"AddYHKCell"];
@@ -43,23 +51,19 @@
 - (void)setrefreshHeaderOrFooter {
     self.tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     
-    self.tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMore)];
+//    self.tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMore)];
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
 }
 
 - (void)loadNewData {
-    [self.dataArr removeAllObjects];
-    
-    [self.tableview cyl_reloadData];
-    self.tableview.mj_footer.state = MJRefreshStateIdle;
-    [self.tableview.mj_header endRefreshing];
+     [self QueryBankcardApi];
 }
 
-- (void)loadMore {
-    [self.tableview.mj_footer endRefreshing];
-    self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
-}
+//- (void)loadMore {
+//    [self.tableview.mj_footer endRefreshing];
+//    self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
+//}
 
 - (void)setrightNav {
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -83,7 +87,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   
-    return self.dataArr.count;
+    return self.listdataArr.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -110,17 +114,34 @@
     
         static NSString *identifier1 = @"AddYHKCell";
         AddYHKCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+       YHKModel *model = self.listdataArr[indexPath.row];
+    if ([model.isDefault isEqualToString:@"1"]) {
+        cell.backgrview.backgroundColor = ThemeColor;
+        cell.nameLab.textColor = [UIColor whiteColor];
+        cell.numLab.textColor = [UIColor whiteColor];
+        [cell.defaultimg setHidden:NO];
+    }
+    else{
+            [cell.defaultimg setHidden:YES];
+            cell.backgrview.backgroundColor = [UIColor whiteColor];
+            cell.nameLab.textColor = [UIColor blackColor];
+            cell.numLab.textColor = [UIColor blackColor];
+    }
+    
         cell.logimg.image = [UIImage imageNamed:@"zhaohang"];
-        cell.nameLab.text = @"张无忌";
-        cell.numLab.text = @"828283783738*********9989";
+        cell.nameLab.text = model.realname;
+        cell.numLab.text = [NSString stringWithFormat:@"****  ****  ****  %@",[model.bankNo substringFromIndex:model.bankNo.length-4]] ;
         cell.accessoryType = UITableViewCellAccessoryNone;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    YHKModel *model = self.listdataArr[indexPath.row];
     ConfirmPaymentVC *vc = [[ConfirmPaymentVC alloc]initWithNibName:@"ConfirmPaymentVC" bundle:nil];
+    vc.realname = model.realname;
+    vc.bankNo = model.bankNo;
+    vc.bankName = model.bankName;
     [self.navigationController pushViewController:vc animated:YES];
     
     
@@ -135,12 +156,6 @@
 - (void)rightbuttonAction {
     CraditRecordVC *vc = [[CraditRecordVC alloc]initWithNibName:@"CraditRecordVC" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (IBAction)setdefaultAction:(id)sender {
-}
-
-- (IBAction)bindingAction:(id)sender {
 }
 
 #pragma mark - CYLTableViewPlaceHolderDelegate Method 没有数据界面显示
@@ -168,6 +183,33 @@
    
 }
 
-
+- (void)QueryBankcardApi {
+    
+    QueryBankcardApi *query = [[QueryBankcardApi alloc]initWithCategory:@"2"];
+    [query startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            [self.tableview.mj_header endRefreshing];
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    [self.listdataArr removeAllObjects];
+                    [self.listdataArr addObjectsFromArray:[YHKModel mj_objectArrayWithKeyValuesArray:[dic objectForKey:@"list"]]];
+                    [self.tableview cyl_reloadData];
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self.tableview.mj_header endRefreshing];
+    }];
+}
 
 @end

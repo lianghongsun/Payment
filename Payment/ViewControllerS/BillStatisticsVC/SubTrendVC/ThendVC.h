@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ThendVC : UIViewController
+@interface ThendVC : BaseViewController
 
 @property (weak, nonatomic) IBOutlet UIView *backgrview;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;

@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.title = @"重置手势密码";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -24,16 +24,23 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 - (IBAction)determineAction:(id)sender {
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *password = [userDefault objectForKey:@"password"];
+    if ([self.loginpassTx.text length]==0) {
+        [self showMessage:@"请输入登录密码" viewHeight:0];
+        return;
+    }
+    
+    if (![self.loginpassTx.text isEqualToString:password]) {
+        [self showMessage:@"密码输入错误,请重新输入" viewHeight:0];
+        return;
+    }
+    
+    [userDefault removeObjectForKey:@"LockPath"];
+    [userDefault removeObjectForKey:@"isLockPath"];
+    [userDefault synchronize];
+    [self.navigationController popViewControllerAnimated:YES];
+    
 }
 @end

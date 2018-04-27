@@ -8,15 +8,22 @@
 
 #import "BindingYHKSecondVC.h"
 #import "UIView+Extension.h"
+#import "AddDebitcardApi.h"
+#import "SendsmsAPI.h"
 
 @interface BindingYHKSecondVC ()<LSXPopMenuDelegate,UITextFieldDelegate>
 {
     NSArray *titlearr;
+    UserInfo *user;
 }
 @end
 
 @implementation BindingYHKSecondVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    user = [UserInfo shareObject];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     titlearr = @[@"个人账户",@"对公账户"];
@@ -63,6 +70,7 @@
     
 }
 - (IBAction)getcodeAction:(id)sender {
+    [self SendsmsAPI];
 }
 
 
@@ -76,10 +84,6 @@
     }
     else if (textField == self.openaccountTc){
         [self.openaccountTc resignFirstResponder];
-        [self.iponeTx becomeFirstResponder];
-    }
-    else if (textField == self.iponeTx){
-        [self.iponeTx resignFirstResponder];
         [self.codeTx becomeFirstResponder];
     }
     else
@@ -89,5 +93,94 @@
     return YES;
 }
 
+- (void)AddDebitcardApi {
+    [self showLoding:@"请稍后"];
+    NSString *typestr;
+    if ([self.typeLab.text isEqualToString:@"个人账户"]) {
+        typestr = @"1";
+    }
+    else{
+        typestr = @"2";
+    }
+    AddDebitcardApi *adddebit = [[AddDebitcardApi alloc]initWithRealname:self.nameTx.text BankNo:self.yhknumTx.text BankName:self.openaccountTc.text CardType:typestr Smscode:self.codeTx.text];
+    [adddebit startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                    
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        
+        
+    }];
+}
 
+
+- (void) SendsmsAPI {
+    [self showLoding:@"正在发送"];
+    SendsmsAPI *sms = [[SendsmsAPI alloc]initWithMobileNo:user.mobile BzType:@"ADDDEBITCARD_VALIDCODE"];
+    [sms startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    [self showMessage:@"验证码发送成功，请查看短信" viewHeight:0];
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        
+        [self closeLoding];
+    }];
+    
+}
+
+
+- (IBAction)submitAction:(id)sender {
+    if ([self.nameTx.text length]<=0) {
+        [self showMessage:@"持卡人姓名不能为空" viewHeight:0];
+        return;
+    }
+    if ([self.yhknumTx.text length]<=0) {
+        [self showMessage:@"银行卡卡号不能为空" viewHeight:0];
+        return;
+    }
+    if ([self.openaccountTc.text length]<=0) {
+        [self showMessage:@"开户银行不能为空" viewHeight:0];
+        return;
+    }
+    if ([self.codeTx.text length]<=0) {
+        [self showMessage:@"验证码不能为空" viewHeight:0];
+        return;
+    }
+    [self AddDebitcardApi];
+    
+    
+    
+}
 @end

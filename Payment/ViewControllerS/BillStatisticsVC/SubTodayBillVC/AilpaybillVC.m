@@ -8,11 +8,17 @@
 
 #import "AilpaybillVC.h"
 #import "collectionCell.h"
-#import "CollectionSuccVC.h"
+#import "TodayBillSuccVC.h"
+#import "DetailTodayBillApi.h"
+#import "YHKModel.h"
 
 @interface AilpaybillVC ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,WeChatStylePlaceHolderDelegate>
-
-@property (nonatomic,strong) NSMutableArray *dataArr;
+{
+    UserInfo *user;
+    NSString *platformId;
+}
+@property (nonatomic,strong) NSMutableArray *listdataArr;
+@property (nonatomic,assign) NSInteger pageNum;
 
 @end
 
@@ -22,15 +28,24 @@
     [super viewWillAppear:animated];
     // 设置导航控制器的代理为self
     self.navigationController.delegate = self;
+    user = [UserInfo shareObject];
+    if ([self.titleStr isEqualToString:@"支付宝账单详情"]) {
+        platformId = @"101";
+    }
+    else{
+        platformId = @"100";
+    }
+    
+    [self.tableview.mj_header beginRefreshing];
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navititle.text = self.titleStr;
 
-    self.dataArr = [NSMutableArray array];
-    [self.dataArr addObject:@"123"];
-    [self.dataArr addObject:@"1321"];
+    self.listdataArr = [NSMutableArray array];
+    
     
     if (@available(iOS 11.0, *)) {
         
@@ -63,15 +78,17 @@
 }
 
 - (void)loadNewData {
-    [self.dataArr removeAllObjects];
-    [self.tableview cyl_reloadData];
+    self.pageNum = 1;
     self.tableview.mj_footer.state = MJRefreshStateIdle;
-    [self.tableview.mj_header endRefreshing];
+    [self DetailTodayBillApi:user.uid PageNum:self.pageNum PageSize:10 StartDate:[JCAUtility stringWithCurrentTime:@"yyyy-MM-dd"] PlatformId:platformId];
 }
 
 - (void)loadMore {
-    [self.tableview.mj_footer endRefreshing];
-    self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
+    self.pageNum ++;
+    [self DetailTodayBillApi:user.uid PageNum:self.pageNum PageSize:10 StartDate:[JCAUtility stringWithCurrentTime:@"yyyy-MM-dd"] PlatformId:platformId];
+    
+//    [self.tableview.mj_footer endRefreshing];
+//    self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
 }
 
 #pragma mark - UINavigationControllerDelegate
@@ -91,7 +108,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    return self.dataArr.count;
+    return self.listdataArr.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -112,16 +129,18 @@
     
     static NSString *identifier1 = @"collectionCell";
     collectionCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+    TodayBilldetailModel *model = self.listdataArr[indexPath.row];
+    
     if ([self.titleStr isEqualToString:@"支付宝账单详情"]) {
      cell.headimge.image = [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e608", 40, ThemeColor)];
     }
     else{
      cell.headimge.image = [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e6ed", 40, RGB(106, 163, 85))];
     }
-    cell.nameLab.text = @"张无忌";
-    cell.timeLab.text = @"2018/03/26 15:00:00";
-    cell.priceLab.text = @"2222.00";
-    cell.statusLab.text = @"收款成功";
+    cell.nameLab.text = model.cashierName;
+    cell.timeLab.text = model.create;
+    cell.priceLab.text = model.arrivalAmount;
+    cell.statusLab.text = model.logType;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
@@ -129,15 +148,17 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
+    TodayBilldetailModel *model = self.listdataArr[indexPath.row];
+    
+    TodayBillSuccVC *vc = [[TodayBillSuccVC alloc]initWithNibName:@"TodayBillSuccVC" bundle:nil];
     vc.ispopRoot = NO;
+    vc.model = model;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 
 - (void)setUidata{
-    self.allgetpriceLab.text = [NSString stringWithFormat:@"¥%@",@"8888.00"];
-    self.billnumLab.text = [NSString stringWithFormat:@"%@笔",@"3"];
+    
 }
 
 
@@ -171,6 +192,57 @@
     
 }
 
+- (void)DetailTodayBillApi:(NSString *)mid PageNum:(NSInteger)pageNum PageSize:(NSInteger)pageSize StartDate:(NSString *)startDate PlatformId:(NSString *)platformId {
+    DetailTodayBillApi *todaybill = [[DetailTodayBillApi alloc]initWithUid:mid PageNum:pageNum PageSize:pageSize StartDate:startDate PlatformId:platformId];
+    [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            [self closeLoding];
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    self.allgetpriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
+                    self.billnumLab.text = [NSString stringWithFormat:@"%@笔",[datadic objectForKey:@"totalCount"]];
+                    if (pageNum == 1) {
+                        [self.listdataArr removeAllObjects];
+                        [self.tableview.mj_header endRefreshing];
+                    }
+                    else{
+                        [self.tableview.mj_footer endRefreshing];
+                        
+                    }
+                    NSArray *arr = [datadic objectForKey:@"list"];
+                    if (arr.count<10) {
+                        self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
+                    }
+                    
+                    [self.listdataArr addObjectsFromArray:[TodayBilldetailModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"list"]]];
+                    [self.tableview cyl_reloadData];
+                    
 
+                    
+                
+                }
+                    break;
+                default:
+                {
+                    [self.tableview.mj_header endRefreshing];
+                    [self.tableview.mj_footer endRefreshing];
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self closeLoding];
+        [self.tableview.mj_header endRefreshing];
+        [self.tableview.mj_footer endRefreshing];
+        
+    }];
+    
+}
 
 @end

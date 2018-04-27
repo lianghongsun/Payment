@@ -8,6 +8,7 @@
 
 #import "ConfirmPaymentVC.h"
 #import "CreditSucc.h"
+#import "WithdrawaPassVC.h"
 
 @interface ConfirmPaymentVC ()
 
@@ -19,6 +20,11 @@
     [super viewDidLoad];
     self.title = @"信用卡还款";
     [self setrigBtn];
+    self.cardnumLab.text = self.bankNo;
+    self.cardnameLab.text = self.realname;
+    [self.priceText addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -40,8 +46,55 @@
     
 }
 - (IBAction)reimbursementAction:(id)sender {
-    CreditSucc *vc = [[CreditSucc alloc]initWithNibName:@"CreditSucc" bundle:nil];
-    vc.ispopRoot = YES;
+    
+    WithdrawaPassVC *vc = [[WithdrawaPassVC alloc]initWithNibName:@"WithdrawaPassVC" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
+    
+//    CreditSucc *vc = [[CreditSucc alloc]initWithNibName:@"CreditSucc" bundle:nil];
+//    vc.ispopRoot = YES;
+//    [self.navigationController pushViewController:vc animated:YES];
 }
+
+-(void)textFieldDidChange :(UITextField *)theTextField{
+    theTextField.text = [self okPriceDecimal:theTextField.text ];
+}
+
+-(NSString *)okPriceDecimal:(NSString *)priceStr
+{
+    
+    NSRange startRange = [priceStr rangeOfString:@"."];
+    //是否有小数点
+    if (startRange.location != NSNotFound) {
+        //若小数点直接在¥后面第一位，则补充0
+        if (startRange.location == 0) {
+            priceStr = [NSMutableString stringWithFormat:@"0%@",[priceStr substringFromIndex:0]];
+            startRange = [priceStr rangeOfString:@"."];
+        }
+        //控制小数点后只能输入两位
+        
+        
+        NSString *str = [priceStr substringFromIndex:startRange.location];
+        if ([str length]==3) {
+            NSString *str2 = [str substringWithRange:NSMakeRange(2,1)];
+            if ([str2 isEqualToString:@"0"]) {
+                return [priceStr substringToIndex:priceStr.length-1];
+            }
+        }
+        if (str.length > 3) {
+            return [priceStr substringToIndex:priceStr.length-1];
+        }
+    }else
+    {
+        if (priceStr.length < 3) return priceStr;
+        //¥右侧第一个数字
+        NSString *numStr = [priceStr substringWithRange:NSMakeRange(1, 1)];
+        //若¥右侧第一个数字是0，则删除第一个0
+        if ([numStr integerValue] == 0) {
+            return [NSString stringWithFormat:@"%@",[priceStr substringFromIndex:2]];
+        }
+    }
+    return priceStr;
+}
+
+
 @end
