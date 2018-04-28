@@ -124,25 +124,35 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSInteger  topheigthnum;
+    NSInteger  footheigthnum;
+    if (iPhone6Plus_6sPlus) {
+        topheigthnum = 200;
+        footheigthnum = 185;
+    }
+    else{
+        topheigthnum = 175;
+        footheigthnum = 160;
+    }
     
     if (user.type ==2) {
         if (indexPath.section == 0) {
-            return 175;
+            return topheigthnum;
         }
         else if (indexPath.section == 1){
             return 50;
         }
         else if (indexPath.section == 2){
-            return 160;
+            return footheigthnum;
         }
         return 120;
     }
     else{
         if (indexPath.section == 0) {
-            return 175;
+            return topheigthnum;
         }
         else if (indexPath.section == 1){
-            return 160;
+            return footheigthnum;
         }
         return 120;
     }
@@ -161,12 +171,12 @@
                 switch (user.type) {
                     case 1:
                     {
-                        [self checkgoscanVc];
+                        [self checkgoscanVc:YES Checkmerchan:YES];
                     }
                         break;
                     case 2:
                     {
-                       [self checkgoscanVc];
+                        [self checkgoscanVc:YES Checkmerchan:NO];
                     }break;
                     case 3:
                     {
@@ -188,12 +198,12 @@
                 switch (user.type) {
                     case 1:
                     {
-                        [self checkgosmartVc];
+                        [self checkgosmartVc:YES Checkmerchan:YES];
                     }
                         break;
                     case 2:
                     {
-                        [self checkgosmartVc];
+                        [self checkgosmartVc:YES Checkmerchan:NO];
                     }break;
                     case 3:
                     {
@@ -216,12 +226,12 @@
                 switch (user.type) {
                     case 1:
                     {
-                        [self checkgosmartVc];
+                        [self checkpaymentVc:YES Checkmerchan:YES];
                     }
                         break;
                     case 2:
                     {
-                        [self checkgosmartVc];
+                        [self checkpaymentVc:YES Checkmerchan:NO];
                     }break;
                     case 3:
                     {
@@ -249,7 +259,7 @@
             cell.withdrawalstoBlock = ^(HomeBalanceCell *cell) {
                 
                 if (user.isLogin) {
-                    [self  checkgoWithdrawalsVC];
+                    [self  checkgoWithdrawalsVC:YES Checkmerchan:NO];
                 }
                 else{
                     [self gologin];
@@ -265,7 +275,7 @@
             HomeCertificationCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
             cell.reimbursementoBlock  = ^(HomeCertificationCell *cell) {
                 if (user.isLogin) {
-                    [self checkgoCreditCardVC];
+                    [self checkgoCreditCardVC:YES Checkmerchan:NO];
                 }
                 else{
                     [self gologin];
@@ -292,7 +302,7 @@
             
             cell.todaytoBlock  = ^(HomeCertificationCell *cell){
                 if (user.isLogin) {
-                    [self checkgoTodayBillVC];
+                    [self checkgoTodayBillVC:YES Checkmerchan:NO];
                 }
                 else{
                     [self gologin];
@@ -339,7 +349,7 @@
                 switch (user.type) {
                     case 1:
                     {
-                        [self checkgoTodayBillVC];
+                        [self checkgoTodayBillVC:YES Checkmerchan:YES];
                     }
                         break;
                     case 3:
@@ -413,75 +423,106 @@
 }
 
 #pragma mark -- 扫一扫
-- (void)checkgoscanVc {
-//    if (!(user.identityAuthed==1)) {
-//        [self showMessage:@"请先进行实名认证" viewHeight:0];
-//        return;
-//    }
-//    if (!(user.merchantAuthed==1)) {
-//        [self showMessage:@"请先进行店铺认证" viewHeight:0];
-//        return;
-//    }
+- (void)checkgoscanVc:(BOOL)checkident Checkmerchan:(BOOL)checkmerchan{
+    if (checkident) {
+        if (!(user.identityAuthed==1)) {
+            [self showMessage:@"请先进行实名认证" viewHeight:0];
+            return;
+        }
+    }
+    
+    if (checkmerchan) {
+        if (!(user.merchantAuthed==1)) {
+            [self showMessage:@"请先进行店铺认证" viewHeight:0];
+            return;
+        }
+    }
+    
     ScanVC *vc = [[ScanVC alloc]initWithNibName:@"ScanVC" bundle:nil];
     vc.hidesBottomBarWhenPushed = YES;  // 设置B
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark -- 智能码
-- (void)checkgosmartVc {
-    if (!(user.identityAuthed==1)) {
-        [self showMessage:@"请先进行实名认证" viewHeight:0];
-        return;
+- (void)checkgosmartVc:(BOOL)checkident Checkmerchan:(BOOL)checkmerchan {
+    if (checkident) {
+        if (!(user.identityAuthed==1)) {
+            [self showMessage:@"请先进行实名认证" viewHeight:0];
+            return;
+        }
     }
-    if (!(user.merchantAuthed==1)) {
-        [self showMessage:@"请先进行店铺认证" viewHeight:0];
-        return;
+    
+    if (checkmerchan) {
+        if (!(user.merchantAuthed==1)) {
+            [self showMessage:@"请先进行店铺认证" viewHeight:0];
+            return;
+        }
     }
+    
     SmartCodeVC *vc = [[SmartCodeVC alloc]initWithNibName:@"SmartCodeVC" bundle:nil];
     vc.hidesBottomBarWhenPushed = YES;  // 设置B
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)checkpaymentVc {
-    if (!(user.identityAuthed==1)) {
-        [self showMessage:@"请先进行实名认证" viewHeight:0];
-        return;
+- (void)checkpaymentVc:(BOOL)checkident Checkmerchan:(BOOL)checkmerchan {
+    if (checkident) {
+        if (!(user.identityAuthed==1)) {
+            [self showMessage:@"请先进行实名认证" viewHeight:0];
+            return;
+        }
     }
-    if (!(user.merchantAuthed==1)) {
-        [self showMessage:@"请先进行店铺认证" viewHeight:0];
-        return;
+    
+    if (checkmerchan) {
+        if (!(user.merchantAuthed==1)) {
+            [self showMessage:@"请先进行店铺认证" viewHeight:0];
+            return;
+        }
     }
+    
     PaymentCodeVC *vc = [[PaymentCodeVC alloc]initWithNibName:@"PaymentCodeVC" bundle:nil];
     vc.hidesBottomBarWhenPushed = YES;  // 设置B
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark -- 收款码
-- (void)checkgoWithdrawalsVC{
-    if (!(user.identityAuthed==1)) {
-        [self showMessage:@"请先进行实名认证" viewHeight:0];
-        return;
+- (void)checkgoWithdrawalsVC:(BOOL)checkident Checkmerchan:(BOOL)checkmerchan {
+    if (checkident) {
+        if (!(user.identityAuthed==1)) {
+            [self showMessage:@"请先进行实名认证" viewHeight:0];
+            return;
+        }
     }
-    if (!(user.merchantAuthed==1)) {
-        [self showMessage:@"请先进行店铺认证" viewHeight:0];
-        return;
+    
+    if (checkmerchan) {
+        if (!(user.merchantAuthed==1)) {
+            [self showMessage:@"请先进行店铺认证" viewHeight:0];
+            return;
+        }
     }
+    
     WithdrawalsVC *vc = [[WithdrawalsVC alloc]initWithNibName:@"WithdrawalsVC" bundle:nil];
     vc.hidesBottomBarWhenPushed = YES;  // 设置B
     vc.balancenum = [NSString stringWithFormat:@"%0.2f",[[user.accounts objectForKey:@"R"]floatValue]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-#pragma mark -- 提款
-- (void)checkgoCreditCardVC {
-    if (!(user.identityAuthed==1)) {
-        [self showMessage:@"请先进行实名认证" viewHeight:0];
-        return;
+#pragma mark -- 信用卡
+- (void)checkgoCreditCardVC:(BOOL)checkident Checkmerchan:(BOOL)checkmerchan {
+    
+    if (checkident) {
+        if (!(user.identityAuthed==1)) {
+            [self showMessage:@"请先进行实名认证" viewHeight:0];
+            return;
+        }
     }
-    if (!(user.merchantAuthed==1)) {
-        [self showMessage:@"请先进行店铺认证" viewHeight:0];
-        return;
+    
+    if (checkmerchan) {
+        if (!(user.merchantAuthed==1)) {
+            [self showMessage:@"请先进行店铺认证" viewHeight:0];
+            return;
+        }
     }
+    
     CreditCardVC *vc = [[CreditCardVC alloc]initWithNibName:@"CreditCardVC" bundle:nil];
     vc.hidesBottomBarWhenPushed = YES;  // 设置B
     [self.navigationController pushViewController:vc animated:YES];
@@ -509,15 +550,21 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark --今日数据
-- (void)checkgoTodayBillVC {
-    if (!(user.identityAuthed==1)) {
-        [self showMessage:@"请先进行实名认证" viewHeight:0];
-        return;
+- (void)checkgoTodayBillVC:(BOOL)checkident Checkmerchan:(BOOL)checkmerchan {
+    if (checkident) {
+        if (!(user.identityAuthed==1)) {
+            [self showMessage:@"请先进行实名认证" viewHeight:0];
+            return;
+        }
     }
-    if (!(user.merchantAuthed==1)) {
-        [self showMessage:@"请先进行店铺认证" viewHeight:0];
-        return;
+    
+    if (checkmerchan) {
+        if (!(user.merchantAuthed==1)) {
+            [self showMessage:@"请先进行店铺认证" viewHeight:0];
+            return;
+        }
     }
+    
     TodayBillVC *vc = [[TodayBillVC alloc]initWithNibName:@"TodayBillVC" bundle:nil];
     vc.hidesBottomBarWhenPushed = YES;  // 设置B
     [self.navigationController pushViewController:vc animated:YES];

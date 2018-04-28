@@ -6,31 +6,30 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="120" id="KGk-i7-Jjw" customClass="HomeDataStatisticsCell">
-            <rect key="frame" x="0.0" y="0.0" width="363" height="120"/>
+            <rect key="frame" x="0.0" y="0.0" width="465" height="122"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="363" height="119.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="465" height="121.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A1W-uT-dEU">
-                        <rect key="frame" x="0.0" y="0.0" width="363" height="1"/>
+                        <rect key="frame" x="0.0" y="0.0" width="465" height="1"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.01" id="hvs-E9-Pxh"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p7u-ut-meD">
-                        <rect key="frame" x="0.0" y="1" width="121" height="121"/>
+                        <rect key="frame" x="0.0" y="1" width="155" height="120.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="今日 8888.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SXo-yV-uGk">
-                                <rect key="frame" x="0.0" y="51" width="121" height="20"/>
+                                <rect key="frame" x="0.0" y="51" width="155" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="dxE-jO-yA5"/>
                                 </constraints>
@@ -39,20 +38,20 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="昨日 8888.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="96W-Kp-8eN">
-                                <rect key="frame" x="17" y="76" width="88" height="17"/>
+                                <rect key="frame" x="34" y="76" width="88" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZpW-2O-id5">
-                                <rect key="frame" x="30" y="17" width="61" height="29"/>
+                                <rect key="frame" x="47" y="17" width="61" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title=" 数据合计">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NpU-89-XxU">
-                                <rect key="frame" x="120" y="10" width="1" height="101"/>
+                                <rect key="frame" x="154" y="10" width="1" height="100.5"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1" id="tmH-XX-pqs"/>
@@ -63,21 +62,27 @@
                             <constraint firstItem="SXo-yV-uGk" firstAttribute="centerX" secondItem="ZpW-2O-id5" secondAttribute="centerX" id="4Lo-8a-etn"/>
                             <constraint firstAttribute="trailing" secondItem="SXo-yV-uGk" secondAttribute="trailing" id="6hR-K7-iK4"/>
                             <constraint firstItem="96W-Kp-8eN" firstAttribute="centerX" secondItem="SXo-yV-uGk" secondAttribute="centerX" id="764-t0-Kq6"/>
+                            <constraint firstAttribute="bottom" secondItem="NpU-89-XxU" secondAttribute="bottom" constant="10" id="7HS-U2-85q"/>
                             <constraint firstItem="96W-Kp-8eN" firstAttribute="top" secondItem="SXo-yV-uGk" secondAttribute="bottom" constant="5" id="BXk-hb-dTN"/>
-                            <constraint firstItem="NpU-89-XxU" firstAttribute="top" secondItem="p7u-ut-meD" secondAttribute="top" constant="10" id="EHL-Qk-iXR"/>
                             <constraint firstItem="SXo-yV-uGk" firstAttribute="centerY" secondItem="p7u-ut-meD" secondAttribute="centerY" id="EzO-QM-ckA"/>
-                            <constraint firstAttribute="width" secondItem="p7u-ut-meD" secondAttribute="height" multiplier="1:1" id="Iv7-PJ-aUY"/>
                             <constraint firstItem="SXo-yV-uGk" firstAttribute="leading" secondItem="p7u-ut-meD" secondAttribute="leading" id="VsJ-dL-piZ"/>
                             <constraint firstItem="SXo-yV-uGk" firstAttribute="top" secondItem="ZpW-2O-id5" secondAttribute="bottom" constant="5" id="nLh-OV-KQh"/>
                             <constraint firstAttribute="trailing" secondItem="NpU-89-XxU" secondAttribute="trailing" id="qvT-PU-yK8"/>
-                            <constraint firstAttribute="bottom" secondItem="NpU-89-XxU" secondAttribute="bottom" constant="10" id="whx-Nh-qOK"/>
+                            <constraint firstItem="NpU-89-XxU" firstAttribute="top" secondItem="p7u-ut-meD" secondAttribute="top" constant="10" id="w4X-CJ-T0o"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w8B-wl-Fq1">
-                        <rect key="frame" x="242" y="1" width="121" height="121"/>
+                        <rect key="frame" x="310" y="1" width="155" height="120.5"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DrD-ak-TVD">
+                                <rect key="frame" x="1" y="10" width="1" height="100.5"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="1" id="uiF-iV-9dx"/>
+                                </constraints>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="今日 0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BRc-V9-N1i">
-                                <rect key="frame" x="0.0" y="50" width="121" height="20"/>
+                                <rect key="frame" x="0.0" y="50" width="155" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="vFQ-h5-nTA"/>
                                 </constraints>
@@ -86,13 +91,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="昨日 8888.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rnn-hc-70h">
-                                <rect key="frame" x="17" y="77" width="88" height="17"/>
+                                <rect key="frame" x="34" y="77" width="88" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JAI-Pi-Hqi">
-                                <rect key="frame" x="23" y="23.5" width="76" height="17"/>
+                                <rect key="frame" x="40" y="23.5" width="76" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title=" 收款合计" image="ailimg">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -100,18 +105,21 @@
                             </button>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="DrD-ak-TVD" firstAttribute="leading" secondItem="w8B-wl-Fq1" secondAttribute="leading" constant="1" id="BNj-Bb-Xt1"/>
                             <constraint firstAttribute="trailing" secondItem="BRc-V9-N1i" secondAttribute="trailing" id="EzT-Tv-qtl"/>
+                            <constraint firstAttribute="bottom" secondItem="DrD-ak-TVD" secondAttribute="bottom" constant="10" id="TeQ-wR-4zC"/>
                             <constraint firstItem="BRc-V9-N1i" firstAttribute="centerX" secondItem="JAI-Pi-Hqi" secondAttribute="centerX" id="XwX-IU-JyX"/>
+                            <constraint firstItem="DrD-ak-TVD" firstAttribute="top" secondItem="w8B-wl-Fq1" secondAttribute="top" constant="10" id="eET-FD-83J"/>
                             <constraint firstItem="BRc-V9-N1i" firstAttribute="centerY" secondItem="w8B-wl-Fq1" secondAttribute="centerY" id="mxs-Ug-ndy"/>
                             <constraint firstItem="BRc-V9-N1i" firstAttribute="leading" secondItem="w8B-wl-Fq1" secondAttribute="leading" id="p6h-ws-jRa"/>
                             <constraint firstItem="Rnn-hc-70h" firstAttribute="centerX" secondItem="BRc-V9-N1i" secondAttribute="centerX" id="w8D-yh-RUC"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dtx-wn-PES">
-                        <rect key="frame" x="121" y="1" width="121" height="121"/>
+                        <rect key="frame" x="155" y="1" width="155" height="120.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="今日 8888.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TjR-Na-dx5">
-                                <rect key="frame" x="0.0" y="50" width="121" height="20"/>
+                                <rect key="frame" x="0.0" y="50" width="155" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="XIn-0L-c4X"/>
                                 </constraints>
@@ -120,35 +128,25 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="昨日 0.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ea1-8O-n1I">
-                                <rect key="frame" x="30" y="76.5" width="61.5" height="17"/>
+                                <rect key="frame" x="47" y="76.5" width="61.5" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mTb-JV-ehh">
-                                <rect key="frame" x="22.5" y="23.5" width="76" height="17"/>
+                                <rect key="frame" x="39.5" y="23.5" width="76" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title=" 收款合计" image="ailimg">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DrD-ak-TVD">
-                                <rect key="frame" x="120" y="10" width="1" height="101"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="1" id="Fof-Zm-SdX"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <constraints>
                             <constraint firstItem="TjR-Na-dx5" firstAttribute="centerX" secondItem="mTb-JV-ehh" secondAttribute="centerX" id="0vQ-uV-fO9"/>
                             <constraint firstItem="ea1-8O-n1I" firstAttribute="centerX" secondItem="TjR-Na-dx5" secondAttribute="centerX" id="RZ7-cn-vxG"/>
                             <constraint firstItem="TjR-Na-dx5" firstAttribute="centerY" secondItem="Dtx-wn-PES" secondAttribute="centerY" id="UOL-Nb-Uwv"/>
                             <constraint firstItem="TjR-Na-dx5" firstAttribute="leading" secondItem="Dtx-wn-PES" secondAttribute="leading" id="YSG-uH-n9Y"/>
-                            <constraint firstAttribute="bottom" secondItem="DrD-ak-TVD" secondAttribute="bottom" constant="10" id="lBz-in-tyr"/>
                             <constraint firstAttribute="trailing" secondItem="TjR-Na-dx5" secondAttribute="trailing" id="pcq-Gv-6LH"/>
-                            <constraint firstItem="DrD-ak-TVD" firstAttribute="top" secondItem="Dtx-wn-PES" secondAttribute="top" constant="10" id="vJJ-nQ-jst"/>
-                            <constraint firstAttribute="trailing" secondItem="DrD-ak-TVD" secondAttribute="trailing" id="yBu-65-7vk"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -167,6 +165,7 @@
                     <constraint firstItem="Dtx-wn-PES" firstAttribute="height" secondItem="p7u-ut-meD" secondAttribute="height" id="NPm-Fi-mZF"/>
                     <constraint firstItem="A1W-uT-dEU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="UG5-hu-0Rt"/>
                     <constraint firstItem="w8B-wl-Fq1" firstAttribute="width" secondItem="p7u-ut-meD" secondAttribute="width" id="Unt-Mq-dQE"/>
+                    <constraint firstAttribute="bottom" secondItem="p7u-ut-meD" secondAttribute="bottom" id="VPc-Vz-EiJ"/>
                     <constraint firstItem="w8B-wl-Fq1" firstAttribute="height" secondItem="p7u-ut-meD" secondAttribute="height" id="f4R-Yh-xbd"/>
                     <constraint firstItem="ea1-8O-n1I" firstAttribute="centerY" secondItem="96W-Kp-8eN" secondAttribute="centerY" id="vCW-5p-qpN"/>
                     <constraint firstItem="w8B-wl-Fq1" firstAttribute="leading" secondItem="Dtx-wn-PES" secondAttribute="trailing" id="yUC-Eu-kfY"/>
@@ -184,7 +183,7 @@
                 <outlet property="weixintodaypeiceLab" destination="BRc-V9-N1i" id="kbR-Wo-qy4"/>
                 <outlet property="weixintomopriceLab" destination="Rnn-hc-70h" id="nrU-Gz-KGJ"/>
             </connections>
-            <point key="canvasLocation" x="54.5" y="84"/>
+            <point key="canvasLocation" x="105.5" y="85"/>
         </tableViewCell>
     </objects>
     <resources>

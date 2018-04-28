@@ -27,6 +27,9 @@
     
     self.iponeText.delegate = self;
     self.codeText.delegate = self;
+    self.iponeText.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.codeText.autocorrectionType = UITextAutocorrectionTypeNo;
+    
     
     self.iponeImg.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e6a1", 40, RGB(153, 153, 153))];
     

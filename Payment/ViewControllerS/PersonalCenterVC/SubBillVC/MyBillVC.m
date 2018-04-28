@@ -10,7 +10,7 @@
 #import "collectionCell.h"
 #import "ChooseTimeVC.h"
 #import "GYZCityHeaderView.h"
-#import "CollectionSuccVC.h"
+#import "TodayBillSuccVC.h"
 #import "CreditSucc.h"
 #import "WithdrawalSucc.h"
 
@@ -188,7 +188,7 @@ NSString *const cityHeaderView = @"CityHeaderView";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == self.tableview) {
-        CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
+        TodayBillSuccVC *vc = [[TodayBillSuccVC alloc]initWithNibName:@"TodayBillSuccVC" bundle:nil];
         vc.ispopRoot = NO;
         [self.navigationController pushViewController:vc animated:YES];
         

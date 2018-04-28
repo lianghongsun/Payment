@@ -73,9 +73,6 @@
             LxPrintf(@"error: %@",error);
         } else {
             [self CreateOrderApi:result];
-//            CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
-//            vc.ispopRoot = YES;
-//            [self.navigationController pushViewController:vc animated:YES];
             LxPrintf(@"扫描结果：%@",result);
             
         }
@@ -160,7 +157,9 @@
                             _shouldStop = YES;
                             [self syntheticVoice:[NSString stringWithFormat:@"%@收款%@元",platformname,self.pricenum]];
                             CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
-                            vc.model = [OrderModel mj_setKeyValues:payorder];
+                            OrderModel *moders = [[OrderModel alloc]init];
+                            [moders mj_setKeyValues:payorder];
+                            vc.model = moders;
                             vc.ispopRoot = YES;
                             [self.navigationController pushViewController:vc animated:YES];
                             return ;

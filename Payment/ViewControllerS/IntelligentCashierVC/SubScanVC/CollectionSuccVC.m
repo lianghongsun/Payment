@@ -24,8 +24,14 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"账单详情";
+    self.title = @"收款详情";
     self.tableview.separatorStyle = NO;
+    
+    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
+    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
+    [self.view addGestureRecognizer:pan];
+    
+    [self.navigationItem setHidesBackButton:YES];
     [self.tableview registerNib:[UINib nibWithNibName:@"WithSuccCell" bundle:nil] forCellReuseIdentifier:@"WithSuccCell"];
     
     [self.tableview registerNib:[UINib nibWithNibName:@"WithDetermineBtnCell" bundle:nil] forCellReuseIdentifier:@"WithDetermineBtnCell"];

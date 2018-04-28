@@ -35,7 +35,7 @@
 
 @interface YearlistBillFirstModel : NSObject
 
-@property (assign,nonatomic) float totalAmount;
+@property (assign,nonatomic) double totalAmount;
 @property (assign,nonatomic) NSInteger totalCount;
 @property (copy,nonatomic) NSString *monthDate;
 

@@ -23,6 +23,10 @@
     [self.newpasswordText setSecureTextEntry:YES];
     [self.againnewpassText setSecureTextEntry:YES];
     
+    self.newpasswordText.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.againnewpassText.autocorrectionType = UITextAutocorrectionTypeNo;
+    
+    
     self.passImg.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e62a", 40, RGB(153, 153, 153))];
     self.againpassImg.image =  [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e62a", 40, RGB(153, 153, 153))];
     

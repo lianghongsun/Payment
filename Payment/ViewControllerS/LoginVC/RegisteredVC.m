@@ -31,6 +31,10 @@
     self.passwordText.delegate = self;
     self.againpasswordText.delegate = self;
     self.verificationText.delegate = self;
+    self.usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.passwordText.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.againpasswordText.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.verificationText.autocorrectionType = UITextAutocorrectionTypeNo;
     
     [self.passwordText setSecureTextEntry:YES];
     [self.againpasswordText setSecureTextEntry:YES];

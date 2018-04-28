@@ -24,13 +24,13 @@
     NSString *fivetmonth;
     NSString *sixtmonth;
     
-    float lastmoney;
-    float firstmoney;
-    float secondmoney;
-    float threemoney;
-    float fourmoney;
-    float fivetmoney;
-    float sixtmoney;
+    double lastmoney;
+    double firstmoney;
+    double secondmoney;
+    double threemoney;
+    double fourmoney;
+    double fivetmoney;
+    double sixtmoney;
     
     NSInteger  lastpen;
     NSInteger firstpen;
@@ -119,7 +119,7 @@
     .seriesSet(@[
                  AAObject(AASeriesElement)
                  .nameSet(@"金额")
-                 .dataSet(@[[NSNumber numberWithFloat:firstmoney], [NSNumber numberWithFloat:secondmoney], [NSNumber numberWithFloat:threemoney], [NSNumber numberWithFloat:fourmoney], [NSNumber numberWithFloat:fivetmoney], [NSNumber numberWithFloat:sixtmoney]]),
+                 .dataSet(@[[NSNumber numberWithDouble:firstmoney], [NSNumber numberWithDouble:secondmoney], [NSNumber numberWithDouble:threemoney], [NSNumber numberWithDouble:fourmoney], [NSNumber numberWithDouble:fivetmoney], [NSNumber numberWithDouble:sixtmoney]]),
                  AAObject(AASeriesElement)
                  .nameSet(@"金额")
                  .dataSet(@[]),

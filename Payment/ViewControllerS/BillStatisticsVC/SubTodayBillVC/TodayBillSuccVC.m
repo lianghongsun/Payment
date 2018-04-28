@@ -1,5 +1,5 @@
 //
-//  CollectionSuccVC.m
+//  TodayBillSuccVC.m
 //  Payment
 //
 //  Created by iMac_1 on 2018/4/10.

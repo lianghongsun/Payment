@@ -39,6 +39,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.passwordText.autocorrectionType = UITextAutocorrectionTypeNo;
     
 
         NSMutableArray *images = [NSMutableArray new];
