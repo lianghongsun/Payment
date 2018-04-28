@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
 @property (nonatomic,copy)NSString *balancenum;
+@property (nonatomic,strong)NSMutableArray *listDataarr;
 
 @end

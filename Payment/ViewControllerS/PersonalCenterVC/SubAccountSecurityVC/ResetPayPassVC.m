@@ -47,7 +47,7 @@
 
 
 - (IBAction)smsAction:(id)sender {
-    
+    [self Packupthekeyboard];
     [self SendsmsAPI];
 }
 
@@ -143,6 +143,12 @@
         [self.smsText resignFirstResponder];
     }
     return YES;
+}
+
+- (void)Packupthekeyboard{
+    [self.passText resignFirstResponder];
+    [self.againpassText resignFirstResponder];
+    [self.smsText resignFirstResponder];
 }
 
 @end

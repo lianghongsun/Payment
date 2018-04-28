@@ -320,7 +320,7 @@
         }
         else{
             cell.versioLab.text = @"环比增长";
-            if (indexPath.row == 0) {
+            if (indexnum== 1) {
                 if (lastmoney <=0) {
                     cell.subLab.text = @"上月无数据";
                 }
@@ -348,13 +348,26 @@
             cell.subLab.text = [NSString stringWithFormat:@"%ld笔",(long)model.totalCount];
         }
         else{
-            YearlistBillFirstModel *mode3 = self.listdataArr[indexnum-1];
-            if (mode3.totalCount <=0) {
-                cell.subLab.text = @"上月无数据";
+            cell.versioLab.text = @"环比增长";
+            if (indexnum== 1) {
+                if (lastmoney <=0) {
+                    cell.subLab.text = @"上月无数据";
+                }
+                else{
+                    float pricenum = (model.totalCount-lastpen )/lastpen ;
+                    cell.subLab.text = [NSString stringWithFormat:@"%.2f%@",pricenum,@"%"];
+                }
             }
             else{
-                float pricenum = (model.totalCount-mode3.totalCount )/mode3.totalCount ;
-                cell.subLab.text = [NSString stringWithFormat:@"%.2f%@",pricenum,@"%"];
+                YearlistBillFirstModel *mode3 = self.listdataArr[indexnum-1];
+                if (mode3.totalCount <=0) {
+                    cell.subLab.text = @"上月无数据";
+                }
+                else{
+                    float pricenum = (model.totalCount-mode3.totalCount )/mode3.totalCount ;
+                    cell.subLab.text = [NSString stringWithFormat:@"%.2f%@",pricenum,@"%"];
+                }
+                
             }
         }
     }

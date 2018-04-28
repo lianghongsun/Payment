@@ -39,6 +39,7 @@
 
 - (IBAction)determineAction:(id)sender {
     
+    [self Packupthekeyboard];
     if ([self.newpasswordText.text length]<6) {
         [self showMessage:@"密码为6位数以上数字或字母" viewHeight:0];
         return;
@@ -97,5 +98,9 @@
     return YES;
 }
 
+- (void)Packupthekeyboard{
+    [self.newpasswordText resignFirstResponder];
+    [self.againnewpassText resignFirstResponder];
+}
 
 @end

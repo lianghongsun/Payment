@@ -237,29 +237,20 @@
     }
     else{
         
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        //移除UserDefaults中存储的用户信息
+        [userDefaults removeObjectForKey:@"name"];
+        [userDefaults removeObjectForKey:@"password"];
+        [userDefaults synchronize];
+        
         UserInfo *user = [UserInfo shareObject];
         user.isLogin = false;
-        
         LoginVC *vc = [[LoginVC alloc]initWithNibName:@"LoginVC" bundle:nil];
         vc.isloginout = YES;
         UINavigationController *naiv = [[UINavigationController alloc]initWithRootViewController:vc];
-        
-        GestureLockLogin *vcs = [[GestureLockLogin alloc]init];
-        vcs.isloginout = YES;
-        UINavigationController *naivs = [[UINavigationController alloc]initWithRootViewController:vcs];
-        
-        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-        NSString *LockPath = [userDefault objectForKey:@"LockPath"];
-        NSString *isLockPath = [userDefault objectForKey:@"isLockPath"];
-        NSString *name = [userDefault objectForKey:@"name"];
-        NSString *password = [userDefault objectForKey:@"password"];
         self.tabBarController.selectedIndex = 0;
-        if ([LockPath length]>0&&[isLockPath isEqualToString:@"开启"]&&[name length]>0&&[password length]>0) {
-            [self presentViewController:naivs animated:YES completion:nil];
-        }
-        else{
-            [self presentViewController:naiv animated:YES completion:nil];
-        }
+        [self presentViewController:naiv animated:YES completion:nil];
+        
     }
 }
 

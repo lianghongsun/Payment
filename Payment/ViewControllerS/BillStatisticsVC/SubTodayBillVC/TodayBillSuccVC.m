@@ -7,7 +7,7 @@
 //
 
 #import "TodayBillSuccVC.h"
-#import "WithSuccCell.h"
+#import "NoimageSuccCell.h"
 #import "WithDetermineBtnCell.h"
 #import "WithSuccHeaderCell.h"
 
@@ -26,7 +26,7 @@
     [super viewDidLoad];
     self.title = @"账单详情";
     self.tableview.separatorStyle = NO;
-    [self.tableview registerNib:[UINib nibWithNibName:@"WithSuccCell" bundle:nil] forCellReuseIdentifier:@"WithSuccCell"];
+    [self.tableview registerNib:[UINib nibWithNibName:@"NoimageSuccCell" bundle:nil] forCellReuseIdentifier:@"NoimageSuccCell"];
     
     [self.tableview registerNib:[UINib nibWithNibName:@"WithDetermineBtnCell" bundle:nil] forCellReuseIdentifier:@"WithDetermineBtnCell"];
     
@@ -93,8 +93,8 @@
         
     }
     else if (indexPath.section == 1){
-        static NSString *identifier1 = @"WithSuccCell";
-        WithSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+        static NSString *identifier1 = @"NoimageSuccCell";
+        NoimageSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         if (indexPath.row == 0) {
             cell.titleLab.text = @"订单金额";
             cell.subtitleLab.text = [NSString stringWithFormat:@"¥%@",self.model.totalAmount];
@@ -112,8 +112,8 @@
         return cell;
     }
     else if (indexPath.section == 2){
-        static NSString *identifier1 = @"WithSuccCell";
-        WithSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+        static NSString *identifier1 = @"NoimageSuccCell";
+        NoimageSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         
         if (indexPath.row == 0){
             cell.titleLab.text = @"交易时间";
@@ -141,8 +141,8 @@
         
     }
     else if (indexPath.section == 3){
-        static NSString *identifier1 = @"WithSuccCell";
-        WithSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+        static NSString *identifier1 = @"NoimageSuccCell";
+        NoimageSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         cell.titleLab.text = @"收银员";
         cell.subtitleLab.text = self.model.cashierName;
         cell.accessoryType = UITableViewCellAccessoryNone;

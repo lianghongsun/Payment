@@ -12,8 +12,13 @@
 #import "WithDetermineBtnCell.h"
 #import "WithdrawalSucc.h"
 #import "WithdrawaPassVC.h"
+#import "YHKModel.h"
+
 @interface WithdrawalSecondVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 @property (nonatomic,strong)UITextField *priceTx;
+@property (nonatomic, assign)BOOL ifSelected;//是否选中
+@property (nonatomic, strong)NSIndexPath * lastSelected;//上一次选中的索引
+
 @end
 
 @implementation WithdrawalSecondVC
@@ -69,7 +74,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 1) {
-        return 3;
+        return self.listDataarr.count;
     }
     return 1;
 }
@@ -151,9 +156,47 @@
     else if(indexPath.section == 1){
         static NSString *identifier1 = @"AddYHKCell";
         AddYHKCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+//        cell.backgroundColor = [UIColor whiteColor];
+        YHKModel *model = self.listDataarr[indexPath.row];
+        cell.backgrview.layer.shadowColor = ThemeColor.CGColor;
+        cell.backgrview.layer.shadowOpacity = 0.5f;
+        cell.backgrview.layer.shadowRadius = 4.f;
+        cell.backgrview.layer.shadowOffset = CGSizeMake(0,0);
+        if ([model.isDefault isEqualToString:@"1"]&&self.ifSelected == NO) {
+            cell.backgrview.backgroundColor = ThemeColor;
+            cell.nameLab.textColor = [UIColor whiteColor];
+            cell.numLab.textColor = [UIColor whiteColor];
+            [cell.defaultimg setHidden:NO];
+        }
+        else if ([model.isDefault isEqualToString:@"1"]&&self.ifSelected == YES){
+            if (self.lastSelected == indexPath) {
+                cell.backgrview.backgroundColor = ThemeColor;
+                cell.nameLab.textColor = [UIColor whiteColor];
+                cell.numLab.textColor = [UIColor whiteColor];
+            }else{
+                cell.backgrview.backgroundColor = [UIColor whiteColor];
+                cell.nameLab.textColor = [UIColor blackColor];
+                cell.numLab.textColor = [UIColor blackColor];
+            }
+            [cell.defaultimg setHidden:NO];
+        }
+        else{
+            [cell.defaultimg setHidden:YES];
+            if (self.lastSelected == indexPath) {
+                cell.backgrview.backgroundColor = ThemeColor;
+                cell.nameLab.textColor = [UIColor whiteColor];
+                cell.numLab.textColor = [UIColor whiteColor];
+            }else{
+                cell.backgrview.backgroundColor = [UIColor whiteColor];
+                cell.nameLab.textColor = [UIColor blackColor];
+                cell.numLab.textColor = [UIColor blackColor];
+            }
+        }
         cell.logimg.image = [UIImage imageNamed:@"zhaohang"];
-        cell.nameLab.text = @"张无忌";
-        cell.numLab.text = @"****   ****   ****   9989";
+        cell.nameLab.text = model.realname;
+        cell.numLab.text = [NSString stringWithFormat:@"****  ****  ****  %@",[model.bankNo substringFromIndex:model.bankNo.length-4]] ;
+        
+        
         cell.accessoryType = UITableViewCellAccessoryNone;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         return cell;
@@ -162,12 +205,18 @@
         static NSString *identifier1 = @"WithDetermineBtnCell";
         WithDetermineBtnCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         cell.determineBlockoBlock = ^(WithDetermineBtnCell *cell) {
-            WithdrawaPassVC *vc = [[WithdrawaPassVC alloc]initWithNibName:@"WithdrawaPassVC" bundle:nil];
-            [self.navigationController pushViewController:vc animated:YES];
             
-//            WithdrawalSucc *vc = [[WithdrawalSucc alloc]initWithNibName:@"WithdrawalSucc" bundle:nil];
-//            vc.ispopRoot = YES;
+            if (!self.lastSelected) {
+                return;
+            }
+            YHKModel *model = self.listDataarr[self.lastSelected.row];
+            
+            LxPrintf(@"选中的卡号%@",model.bankNo);
+            
+//            WithdrawaPassVC *vc = [[WithdrawaPassVC alloc]initWithNibName:@"WithdrawaPassVC" bundle:nil];
 //            [self.navigationController pushViewController:vc animated:YES];
+            
+
         };
         
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -180,8 +229,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-   
-    
+    if (indexPath.section == 1) {
+        self.ifSelected = YES;
+        self.lastSelected = indexPath;//选中的修改为当前行
+        [tableView reloadData];
+        
+    }
     
 }
 

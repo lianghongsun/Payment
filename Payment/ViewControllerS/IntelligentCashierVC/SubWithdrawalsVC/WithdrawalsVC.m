@@ -11,9 +11,12 @@
 #import "WithButtonCell.h"
 #import "WithdrawalSecondVC.h"
 #import "WithdrawalSucc.h"
+#import "QueryBankcardApi.h"
+#import "YHKModel.h"
 
 @interface WithdrawalsVC ()<UITableViewDelegate,UITableViewDataSource,WeChatStylePlaceHolderDelegate>
 @property (nonatomic,strong) NSMutableArray *dataArr;
+@property (nonatomic,strong) NSMutableArray *listdataArr;
 @end
 
 @implementation WithdrawalsVC
@@ -27,6 +30,8 @@
     [super viewDidLoad];
     self.title = @"提款";
     self.dataArr = [NSMutableArray array];
+    self.listdataArr = [NSMutableArray array];
+    [self QueryBankcardApi];
     [self.dataArr addObject:@"123"];
     [self.dataArr addObject:@"1321"];
     [self.tableview registerNib:[UINib nibWithNibName:@"WithdrawalsFirstCell" bundle:nil] forCellReuseIdentifier:@"WithdrawalsFirstCell"];
@@ -141,8 +146,14 @@
         WithButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         [cell.withdarBtn setTitle:@"我要提款" forState:UIControlStateNormal];
         cell.withdrawalstoBlock = ^(WithButtonCell *cell){
+            if (self.listdataArr.count==0) {
+                [self showMessage:@"您还未绑定银行卡,请先去绑定收款银行" viewHeight:0];
+                return ;
+            }
+            
             WithdrawalSecondVC *vc = [[WithdrawalSecondVC alloc]initWithNibName:@"WithdrawalSecondVC" bundle:nil];
             vc.balancenum = self.balancenum;
+            vc.listDataarr = self.listdataArr;
             [weakself.navigationController pushViewController:vc animated:YES];
         };
         
@@ -191,6 +202,33 @@
     
 }
 
-
+- (void)QueryBankcardApi {
+    
+    QueryBankcardApi *query = [[QueryBankcardApi alloc]initWithCategory:@"1"];
+    [query startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
+            [self.tableview.mj_header endRefreshing];
+            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
+            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            switch (responseCode) {
+                case RequestStatusSuccess:
+                {
+                    
+                    [self.listdataArr removeAllObjects];
+                    [self.listdataArr addObjectsFromArray:[YHKModel mj_objectArrayWithKeyValuesArray:[dic objectForKey:@"list"]]];
+                }
+                    break;
+                default:
+                {
+                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
+                    [self showMessage:mesgStr viewHeight:0];
+                }
+                    break;
+            }
+        }
+    } failure:^(YTKBaseRequest *request) {
+        [self.tableview.mj_header endRefreshing];
+    }];
+}
 
 @end

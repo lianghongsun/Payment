@@ -22,6 +22,6 @@ pod 'YYModel'
 pod 'Masonry'
 pod 'CYLTableViewPlaceHolder'
 pod 'Qiniu', '~> 7.1.0.1’
-
+pod 'JPush', '3.0.2'
 
 end

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		28CF1E73E5A8E9FFCFC984CC /* Pods_Payment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A16DA8AE7E1C63AAB6EF4FA4 /* Pods_Payment.framework */; };
+		4F1CA60C2094581900929858 /* NoimageSuccCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1CA60A2094581900929858 /* NoimageSuccCell.m */; };
+		4F1CA60D2094581900929858 /* NoimageSuccCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F1CA60B2094581900929858 /* NoimageSuccCell.xib */; };
 		4F3174972074C667001D68F6 /* FXCyclePagerTransformLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3174902074C667001D68F6 /* FXCyclePagerTransformLayout.m */; };
 		4F3174982074C667001D68F6 /* FXCyclePagerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3174922074C667001D68F6 /* FXCyclePagerView.m */; };
 		4F3174992074C667001D68F6 /* FXCyclePagerViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3174942074C667001D68F6 /* FXCyclePagerViewCell.m */; };
@@ -369,6 +371,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4F1CA608209447C100929858 /* Payment.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Payment.entitlements; sourceTree = "<group>"; };
+		4F1CA6092094581800929858 /* NoimageSuccCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoimageSuccCell.h; sourceTree = "<group>"; };
+		4F1CA60A2094581900929858 /* NoimageSuccCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoimageSuccCell.m; sourceTree = "<group>"; };
+		4F1CA60B2094581900929858 /* NoimageSuccCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoimageSuccCell.xib; sourceTree = "<group>"; };
 		4F31748F2074C667001D68F6 /* FXCyclePagerTransformLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXCyclePagerTransformLayout.h; sourceTree = "<group>"; };
 		4F3174902074C667001D68F6 /* FXCyclePagerTransformLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXCyclePagerTransformLayout.m; sourceTree = "<group>"; };
 		4F3174912074C667001D68F6 /* FXCyclePagerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXCyclePagerView.h; sourceTree = "<group>"; };
@@ -1905,6 +1911,9 @@
 				4F7A9F59207C8ED400072745 /* WithSuccCell.h */,
 				4F7A9F5A207C8ED400072745 /* WithSuccCell.m */,
 				4F7A9F5B207C8ED400072745 /* WithSuccCell.xib */,
+				4F1CA6092094581800929858 /* NoimageSuccCell.h */,
+				4F1CA60A2094581900929858 /* NoimageSuccCell.m */,
+				4F1CA60B2094581900929858 /* NoimageSuccCell.xib */,
 				4F7A9F5E207C92D900072745 /* WithSuccHeaderCell.h */,
 				4F7A9F5F207C92D900072745 /* WithSuccHeaderCell.m */,
 				4F7A9F60207C92D900072745 /* WithSuccHeaderCell.xib */,
@@ -2146,6 +2155,7 @@
 		BBC0BE22206F947500439D37 /* Payment */ = {
 			isa = PBXGroup;
 			children = (
+				4F1CA608209447C100929858 /* Payment.entitlements */,
 				4FCEFDB0209047930030C124 /* InfoList */,
 				4F7A9DCC207AF82F00072745 /* Request */,
 				4F7A9DC5207AF76900072745 /* Global */,
@@ -2382,6 +2392,11 @@
 					BBC0BE1F206F947500439D37 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					BBC0BE37206F947600439D37 = {
 						CreatedOnToolsVersion = 9.2;
@@ -2474,6 +2489,7 @@
 				4F8EFE6F2072073A00EE645F /* BindingYHKVC.xib in Resources */,
 				BB71FAF12078827600AD9C57 /* MyBillVC.xib in Resources */,
 				4F7A9F7B207CDAA900072745 /* ChooeseThree.xib in Resources */,
+				4F1CA60D2094581900929858 /* NoimageSuccCell.xib in Resources */,
 				4F7A9FD1207F478200072745 /* NewHistorybillVC.xib in Resources */,
 				4FCEFD8C208F009A0030C124 /* RealNameFailureVC.xib in Resources */,
 				4F8EFEE420736F9900EE645F /* ChooseTimeVC.xib in Resources */,
@@ -2835,6 +2851,7 @@
 				BB71FA6D2076418400AD9C57 /* MMScanViewController.m in Sources */,
 				BB71FA7520764DB700AD9C57 /* SmartCodeVC.m in Sources */,
 				4F7A9F26207AFDA900072745 /* QueryOrderApi.m in Sources */,
+				4F1CA60C2094581900929858 /* NoimageSuccCell.m in Sources */,
 				4F931C5820844C9700BBE236 /* NSString+Category.m in Sources */,
 				4F7A9FA0207DD96700072745 /* RealNameSecondVC.m in Sources */,
 				4F7A9F1D207AFDA900072745 /* AddCreditCardApi.m in Sources */,
@@ -3017,6 +3034,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Payment/Payment.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 424JP42M72;
@@ -3044,6 +3062,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Payment/Payment.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 424JP42M72;

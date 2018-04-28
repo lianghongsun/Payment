@@ -59,12 +59,12 @@
 
 #pragma mark --  LSXPopupMenDelegate
 -(void)LSXPopupMenuDidSelectedAtIndex:(NSInteger)index LSXPopupMenu:(LSXPopMenu *)LSXPopupMenu{
-    
     self.typeLab.text = [NSString stringWithFormat:@"%@",titlearr[index]];
     NSLog(@"------点击---%ld",(long)index);
 }
 
 - (IBAction)typeAction:(id)sender {
+    [self Packupthekeyboard];
     
     [LSXPopMenu showRelyOnView:sender titles:titlearr  icons:@[@"",@""] menuWidth:120 isShowTriangle:YES delegate:self];
     
@@ -179,8 +179,12 @@
         return;
     }
     [self AddDebitcardApi];
-    
-    
-    
+}
+
+- (void)Packupthekeyboard{
+    [self.nameTx resignFirstResponder];
+    [self.yhknumTx resignFirstResponder];
+    [self.openaccountTc resignFirstResponder];
+    [self.codeTx resignFirstResponder];
 }
 @end

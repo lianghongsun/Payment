@@ -68,10 +68,10 @@
     CGFloat mainViewW = self.view.frame.size.width;
     
     
-    CGFloat smallLockViewW = 100.0f;
-    CGFloat smallLockViewH = 100.0f;
+    CGFloat smallLockViewW = 60.0f;
+    CGFloat smallLockViewH = 60.0f;
     CGFloat smallLockViewX = (mainViewW - smallLockViewW)/2.0f;
-    CGFloat smallLockViewY = 40.0f;
+    CGFloat smallLockViewY = 20.0f;
     UIImageView *lockViewShotView = [[UIImageView alloc] init];
     lockViewShotView.frame = CGRectMake(smallLockViewX, smallLockViewY, smallLockViewW, smallLockViewH);
     [self.view addSubview:lockViewShotView];
@@ -88,13 +88,13 @@
     self.tipLabel = tipLabel;
     
     CGFloat lockViewW = self.view.frame.size.width;
-    GestureLockView *lockView = [[GestureLockView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.tipLabel.frame) + MarginY, lockViewW, lockViewW)];
+    GestureLockView *lockView = [[GestureLockView alloc]initWithFrame:CGRectMake((lockViewW-300)/2, CGRectGetMaxY(self.tipLabel.frame) + MarginY, 300, 250)];
     lockView.delegate = self;
     [self.view addSubview:lockView];
     self.gestureLockView = lockView;
-    self.resetButton = [[UIButton alloc]initWithFrame:CGRectMake(100, CGRectGetMaxY(self.tipLabel.frame) + MarginY*2+lockViewW,lockViewW-200 , 30)];
+    self.resetButton = [[UIButton alloc]initWithFrame:CGRectMake(40, CGRectGetMaxY(self.tipLabel.frame) + MarginY*2+270,lockViewW-80 , 30)];
     [self.resetButton addTarget:self action:@selector(ForgetPassAction) forControlEvents:UIControlEventTouchUpInside];
-    NSMutableAttributedString* tncString = [[NSMutableAttributedString alloc] initWithString:@"切换用户名密码登录"];
+    NSMutableAttributedString* tncString = [[NSMutableAttributedString alloc] initWithString:@"切换密码登录"];
     [tncString addAttribute:NSUnderlineStyleAttributeName
                       value:@(NSUnderlineStyleSingle)
                       range:(NSRange){0,[tncString length]}];

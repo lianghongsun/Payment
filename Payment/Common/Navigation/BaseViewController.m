@@ -410,7 +410,7 @@
     
     if ([name isEqualToString:@"开启"]&&[vibration isEqualToString:@"开启"]) {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);  // 震动
-        AudioServicesPlaySystemSound(1007);
+//        AudioServicesPlaySystemSound(1007);
     }
     
     if ([name isEqualToString:@"开启"]&&[voice isEqualToString:@"开启"]) {
@@ -420,7 +420,9 @@
         //设置语言类别（不能被识别，返回值为nil）
         speechUtterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-CN"];
         //设置语速快慢
-        speechUtterance.rate = 0.5;
+        speechUtterance.rate = 0.45;
+        speechUtterance.pitchMultiplier = 0.5;
+        
         //语音合成器会生成音频
         [ synthesizer speakUtterance:speechUtterance];
     }

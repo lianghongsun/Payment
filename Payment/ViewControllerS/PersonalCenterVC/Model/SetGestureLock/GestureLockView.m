@@ -8,7 +8,7 @@
 
 #import "GestureLockView.h"
 
-#define ButtonW 64
+#define ButtonW 40
 #define SmallViewButtonW 12
 
 

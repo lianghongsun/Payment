@@ -63,11 +63,10 @@
 }
 
 
-- (IBAction)loginAction:(id)sender {
-}
+
 
 - (IBAction)verificationAction:(id)sender {
-    
+    [self Packupthekeyboard];
         if (![self phoneisMatchWith:self.usernameText.text]) {
             return;
         }
@@ -76,7 +75,7 @@
 }
 
 - (void)agreedAction:(UIButton *)button {
-    
+    [self Packupthekeyboard];
     button.selected = !button.isSelected;
     isagerr = button.selected;
 }
@@ -84,9 +83,11 @@
 
 
 - (IBAction)agreementAction:(id)sender {
+    [self Packupthekeyboard];
 }
 
 - (IBAction)registeredAction:(id)sender {
+    [self Packupthekeyboard];
     if (![self phoneisMatchWith:self.usernameText.text]) {
         return;
     }
@@ -114,10 +115,12 @@
 }
 
 - (IBAction)backLoginAction:(id)sender {
+    [self Packupthekeyboard];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void) SendsmsAPI {
+    [self Packupthekeyboard];
     [self showLoding:@"正在发送"];
 //    self.verificationBtn.userInteractionEnabled=NO;
 //    timeCounts = 60;
@@ -212,5 +215,11 @@
     return YES;
 }
 
+- (void)Packupthekeyboard{
+    [self.usernameText resignFirstResponder];
+    [self.passwordText resignFirstResponder];
+    [self.againpasswordText resignFirstResponder];
+    [self.verificationText resignFirstResponder];
+}
 
 @end

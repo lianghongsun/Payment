@@ -18,7 +18,7 @@
     self.backgrview.layer.shadowOpacity = 0.5f;
     self.backgrview.layer.shadowRadius = 4.f;
     self.backgrview.layer.shadowOffset = CGSizeMake(0,0);
-
+    self.numLab.adjustsFontSizeToFitWidth = YES;
     // Initialization code
 }
 

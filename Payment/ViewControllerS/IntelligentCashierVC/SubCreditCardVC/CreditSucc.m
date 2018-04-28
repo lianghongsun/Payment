@@ -10,6 +10,7 @@
 #import "WithSuccCell.h"
 #import "WithDetermineBtnCell.h"
 #import "WithSuccHeaderCell.h"
+#import "NoimageSuccCell.h"
 
 @interface CreditSucc ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -23,6 +24,8 @@
     
     self.tableview.separatorStyle = NO;
     [self.tableview registerNib:[UINib nibWithNibName:@"WithSuccCell" bundle:nil] forCellReuseIdentifier:@"WithSuccCell"];
+    
+    [self.tableview registerNib:[UINib nibWithNibName:@"NoimageSuccCell" bundle:nil] forCellReuseIdentifier:@"NoimageSuccCell"];
     
     [self.tableview registerNib:[UINib nibWithNibName:@"WithDetermineBtnCell" bundle:nil] forCellReuseIdentifier:@"WithDetermineBtnCell"];
     
@@ -94,35 +97,44 @@
     }
     else if (indexPath.section == 2){
         static NSString *identifier1 = @"WithSuccCell";
-        WithSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+        
         if (indexPath.row == 0) {
+            WithSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+            
             [cell.logimag setHidden:NO];
             cell.titleLab.text = @"还款账号";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"6888999999****9398"];
+            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"************9398"];
             cell.logimag.image = [UIImage imageNamed:@"zhaohang"];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            return cell;
         }
-        else if (indexPath.row == 1){
-            cell.titleLab.text = @"还款时间";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"2018年03月27日 09:18:34"];
+        else  {
+            NoimageSuccCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
+            if (indexPath.row == 1 ) {
+                cell.titleLab.text = @"还款时间";
+                cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"2018年03月27日 09:18:34"];
+            }
+            else if (indexPath.row == 2){
+                cell.titleLab.text = @"交易状态";
+                cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"还款成功"];
+            }
+            else if (indexPath.row == 3){
+                cell.titleLab.text = @"交易单号";
+                cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"20180312837337747383"];
+            }
+            else if (indexPath.row == 4){
+                cell.titleLab.text = @"订单编号";
+                cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"000123837473737737"];
+            }else{
+                cell.titleLab.text = @"备注";
+                cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"我想花钱了"];
+            }
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            return cell;
         }
-        else if (indexPath.row == 2){
-            cell.titleLab.text = @"交易状态";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"还款成功"];
-        }
-        else if (indexPath.row == 3){
-            cell.titleLab.text = @"交易单号";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"20180312837337747383"];
-        }
-        else if (indexPath.row == 4){
-            cell.titleLab.text = @"订单编号";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"000123837473737737"];
-        }else{
-            cell.titleLab.text = @"备注";
-            cell.subtitleLab.text = [NSString stringWithFormat:@"%@",@"我想花钱了"];
-        }
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        return cell;
+        
         
     }
     else{

@@ -99,7 +99,7 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    
+    user.type = 2;
     if (user.type == 2) {
         return 4;
     }
@@ -171,12 +171,13 @@
                 switch (user.type) {
                     case 1:
                     {
-                        [self checkgoscanVc:YES Checkmerchan:YES];
+                    [self checkgoscanVc:YES Checkmerchan:YES];
                     }
                         break;
                     case 2:
                     {
-                        [self checkgoscanVc:YES Checkmerchan:NO];
+                        
+                    [self checkgoscanVc:YES Checkmerchan:NO];
                     }break;
                     case 3:
                     {
@@ -198,12 +199,12 @@
                 switch (user.type) {
                     case 1:
                     {
-                        [self checkgosmartVc:YES Checkmerchan:YES];
+                    [self checkgosmartVc:YES Checkmerchan:YES];
                     }
                         break;
                     case 2:
                     {
-                        [self checkgosmartVc:YES Checkmerchan:NO];
+                    [self checkgosmartVc:YES Checkmerchan:NO];
                     }break;
                     case 3:
                     {
@@ -226,12 +227,12 @@
                 switch (user.type) {
                     case 1:
                     {
-                        [self checkpaymentVc:YES Checkmerchan:YES];
+                    [self checkpaymentVc:YES Checkmerchan:YES];
                     }
                         break;
                     case 2:
                     {
-                        [self checkpaymentVc:YES Checkmerchan:NO];
+                    [self checkpaymentVc:YES Checkmerchan:NO];
                     }break;
                     case 3:
                     {
@@ -259,7 +260,7 @@
             cell.withdrawalstoBlock = ^(HomeBalanceCell *cell) {
                 
                 if (user.isLogin) {
-                    [self  checkgoWithdrawalsVC:YES Checkmerchan:NO];
+                [self  checkgoWithdrawalsVC:YES Checkmerchan:NO];
                 }
                 else{
                     [self gologin];
@@ -570,9 +571,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
 - (void)TodayBillApi:(NSString *)mid StartDate:(NSString *)startDate{
-    [self showLoding:@"请稍后"];
     TodayBillApi *todaybill = [[TodayBillApi alloc]initWithUid:mid StartDate:startDate];
     [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {

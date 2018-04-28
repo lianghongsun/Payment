@@ -44,6 +44,7 @@
 
 - (IBAction)getcodeAction:(id)sender {
     
+    [self Packupthekeyboard];
     if (![self phoneisMatchWith:self.iponeText.text]) {
         return;
     }
@@ -53,7 +54,7 @@
 }
 
 - (IBAction)nextAction:(id)sender {
-    
+    [self Packupthekeyboard];
     if (![self phoneisMatchWith:self.iponeText.text]) {
         return;
     }
@@ -114,5 +115,9 @@
     return YES;
 }
 
+- (void)Packupthekeyboard{
+    [self.iponeText resignFirstResponder];
+    [self.codeText resignFirstResponder];
+}
 
 @end
