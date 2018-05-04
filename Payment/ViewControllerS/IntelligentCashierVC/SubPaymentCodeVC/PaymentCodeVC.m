@@ -83,6 +83,12 @@
                 break;
             case 13:
             {
+                UserInfo *user = [UserInfo shareObject];
+                if (!user.isLogin) {
+                    [self gobacklogin];
+                    return;
+                }
+                
                 if([weakself.moneyTF.text length]<=1){
                     [self showMessage:@"输入金额不能为空" viewHeight:0];
                     return ;
@@ -93,7 +99,7 @@
                 }
                 
                 NSString *pric = [weakself.moneyTF.text substringFromIndex:1];
-                ChooeseThree *vc = [[ChooeseThree alloc]initWithNibName:@"ChooesePayment" bundle:nil];
+                ChooeseThree *vc = [[ChooeseThree alloc]initWithNibName:@"ChooeseThree" bundle:nil];
                 vc.pricenum = [NSString stringWithFormat:@"%.2f",[pric floatValue]];
                 [self.navigationController pushViewController:vc animated:YES];
             }
@@ -127,7 +133,11 @@
 }
 
 - (void)rightAction {
-    
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     
 }
 

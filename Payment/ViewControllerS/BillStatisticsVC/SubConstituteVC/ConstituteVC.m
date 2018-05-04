@@ -27,6 +27,16 @@
 
 @implementation ConstituteVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self hideNavigationBarBottomLine:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self hideNavigationBarBottomLine:NO];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"收款构成";
@@ -48,10 +58,7 @@
     
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
+
 
 
 
@@ -103,6 +110,12 @@
 
 
 - (IBAction)choosetimeAction:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     HistoryTimeVC *vc = [[HistoryTimeVC alloc]initWithNibName:@"HistoryTimeVC" bundle:nil];
     vc.choosetime = mybegintime;
     vc.startDate = [JCAUtility DataWithTimestr:mybegintime formatStr:@"yyyy年MM月"];
@@ -124,39 +137,52 @@
     [monbill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
             [self closeLoding];
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject ;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    
-                    NSMutableArray*listarr = [NSMutableArray array];
-                    [listarr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[dic objectForKey:@"data"]]];
-                    
-                    TodayBillFirstModel *model1 = listarr[0];
-                    TodayBillFirstModel *model2 = listarr[1];
-                    
-                    self.totalrevenueLab.text = [NSString stringWithFormat:@"¥%.2f",[model1.totalAmount floatValue]+[model2.totalAmount floatValue]];
-
-                    if ([model1.platformId isEqualToString:@"100"]) {
-                        self.weixinincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
-                        weixinmoney = [model1.totalAmount floatValue];
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            NSMutableArray*listarr = [NSMutableArray array];
+                            [listarr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"data"]]];
+                            TodayBillFirstModel *model1 = listarr[0];
+                            TodayBillFirstModel *model2 = listarr[1];
+                            
+                            self.totalrevenueLab.text = [NSString stringWithFormat:@"¥%.2f",[model1.totalAmount floatValue]+[model2.totalAmount floatValue]];
+                            
+                            if ([model1.platformId isEqualToString:@"100"]) {
+                                self.weixinincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
+                                weixinmoney = [model1.totalAmount floatValue];
+                            }
+                            else{
+                                self.ailpayincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
+                                ailmoney = [model1.totalAmount floatValue];
+                            }
+                            
+                            if ([model2.platformId isEqualToString:@"100"]) {
+                                self.weixinincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
+                                weixinmoney = [model2.totalAmount floatValue];
+                            }
+                            else{
+                                self.ailpayincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
+                                ailmoney = [model2.totalAmount floatValue];
+                            }
+                            
+                            [self setUpTheAAChartViewWithChartType:AAChartTypePie];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
                     }
-                    else{
-                        self.ailpayincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
-                        ailmoney = [model1.totalAmount floatValue];
-                    }
-
-                    if ([model2.platformId isEqualToString:@"100"]) {
-                        self.weixinincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
-                        weixinmoney = [model2.totalAmount floatValue];
-                    }
-                    else{
-                        self.ailpayincomeLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
-                        ailmoney = [model2.totalAmount floatValue];
-                    }
-                    
-                    [self setUpTheAAChartViewWithChartType:AAChartTypePie];
                 }
                     break;
                 default:

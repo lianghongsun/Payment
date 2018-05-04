@@ -13,7 +13,9 @@
 #import "Define.h"
 
 @interface ScanVC ()<UITextFieldDelegate>
-
+{
+    UserInfo *user;
+}
 @end
 
 @implementation ScanVC
@@ -22,7 +24,7 @@
     [super viewDidLoad];
     self.title = @"收款金额";
     [self setCustomRightBtnItemWithImgName:@"" withTitle:@""];
-
+    user = [UserInfo shareObject];
     [self setrigBtn];
     YCPayKeyboard *keyboard = [YCPayKeyboard keyboard];
     keyboard.height = 250;
@@ -91,10 +93,15 @@
                     [self showMessage:@"输入金额不能为0" viewHeight:0];
                     return ;
                 }
-                NSString *pric = [weakself.moneyTF.text substringFromIndex:1];
-                ChooesePayment *vc = [[ChooesePayment alloc]initWithNibName:@"ChooesePayment" bundle:nil];
-                vc.pricenum = [NSString stringWithFormat:@"%.2f",[pric floatValue]];
-                [self.navigationController pushViewController:vc animated:YES];
+                if (user.isLogin) {
+                    NSString *pric = [weakself.moneyTF.text substringFromIndex:1];
+                    ChooesePayment *vc = [[ChooesePayment alloc]initWithNibName:@"ChooesePayment" bundle:nil];
+                    vc.pricenum = [NSString stringWithFormat:@"%.2f",[pric floatValue]];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                else{
+                    [self gobacklogin];
+                }
             }
                 break;
             default:
@@ -126,7 +133,12 @@ self.navigationItem.rightBarButtonItem = right;
 }
 
 - (void)rightAction {
-    
+    if (user.isLogin) {
+        
+    }
+    else{
+        [self gobacklogin];
+    }
     
 }
     

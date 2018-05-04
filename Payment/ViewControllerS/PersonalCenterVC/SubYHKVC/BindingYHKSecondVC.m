@@ -70,6 +70,11 @@
     
 }
 - (IBAction)getcodeAction:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     [self SendsmsAPI];
 }
 
@@ -106,13 +111,27 @@
     [adddebit startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         [self closeLoding];
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    [self.navigationController popViewControllerAnimated:YES];
-                    
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:
@@ -137,12 +156,27 @@
     [sms startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         [self closeLoding];
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    [self showMessage:@"验证码发送成功，请查看短信" viewHeight:0];
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                          [self showMessage:@"验证码发送成功，请查看短信" viewHeight:0];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:
@@ -162,6 +196,11 @@
 
 
 - (IBAction)submitAction:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     if ([self.nameTx.text length]<=0) {
         [self showMessage:@"持卡人姓名不能为空" viewHeight:0];
         return;

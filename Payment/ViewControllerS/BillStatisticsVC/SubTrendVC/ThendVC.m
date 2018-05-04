@@ -51,8 +51,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+    [self hideNavigationBarBottomLine:YES];
 }
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self hideNavigationBarBottomLine:NO];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"收款趋势";
@@ -210,6 +216,13 @@
 }
 
 - (IBAction)timeBtn1Action:(id)sender {
+    
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     if (indexnum == 1) {
         return;
     }
@@ -219,6 +232,12 @@
 }
 
 - (IBAction)timeBtn2Action:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     if (indexnum == 2) {
         return;
     }
@@ -230,6 +249,11 @@
 
 
 - (IBAction)timeBtn3Action:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     if (indexnum == 3) {
         return;
     }
@@ -240,6 +264,11 @@
 }
 
 - (IBAction)timeBtn4Action:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     if (indexnum == 4) {
         return;
     }
@@ -249,6 +278,12 @@
 }
 
 - (IBAction)timeBtn5Action:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     if (indexnum == 5) {
         return;
     }
@@ -259,6 +294,12 @@
 }
 
 - (IBAction)timeBtn6Action:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     if (indexnum == 6) {
         return;
     }
@@ -325,7 +366,7 @@
                     cell.subLab.text = @"上月无数据";
                 }
                 else{
-                    float pricenum = (model.totalAmount-lastmoney )/lastmoney ;
+                    float pricenum = (model.totalAmount-lastmoney )/lastmoney*100 ;
                     cell.subLab.text = [NSString stringWithFormat:@"%.2f%@",pricenum,@"%"];
                 }
             }
@@ -335,7 +376,7 @@
                     cell.subLab.text = @"上月无数据";
                 }
                 else{
-                    float pricenum = (model.totalAmount-mode3.totalAmount )/mode3.totalAmount ;
+                    float pricenum = (model.totalAmount-mode3.totalAmount )/mode3.totalAmount*100 ;
                     cell.subLab.text = [NSString stringWithFormat:@"%.2f%@",pricenum,@"%"];
                 }
                 
@@ -354,7 +395,7 @@
                     cell.subLab.text = @"上月无数据";
                 }
                 else{
-                    float pricenum = (model.totalCount-lastpen )/lastpen ;
+                    float pricenum = (model.totalCount-lastpen )/lastpen*100 ;
                     cell.subLab.text = [NSString stringWithFormat:@"%.2f%@",pricenum,@"%"];
                 }
             }
@@ -364,7 +405,7 @@
                     cell.subLab.text = @"上月无数据";
                 }
                 else{
-                    float pricenum = (model.totalCount-mode3.totalCount )/mode3.totalCount ;
+                    float pricenum = (model.totalCount-mode3.totalCount )/mode3.totalCount*100 ;
                     cell.subLab.text = [NSString stringWithFormat:@"%.2f%@",pricenum,@"%"];
                 }
                 
@@ -410,60 +451,71 @@
     [monbill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
             [self closeLoding];
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
                     NSDictionary *datadic = [dic objectForKey:@"data"];
-                    
-                    [self.listdataArr addObjectsFromArray:[YearlistBillFirstModel mj_objectArrayWithKeyValuesArray:datadic ]];
-                    
-                    
-                    
-                    YearlistBillFirstModel *model1 = self.listdataArr[0];
-                    YearlistBillFirstModel *model2 = self.listdataArr[1];
-                    YearlistBillFirstModel *model3 = self.listdataArr[2];
-                    YearlistBillFirstModel *model4 = self.listdataArr[3];
-                    YearlistBillFirstModel *model5 = self.listdataArr[4];
-                    YearlistBillFirstModel *model6 = self.listdataArr[5];
-                    YearlistBillFirstModel *model7 = self.listdataArr[6];
-                    lastmonth = model1.monthDate;
-                    lastmoney = model1.totalAmount;
-                    lastpen  = model1.totalCount;
-                    
-                    firstmonth = model2.monthDate;
-                    firstmoney = model2.totalAmount;
-                    firstpen  = model2.totalCount;
-                    [self.timeBtn1 setTitle:model2.monthDate forState:UIControlStateNormal];
-                    
-                    secondmonth = model3.monthDate;
-                    secondmoney = model3.totalAmount;
-                    secondpen  = model3.totalCount;
-                    [self.timeBtn2 setTitle:model3.monthDate forState:UIControlStateNormal];
-                    
-                    threemonth = model4.monthDate;
-                    threemoney = model4.totalAmount;
-                    threepen  = model4.totalCount;
-                    [self.timeBtn3 setTitle:model4.monthDate forState:UIControlStateNormal];
-                    
-                    fourmonth = model5.monthDate;
-                    fourmoney = model5.totalAmount;
-                    fourpen  = model5.totalCount;
-                    [self.timeBtn4 setTitle:model5.monthDate forState:UIControlStateNormal];
-                    
-                    fivetmonth = model6.monthDate;
-                    fivetmoney = model6.totalAmount;
-                    fivetpen  = model6.totalCount;
-                    [self.timeBtn5 setTitle:model6.monthDate forState:UIControlStateNormal];
-                    
-                    sixtmonth = model7.monthDate;
-                    sixtmoney = model7.totalAmount;
-                    sixtpen  = model7.totalCount;
-                   [self.timeBtn6 setTitle:model7.monthDate forState:UIControlStateNormal];
-                    
-                     [self setUpTheAAChartViewWithChartType:AAChartTypeSpline];
-                    [self.tableview.mj_header beginRefreshing];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            NSDictionary *listdic = [datadic objectForKey:@"data"];
+                            [self.listdataArr addObjectsFromArray:[YearlistBillFirstModel mj_objectArrayWithKeyValuesArray:listdic ]];
+                            YearlistBillFirstModel *model1 = self.listdataArr[0];
+                            YearlistBillFirstModel *model2 = self.listdataArr[1];
+                            YearlistBillFirstModel *model3 = self.listdataArr[2];
+                            YearlistBillFirstModel *model4 = self.listdataArr[3];
+                            YearlistBillFirstModel *model5 = self.listdataArr[4];
+                            YearlistBillFirstModel *model6 = self.listdataArr[5];
+                            YearlistBillFirstModel *model7 = self.listdataArr[6];
+                            lastmonth = model1.monthDate;
+                            lastmoney = model1.totalAmount;
+                            lastpen  = model1.totalCount;
+                            
+                            firstmonth = model2.monthDate;
+                            firstmoney = model2.totalAmount;
+                            firstpen  = model2.totalCount;
+                            [self.timeBtn1 setTitle:model2.monthDate forState:UIControlStateNormal];
+                            
+                            secondmonth = model3.monthDate;
+                            secondmoney = model3.totalAmount;
+                            secondpen  = model3.totalCount;
+                            [self.timeBtn2 setTitle:model3.monthDate forState:UIControlStateNormal];
+                            
+                            threemonth = model4.monthDate;
+                            threemoney = model4.totalAmount;
+                            threepen  = model4.totalCount;
+                            [self.timeBtn3 setTitle:model4.monthDate forState:UIControlStateNormal];
+                            
+                            fourmonth = model5.monthDate;
+                            fourmoney = model5.totalAmount;
+                            fourpen  = model5.totalCount;
+                            [self.timeBtn4 setTitle:model5.monthDate forState:UIControlStateNormal];
+                            
+                            fivetmonth = model6.monthDate;
+                            fivetmoney = model6.totalAmount;
+                            fivetpen  = model6.totalCount;
+                            [self.timeBtn5 setTitle:model6.monthDate forState:UIControlStateNormal];
+                            
+                            sixtmonth = model7.monthDate;
+                            sixtmoney = model7.totalAmount;
+                            sixtpen  = model7.totalCount;
+                            [self.timeBtn6 setTitle:model7.monthDate forState:UIControlStateNormal];
+                            
+                            [self setUpTheAAChartViewWithChartType:AAChartTypeSpline];
+                            [self.tableview.mj_header beginRefreshing];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:

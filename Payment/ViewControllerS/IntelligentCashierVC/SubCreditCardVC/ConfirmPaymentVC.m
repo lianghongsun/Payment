@@ -23,7 +23,7 @@
     self.cardnumLab.text = self.bankNo;
     self.cardnameLab.text = self.realname;
     [self.priceText addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    
+    self.priceText.keyboardType = UIKeyboardTypeDecimalPad;
     
 }
 
@@ -42,10 +42,20 @@
 }
 
 - (void)rightAction {
-    
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     
 }
 - (IBAction)reimbursementAction:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     
     WithdrawaPassVC *vc = [[WithdrawaPassVC alloc]initWithNibName:@"WithdrawaPassVC" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];

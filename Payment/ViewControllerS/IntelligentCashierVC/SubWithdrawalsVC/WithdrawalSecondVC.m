@@ -206,6 +206,13 @@
         WithDetermineBtnCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         cell.determineBlockoBlock = ^(WithDetermineBtnCell *cell) {
             
+            UserInfo *user = [UserInfo shareObject];
+            if (!user.isLogin) {
+                [self gobacklogin];
+                return;
+            }
+            
+            
             if (!self.lastSelected) {
                 return;
             }

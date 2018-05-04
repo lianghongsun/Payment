@@ -143,7 +143,7 @@
 - (void)SaveLockPath:(NSString *)path{
     NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
     [userDef setObject:path forKey:@"LockPath"];
-    [userDef setObject:@"关闭" forKey:@"isLockPath"];
+    [userDef setObject:@"开启" forKey:@"isLockPath"];
     [userDef synchronize];
 }
 @end

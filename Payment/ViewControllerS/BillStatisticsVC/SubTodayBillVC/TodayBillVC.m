@@ -33,7 +33,6 @@
     [super viewDidLoad];
     self.title = @"今日账单";
     [self setUidata];
-   
     [self.backBtn setImage:[UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e7c2", 30, RGB(255, 255, 255))] forState:UIControlStateNormal];
     
 }
@@ -57,13 +56,22 @@
 }
 
 - (IBAction)alipayAction:(id)sender {
-    
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     AilpaybillVC *vc = [[AilpaybillVC alloc]initWithNibName:@"AilpaybillVC" bundle:nil];
     vc.titleStr = @"支付宝账单详情";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)weixinAction:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     AilpaybillVC *vc = [[AilpaybillVC alloc]initWithNibName:@"AilpaybillVC" bundle:nil];
     vc.titleStr = @"微信账单详情";
     [self.navigationController pushViewController:vc animated:YES];
@@ -80,39 +88,54 @@
     [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
             [self closeLoding];
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
                     NSDictionary *datadic = [dic objectForKey:@"data"];
-                    self.allgetpriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
-                    self.billnumLab.text = [NSString stringWithFormat:@"%@笔",[datadic objectForKey:@"totalRow"]];
-                   
-                    self.listdataArr = [NSMutableArray array];
-                    [self.listdataArr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"list"]]];
-                    if (self.listdataArr.count==2) {
-                        TodayBillFirstModel *model1 = self.listdataArr[0];
-                        TodayBillFirstModel *model2 = self.listdataArr[1];
-                        if ([model1.platformId isEqualToString:@"100"]) {
-                            self.weixinpriceLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
-                            self.weixinnumLab.text = [NSString stringWithFormat:@"%@笔",model1.totalRow];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            NSDictionary *listdic = [datadic objectForKey:@"data"];
+                            self.allgetpriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[listdic objectForKey:@"totalAmount"]floatValue]];
+                            self.billnumLab.text = [NSString stringWithFormat:@"%@笔",[listdic objectForKey:@"totalRow"]];
+                            
+                            self.listdataArr = [NSMutableArray array];
+                            [self.listdataArr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[listdic objectForKey:@"list"]]];
+                            if (self.listdataArr.count==2) {
+                                TodayBillFirstModel *model1 = self.listdataArr[0];
+                                TodayBillFirstModel *model2 = self.listdataArr[1];
+                                if ([model1.platformId isEqualToString:@"100"]) {
+                                    self.weixinpriceLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
+                                    self.weixinnumLab.text = [NSString stringWithFormat:@"%@笔",model1.totalRow];
+                                }
+                                else{
+                                    self.ailPaypriceLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
+                                    self.ailpaynumLab.text = [NSString stringWithFormat:@"%@笔",model1.totalRow];
+                                }
+                                if ([model2.platformId isEqualToString:@"100"]) {
+                                    self.weixinpriceLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
+                                    self.weixinnumLab.text = [NSString stringWithFormat:@"%@笔",model2.totalRow];
+                                }
+                                else{
+                                    self.ailPaypriceLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
+                                    self.ailpaynumLab.text = [NSString stringWithFormat:@"%@笔",model2.totalRow];
+                                }
+                            }
                         }
-                        else{
-                            self.ailPaypriceLab.text = [NSString stringWithFormat:@"%.2f元",[model1.totalAmount floatValue]];
-                            self.ailpaynumLab.text = [NSString stringWithFormat:@"%@笔",model1.totalRow];
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
                         }
-                        
-                        
-                        if ([model2.platformId isEqualToString:@"100"]) {
-                            self.weixinpriceLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
-                            self.weixinnumLab.text = [NSString stringWithFormat:@"%@笔",model2.totalRow];
-                        }
-                        else{
-                            self.ailPaypriceLab.text = [NSString stringWithFormat:@"%.2f元",[model2.totalAmount floatValue]];
-                            self.ailpaynumLab.text = [NSString stringWithFormat:@"%@笔",model2.totalRow];
-                        }
+                            break;
                     }
+                    
+                    
                 }
                     break;
                 default:

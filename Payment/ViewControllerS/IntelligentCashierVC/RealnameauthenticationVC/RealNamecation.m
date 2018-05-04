@@ -92,6 +92,11 @@
     switch (user.identityAuthed) {
         case 0:
         {
+            UserInfo *user = [UserInfo shareObject];
+            if (!user.isLogin) {
+                [self gobacklogin];
+                return;
+            }
             RealNameSecondVC *vc = [[RealNameSecondVC alloc]initWithNibName:@"RealNameSecondVC" bundle:nil];
             [self.navigationController pushViewController:vc animated:YES];
         }
@@ -108,6 +113,11 @@
             break;
         case 3:
         {
+            UserInfo *user = [UserInfo shareObject];
+            if (!user.isLogin) {
+                [self gobacklogin];
+                return;
+            }
             RealNameFailureVC *vc = [[RealNameFailureVC alloc]initWithNibName:@"RealNameFailureVC" bundle:nil];
             [self.navigationController pushViewController:vc animated:YES];
         }

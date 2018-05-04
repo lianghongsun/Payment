@@ -169,6 +169,12 @@
         static NSString *identifier1 = @"WithDetermineBtnCell";
         WithDetermineBtnCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         cell.determineBlockoBlock = ^(WithDetermineBtnCell *cell) {
+            UserInfo *user = [UserInfo shareObject];
+            if (!user.isLogin) {
+                [self gobacklogin];
+                return;
+            }
+            
             if (self.ispopRoot) {
             [weakself.navigationController popToRootViewControllerAnimated:YES];
                 return;

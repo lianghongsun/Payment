@@ -87,12 +87,22 @@
     [self.view addSubview:tipLabel];
     self.tipLabel = tipLabel;
     
+    NSInteger  withnum;
+    if (iPhone6Plus_6sPlus) {
+        withnum = 400;
+    }
+    else if (IsiPhoneX){
+        withnum = 350;
+    }
+    else{
+        withnum =  250;
+    }
     CGFloat lockViewW = self.view.frame.size.width;
-    GestureLockView *lockView = [[GestureLockView alloc]initWithFrame:CGRectMake((lockViewW-300)/2, CGRectGetMaxY(self.tipLabel.frame) + MarginY, 300, 250)];
+    GestureLockView *lockView = [[GestureLockView alloc]initWithFrame:CGRectMake(10, CGRectGetMaxY(self.tipLabel.frame) + MarginY, lockViewW-20, withnum)];
     lockView.delegate = self;
     [self.view addSubview:lockView];
     self.gestureLockView = lockView;
-    self.resetButton = [[UIButton alloc]initWithFrame:CGRectMake(40, CGRectGetMaxY(self.tipLabel.frame) + MarginY*2+270,lockViewW-80 , 30)];
+    self.resetButton = [[UIButton alloc]initWithFrame:CGRectMake(40, CGRectGetMaxY(self.tipLabel.frame) + MarginY*2+withnum+20,lockViewW-80 , 30)];
     [self.resetButton addTarget:self action:@selector(ForgetPassAction) forControlEvents:UIControlEventTouchUpInside];
     NSMutableAttributedString* tncString = [[NSMutableAttributedString alloc] initWithString:@"切换密码登录"];
     [tncString addAttribute:NSUnderlineStyleAttributeName
@@ -194,22 +204,37 @@
     [login startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         [self closeLoding];
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    UserInfo *user = [UserInfo shareObject];
-                    user.datatoken = [NSString stringWithFormat:@"%@",[dic objectForKey:@"token"]];
-                    user.type = [[dic objectForKey:@"type"]integerValue];
-                    [self BaseinfoAPI];
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
                     
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            UserInfo *user = [UserInfo shareObject];
+                            user.datatoken = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"token"]];
+                            user.type = [[datadic objectForKey:@"type"]integerValue];
+                            [self BaseinfoAPI];
+                        }
+                        break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:
                 {
                     NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
-                    [self showMessage:mesgStr viewHeight:100];
+                    [self showMessage:mesgStr viewHeight:0];
                 }
                     break;
             }
@@ -226,21 +251,36 @@
     BaseinfoAPI *basein = [[BaseinfoAPI alloc]initWith];
     [basein startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    UserInfo *user = [UserInfo shareObject];
-                    [user mj_setKeyValues:dic];
-                    user.isLogin = YES;
-                    
-                    if (self.isloginout) {
-                        [self dismissViewControllerAnimated:YES completion:nil];
-                    }
-                    else{
-                        APPDELEGATE;
-                        [self presentViewController:del.tabController animated:YES completion:nil];
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            UserInfo *user = [UserInfo shareObject];
+                            [user mj_setKeyValues:datadic];
+                            user.isLogin = YES;
+                            
+                            if (self.isloginout) {
+                                [self dismissViewControllerAnimated:YES completion:nil];
+                            }
+                            else{
+                                APPDELEGATE;
+                                [self presentViewController:del.tabController animated:YES completion:nil];
+                            }
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
                     }
                 }
                     break;

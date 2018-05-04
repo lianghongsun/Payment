@@ -80,6 +80,12 @@
     BOOL show = [userDefaults boolForKey:[NSString stringWithFormat:@"version_%@", version]];
     
     if (!show && nil == self.window) {
+        
+        NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
+        [userDef setObject:@"开启" forKey:@"allMessnoti"];
+        [userDef setObject:@"开启" forKey:@"voiceMessnoti"];
+        [userDef setObject:@"开启" forKey:@"vibrationMess"];
+            
         self.images = images;
         self.buttonBorderColor = borderColor;
         self.buttonBgColor = bgColor;

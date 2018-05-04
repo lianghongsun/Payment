@@ -15,6 +15,9 @@
                 <outlet property="ailbackgrview" destination="BsP-ol-aSI" id="08G-LV-Uao"/>
                 <outlet property="aillogBtn" destination="21g-5I-BMt" id="Inv-iD-UOV"/>
                 <outlet property="ailtapimage" destination="cv8-mf-v50" id="l3q-AR-I4t"/>
+                <outlet property="chooseImg" destination="iJR-g1-7qC" id="EEv-C5-845"/>
+                <outlet property="industryBtn" destination="SpH-9y-iAj" id="5yC-FD-qbm"/>
+                <outlet property="subbackgView" destination="StX-9V-zWw" id="ogx-ap-fix"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="weixinbackgrview" destination="aQw-ro-VS1" id="aJl-lT-SxG"/>
                 <outlet property="weixinlogBtn" destination="huQ-pQ-Qsf" id="nUa-N1-H3T"/>
@@ -27,7 +30,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BsP-ol-aSI">
-                    <rect key="frame" x="112.5" y="30" width="150" height="150"/>
+                    <rect key="frame" x="112.5" y="100" width="150" height="150"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="支付宝支付" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lim-Sy-FCw">
                             <rect key="frame" x="38.5" y="130" width="71.5" height="10"/>
@@ -69,7 +72,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aQw-ro-VS1">
-                    <rect key="frame" x="112.5" y="230" width="150" height="150"/>
+                    <rect key="frame" x="112.5" y="300" width="150" height="150"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="微信支付" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQN-Gd-PPb">
                             <rect key="frame" x="46" y="130" width="57.5" height="10"/>
@@ -109,15 +112,61 @@
                         <constraint firstItem="huQ-pQ-Qsf" firstAttribute="centerX" secondItem="aQw-ro-VS1" secondAttribute="centerX" id="s1i-Hg-WRN"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="交易类型:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TzD-N5-ydd">
+                    <rect key="frame" x="47" y="41" width="65.5" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="StX-9V-zWw">
+                    <rect key="frame" x="112.5" y="30" width="227.5" height="40"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iJR-g1-7qC">
+                            <rect key="frame" x="187.5" y="7" width="25" height="25"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="7dp-zw-UQG"/>
+                                <constraint firstAttribute="width" constant="25" id="gV4-XB-Czk"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SpH-9y-iAj">
+                            <rect key="frame" x="20" y="0.0" width="207.5" height="40"/>
+                            <state key="normal" title="超市电器类">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="chooseindustryAction:" destination="-1" eventType="touchUpInside" id="kkf-dV-t1S"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="SpH-9y-iAj" firstAttribute="leading" secondItem="StX-9V-zWw" secondAttribute="leading" constant="20" id="3e3-Fc-Iy9"/>
+                        <constraint firstAttribute="trailing" secondItem="SpH-9y-iAj" secondAttribute="trailing" id="Qcx-1H-zia"/>
+                        <constraint firstAttribute="trailing" secondItem="iJR-g1-7qC" secondAttribute="trailing" constant="15" id="Ud0-uq-ArY"/>
+                        <constraint firstItem="iJR-g1-7qC" firstAttribute="centerY" secondItem="SpH-9y-iAj" secondAttribute="centerY" id="ZUB-8v-hci"/>
+                        <constraint firstAttribute="height" constant="40" id="aI7-Pp-AhN"/>
+                        <constraint firstAttribute="bottom" secondItem="SpH-9y-iAj" secondAttribute="bottom" id="ene-z8-qNN"/>
+                        <constraint firstItem="SpH-9y-iAj" firstAttribute="top" secondItem="StX-9V-zWw" secondAttribute="top" id="ryl-1A-8li"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <constraints>
+                <constraint firstItem="StX-9V-zWw" firstAttribute="leading" secondItem="TzD-N5-ydd" secondAttribute="trailing" id="2SC-iC-E0A"/>
+                <constraint firstItem="BsP-ol-aSI" firstAttribute="leading" secondItem="StX-9V-zWw" secondAttribute="leading" id="3DE-hc-dJr"/>
                 <constraint firstItem="aQw-ro-VS1" firstAttribute="top" secondItem="BsP-ol-aSI" secondAttribute="bottom" constant="50" id="6Mq-lj-h1v"/>
                 <constraint firstItem="aQw-ro-VS1" firstAttribute="centerX" secondItem="BsP-ol-aSI" secondAttribute="centerX" id="7i6-2b-Zw4"/>
-                <constraint firstItem="BsP-ol-aSI" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="L0a-hu-qEX"/>
                 <constraint firstItem="BsP-ol-aSI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="RhT-h9-tVH"/>
+                <constraint firstAttribute="trailing" secondItem="StX-9V-zWw" secondAttribute="trailing" constant="35" id="cnf-9M-NtP"/>
                 <constraint firstItem="aQw-ro-VS1" firstAttribute="width" secondItem="BsP-ol-aSI" secondAttribute="width" id="d56-0C-fbY"/>
+                <constraint firstItem="StX-9V-zWw" firstAttribute="centerY" secondItem="TzD-N5-ydd" secondAttribute="centerY" id="emy-6W-Hkg"/>
                 <constraint firstItem="aQw-ro-VS1" firstAttribute="height" secondItem="BsP-ol-aSI" secondAttribute="height" id="jCn-Vg-5Cy"/>
+                <constraint firstItem="BsP-ol-aSI" firstAttribute="top" secondItem="StX-9V-zWw" secondAttribute="bottom" constant="30" id="mGM-nt-CsX"/>
+                <constraint firstItem="StX-9V-zWw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="tsy-O4-qOq"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="110.5"/>
         </view>

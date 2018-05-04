@@ -47,14 +47,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    UITabBarItem * item=[self.tabBarController.tabBar.items objectAtIndex:2];
+    item.badgeValue=[NSString stringWithFormat:@"%@",@"9"];
+    
      user = [UserInfo shareObject];
     // 设置导航控制器的代理为self
     self.navigationController.delegate = self;
-    [self BaseinfoAPI];
     myenttime = [JCAUtility stringWithCurrentTime:@"yyyy-MM-dd"];
-    
-    [self TodayBillApi:user.uid StartDate:[JCAUtility stringWithCurrentTime:@"yyyy-MM-dd"]];
-    [self EverydayBillApi:user.uid StartDate:[JCAUtility stringLastWithCurrentTime:@"yyyy-MM-dd"] EndDate:[JCAUtility stringLastWithCurrentTime:@"yyyy-MM-dd"]];
+     [self.tableview.mj_header beginRefreshing];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -82,8 +82,10 @@
 }
 
 - (void)loadNewData {
-    [self.tableview reloadData];
-   [self.tableview.mj_header endRefreshing];
+    
+    [self BaseinfoAPI];
+    [self TodayBillApi:user.uid StartDate:[JCAUtility stringWithCurrentTime:@"yyyy-MM-dd"]];
+    [self EverydayBillApi:user.uid StartDate:[JCAUtility stringLastWithCurrentTime:@"yyyy-MM-dd"] EndDate:[JCAUtility stringLastWithCurrentTime:@"yyyy-MM-dd"]];
 }
 #pragma mark - UINavigationControllerDelegate
 // 将要显示控制器
@@ -176,7 +178,6 @@
                         break;
                     case 2:
                     {
-                        
                     [self checkgoscanVc:YES Checkmerchan:NO];
                     }break;
                     case 3:
@@ -190,7 +191,7 @@
                 }
             }
             else{
-                [self gologin];
+                [self gobacklogin];
             }
         };
         
@@ -218,7 +219,7 @@
                 }
             }
             else{
-                [self gologin];
+                [self gobacklogin];
             }
         };
         
@@ -245,7 +246,7 @@
                 }
             }
             else{
-                [self gologin];
+                [self gobacklogin];
             }
         };
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -263,7 +264,7 @@
                 [self  checkgoWithdrawalsVC:YES Checkmerchan:NO];
                 }
                 else{
-                    [self gologin];
+                    [self gobacklogin];
                 }
             };
             
@@ -279,7 +280,7 @@
                     [self checkgoCreditCardVC:YES Checkmerchan:NO];
                 }
                 else{
-                    [self gologin];
+                    [self gobacklogin];
                 }
             };
             cell.realnametoBlock = ^(HomeCertificationCell *cell){
@@ -287,7 +288,7 @@
                     [self checkgoRealNamecation];
                 }
                 else{
-                    [self gologin];
+                    [self gobacklogin];
                 }
             };
             
@@ -297,7 +298,7 @@
                     [self checkgoShopCertifiVC];
                 }
                 else{
-                    [self gologin];
+                    [self gobacklogin];
                 }
             };
             
@@ -306,7 +307,7 @@
                     [self checkgoTodayBillVC:YES Checkmerchan:NO];
                 }
                 else{
-                    [self gologin];
+                    [self gobacklogin];
                 }
             };
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -334,33 +335,51 @@
             static NSString *identifier1 = @"HomeCertificationCell";
             HomeCertificationCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
             cell.reimbursementoBlock  = ^(HomeCertificationCell *cell) {
-                [self showMessage:@"您还没有权限使用此功能" viewHeight:0];
-                
+                if (user.isLogin) {
+                 [self showMessage:@"您还没有权限使用此功能" viewHeight:0];
+                }
+                else{
+                    [self gobacklogin];
+                }
             };
             cell.realnametoBlock = ^(HomeCertificationCell *cell){
-                [self checkgoRealNamecation];
+                if (user.isLogin) {
+                 [self checkgoRealNamecation];
+                }
+                else{
+                    [self gobacklogin];
+                }
             };
             
             cell.storetolock  = ^(HomeCertificationCell *cell){
-                [self checkgoShopCertifiVC];
-                
+                if (user.isLogin) {
+                    [self checkgoShopCertifiVC];
+                }
+                else{
+                    [self gobacklogin];
+                }
             };
             
             cell.todaytoBlock  = ^(HomeCertificationCell *cell){
-                switch (user.type) {
-                    case 1:
-                    {
-                        [self checkgoTodayBillVC:YES Checkmerchan:YES];
+                if (user.isLogin) {
+                    switch (user.type) {
+                        case 1:
+                        {
+                            [self checkgoTodayBillVC:YES Checkmerchan:YES];
+                        }
+                            break;
+                        case 3:
+                        {
+                            TodayBillVC *vc = [[TodayBillVC alloc]initWithNibName:@"TodayBillVC" bundle:nil];
+                            vc.hidesBottomBarWhenPushed = YES;  // 设置B
+                            [weakself.navigationController pushViewController:vc animated:YES];
+                        }break;
+                        default:
+                            break;
                     }
-                        break;
-                    case 3:
-                    {
-                        TodayBillVC *vc = [[TodayBillVC alloc]initWithNibName:@"TodayBillVC" bundle:nil];
-                        vc.hidesBottomBarWhenPushed = YES;  // 设置B
-                        [weakself.navigationController pushViewController:vc animated:YES];
-                    }break;
-                    default:
-                        break;
+                }
+                else{
+                    [self gobacklogin];
                 }
             };
             
@@ -388,25 +407,36 @@
     
 }
 
-- (void)gologin {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (void)BaseinfoAPI {
     BaseinfoAPI *basein = [[BaseinfoAPI alloc]initWith];
     [basein startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        [self.tableview.mj_header endRefreshing];
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            [self.tableview.mj_header endRefreshing];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    UserInfo *user = [UserInfo shareObject];
-                    [user mj_setKeyValues:dic];
-                    user.isLogin = YES;
-                     [self.tableview.mj_header beginRefreshing];
-                    
-                    
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            UserInfo *user = [UserInfo shareObject];
+                            [user mj_setKeyValues:datadic];
+                            user.isLogin = YES;
+                            [self.tableview reloadData];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:
@@ -419,7 +449,7 @@
         }
     } failure:^(YTKBaseRequest *request) {
         
-        
+        [self.tableview.mj_header endRefreshing];
     }];
 }
 
@@ -464,7 +494,7 @@
     vc.hidesBottomBarWhenPushed = YES;  // 设置B
     [self.navigationController pushViewController:vc animated:YES];
 }
-
+#pragma mark -- 收款码
 - (void)checkpaymentVc:(BOOL)checkident Checkmerchan:(BOOL)checkmerchan {
     if (checkident) {
         if (!(user.identityAuthed==1)) {
@@ -485,7 +515,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-#pragma mark -- 收款码
+#pragma mark -- 提款
 - (void)checkgoWithdrawalsVC:(BOOL)checkident Checkmerchan:(BOOL)checkmerchan {
     if (checkident) {
         if (!(user.identityAuthed==1)) {
@@ -499,6 +529,11 @@
             [self showMessage:@"请先进行店铺认证" viewHeight:0];
             return;
         }
+    }
+    
+    if (!(user.paypasswdAuthed==1)) {
+        [self showMessage:@"请先设置支付密码" viewHeight:0];
+        return;
     }
     
     WithdrawalsVC *vc = [[WithdrawalsVC alloc]initWithNibName:@"WithdrawalsVC" bundle:nil];
@@ -522,6 +557,11 @@
             [self showMessage:@"请先进行店铺认证" viewHeight:0];
             return;
         }
+    }
+    
+    if (!(user.paypasswdAuthed==1)) {
+        [self showMessage:@"请先设置支付密码" viewHeight:0];
+        return;
     }
     
     CreditCardVC *vc = [[CreditCardVC alloc]initWithNibName:@"CreditCardVC" bundle:nil];
@@ -576,37 +616,49 @@
     [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
             [self closeLoding];
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
                     NSDictionary *datadic = [dic objectForKey:@"data"];
-                    NSMutableArray*listarr = [NSMutableArray array];
-                    [listarr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"list"]]];
-                    
-                    TodayBillFirstModel *model1 = listarr[0];
-                    TodayBillFirstModel *model2 = listarr[1];
-                    
-                    
-                        todayAllbill = [NSString stringWithFormat:@"今日 %.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
-                        if ([model1.platformId isEqualToString:@"100"]) {
-                            todayweixinbill = [NSString stringWithFormat:@"今日 %.2f",[model1.totalAmount floatValue]];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            NSDictionary *listdic = [datadic objectForKey:@"data"];
+                            NSMutableArray*listarr = [NSMutableArray array];
+                            [listarr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[listdic objectForKey:@"list"]]];
+                            
+                            TodayBillFirstModel *model1 = listarr[0];
+                            TodayBillFirstModel *model2 = listarr[1];
+                            
+                            
+                            todayAllbill = [NSString stringWithFormat:@"今日 %.2f",[[listdic objectForKey:@"totalAmount"]floatValue]];
+                            if ([model1.platformId isEqualToString:@"100"]) {
+                                todayweixinbill = [NSString stringWithFormat:@"今日 %.2f",[model1.totalAmount floatValue]];
+                            }
+                            else{
+                                todayweixinbill = [NSString stringWithFormat:@"今日 %.2f",[model1.totalAmount floatValue]];
+                            }
+                            
+                            if ([model2.platformId isEqualToString:@"100"]) {
+                                todayailbill = [NSString stringWithFormat:@"今日 %.2f",[model2.totalAmount floatValue]];
+                            }
+                            else{
+                                todayailbill = [NSString stringWithFormat:@"今日 %.2f",[model2.totalAmount floatValue]];
+                            }
+                            [self.tableview reloadData];
                         }
-                        else{
-                            todayweixinbill = [NSString stringWithFormat:@"今日 %.2f",[model1.totalAmount floatValue]];
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
                         }
-                        
-                        if ([model2.platformId isEqualToString:@"100"]) {
-                            todayailbill = [NSString stringWithFormat:@"今日 %.2f",[model2.totalAmount floatValue]];
-                        }
-                        else{
-                            todayailbill = [NSString stringWithFormat:@"今日 %.2f",[model2.totalAmount floatValue]];
-                        }
-                    
-                    
-                    [self.tableview reloadData];
-                    
+                            break;
+                    }
                 }
                     break;
                 default:
@@ -625,41 +677,53 @@
 }
 
 - (void)EverydayBillApi:(NSString *)mid StartDate:(NSString *)startDate EndDate:(NSString *)endDate{
-    [self showLoding:@"请稍后"];
     EverydayBillApi *todaybill = [[EverydayBillApi alloc]initWithUid:mid StartDate:startDate EndDate:endDate];
     [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            [self closeLoding];
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
                     NSDictionary *datadic = [dic objectForKey:@"data"];
-                    NSMutableArray*listarr = [NSMutableArray array];
-                    [listarr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"list"]]];
-                    
-                    TodayBillFirstModel *model1 = listarr[0];
-                    TodayBillFirstModel *model2 = listarr[1];
-                    
-                    
-                        tomoAllBill = [NSString stringWithFormat:@"昨日 %.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
-                        if ([model1.platformId isEqualToString:@"100"]) {
-                            tomoweixinBill = [NSString stringWithFormat:@"昨日 %.2f",[model1.totalAmount floatValue]];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            NSDictionary *listdic = [datadic objectForKey:@"data"];
+                            NSMutableArray*listarr = [NSMutableArray array];
+                            [listarr addObjectsFromArray:[TodayBillFirstModel mj_objectArrayWithKeyValuesArray:[listdic objectForKey:@"list"]]];
+                            
+                            TodayBillFirstModel *model1 = listarr[0];
+                            TodayBillFirstModel *model2 = listarr[1];
+                            
+                            
+                            tomoAllBill = [NSString stringWithFormat:@"昨日 %.2f",[[listdic objectForKey:@"totalAmount"]floatValue]];
+                            if ([model1.platformId isEqualToString:@"100"]) {
+                                tomoweixinBill = [NSString stringWithFormat:@"昨日 %.2f",[model1.totalAmount floatValue]];
+                            }
+                            else{
+                                tomoweixinBill = [NSString stringWithFormat:@"昨日 %.2f",[model1.totalAmount floatValue]];
+                            }
+                            
+                            if ([model2.platformId isEqualToString:@"100"]) {
+                                tomoailBill = [NSString stringWithFormat:@"昨日 %.2f",[model2.totalAmount floatValue]];
+                            }
+                            else{
+                                tomoailBill = [NSString stringWithFormat:@"昨日 %.2f",[model2.totalAmount floatValue]];
+                            }
+                            
+                            [self.tableview reloadData];
                         }
-                        else{
-                            tomoweixinBill = [NSString stringWithFormat:@"昨日 %.2f",[model1.totalAmount floatValue]];
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
                         }
-                        
-                        if ([model2.platformId isEqualToString:@"100"]) {
-                            tomoailBill = [NSString stringWithFormat:@"昨日 %.2f",[model2.totalAmount floatValue]];
-                        }
-                        else{
-                            tomoailBill = [NSString stringWithFormat:@"昨日 %.2f",[model2.totalAmount floatValue]];
-                        }
-        
-                    [self.tableview reloadData];
-                    
+                            break;
+                    }
                 }
                     break;
                 default:
@@ -671,7 +735,6 @@
             }
         }
     } failure:^(YTKBaseRequest *request) {
-        [self closeLoding];
         
         
     }];

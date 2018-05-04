@@ -27,9 +27,5 @@
 @property (nonatomic,strong) NSDictionary *accounts;//账户金额
 @property (nonatomic,strong) NSDictionary *detail;//个人信息
 @property (nonatomic,assign) BOOL isLogin;
-@property (nonatomic,assign) BOOL issetgesturespass;
-
-
-
 
 @end

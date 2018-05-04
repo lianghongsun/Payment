@@ -18,7 +18,6 @@
 #import "CZHAddressPickerView.h"
 #import "AddressPickerHeader.h"
 #import "IdentiyMerchantApi.h"
-#import "ShopBindingYHKVC.h"
 
 @interface ShopCerifiThreeVC ()<UITextFieldDelegate>
 {
@@ -68,6 +67,12 @@
 }
 
 - (IBAction)nextAction:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     [self.nameTx resignFirstResponder];
     [self.adreeTx resignFirstResponder];
     
@@ -167,17 +172,34 @@
 
 - (void)IdentiyMerchantApi {
     [self showLoding:@"正在验证信息"];
-    IdentiyMerchantApi *identuy = [[IdentiyMerchantApi alloc]initWithType:self.storetype MerName:self.nameTx.text ProvinceId:provincecode CityId:citycode District:countycode Address:self.adreeTx.text MerContent:self.categoryBtn.titleLabel.text BizCode:@"" BizCodeFile:[UIImage imageNamed:@"bill-msg1"] BizHeadFile:[UIImage imageNamed:@"bill-msg1"] BizInnerFile:[UIImage imageNamed:@"bill-msg1"]];
+    IdentiyMerchantApi *identuy = [[IdentiyMerchantApi alloc]initWithType:self.storetype MerName:self.nameTx.text ProvinceId:provincecode CityId:citycode District:countycode Address:self.adreeTx.text MerContent:self.categoryBtn.titleLabel.text BizCode:@"" BizCodeFile:[UIImage imageNamed:@"bill-msg1"] BizHeadFile:[UIImage imageNamed:@"bill-msg1"] BizInnerFile:[UIImage imageNamed:@"bill-msg1"] Realname:@"" BankNo:@"" CardType:@"" BankName:@"" Smscode:@""];
     [identuy startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         [self closeLoding];
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    ShopBindingYHKVC *vc = [[ShopBindingYHKVC alloc]initWithNibName:@"ShopBindingYHKVC" bundle:nil];
-                    [self.navigationController pushViewController:vc animated:YES];
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                           
+                            UserInfo *user = [UserInfo shareObject];
+                            user.merchantAuthed = 2;
+                            [self.navigationController popToRootViewControllerAnimated:YES];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:

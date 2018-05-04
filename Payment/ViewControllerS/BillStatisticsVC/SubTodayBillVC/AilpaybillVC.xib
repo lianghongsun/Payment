@@ -38,7 +38,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="169"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2w1-Pk-Pn5">
-                            <rect key="frame" x="187" y="30" width="0.0" height="0.0"/>
+                            <rect key="frame" x="187" y="35" width="0.0" height="0.0"/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -121,11 +121,13 @@
                                 <constraint firstItem="nOg-iX-Y9q" firstAttribute="height" secondItem="csn-74-dir" secondAttribute="height" id="y6S-x0-bIJ"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5o-jA-wq1">
-                            <rect key="frame" x="15" y="15" width="53" height="30"/>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5o-jA-wq1">
+                            <rect key="frame" x="5" y="20" width="75" height="30"/>
                             <constraints>
+                                <constraint firstAttribute="width" constant="75" id="QAo-c1-cXz"/>
                                 <constraint firstAttribute="height" constant="30" id="Qar-sk-p55"/>
                             </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" title="返回" image="iconfont-xuanze">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -143,9 +145,9 @@
                         <constraint firstAttribute="height" constant="169" id="ZLQ-8r-OHN"/>
                         <constraint firstAttribute="trailing" secondItem="n6d-aE-F5r" secondAttribute="trailing" id="d8G-Zq-Wff"/>
                         <constraint firstItem="n6d-aE-F5r" firstAttribute="top" secondItem="doU-pg-15T" secondAttribute="top" id="f8G-rQ-2Jy"/>
-                        <constraint firstItem="P5o-jA-wq1" firstAttribute="leading" secondItem="doU-pg-15T" secondAttribute="leading" constant="15" id="lRM-nc-1sg"/>
+                        <constraint firstItem="P5o-jA-wq1" firstAttribute="leading" secondItem="doU-pg-15T" secondAttribute="leading" constant="5" id="lRM-nc-1sg"/>
                         <constraint firstItem="n6d-aE-F5r" firstAttribute="leading" secondItem="doU-pg-15T" secondAttribute="leading" id="nGs-Ad-A5c"/>
-                        <constraint firstItem="2w1-Pk-Pn5" firstAttribute="top" secondItem="doU-pg-15T" secondAttribute="top" constant="30" id="pbf-q6-VQN"/>
+                        <constraint firstItem="2w1-Pk-Pn5" firstAttribute="top" secondItem="doU-pg-15T" secondAttribute="top" constant="35" id="pbf-q6-VQN"/>
                         <constraint firstItem="5Wl-6v-V0v" firstAttribute="leading" secondItem="doU-pg-15T" secondAttribute="leading" id="y59-Wp-0gt"/>
                         <constraint firstAttribute="bottom" secondItem="5Wl-6v-V0v" secondAttribute="bottom" id="zzo-Ae-RGd"/>
                     </constraints>

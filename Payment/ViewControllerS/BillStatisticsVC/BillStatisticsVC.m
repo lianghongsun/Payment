@@ -141,6 +141,12 @@ static NSString * const identifier = @"FXCyclePagerViewCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
@@ -198,16 +204,29 @@ static NSString * const identifier = @"FXCyclePagerViewCell";
     [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
             [self closeLoding];
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {   
                     NSDictionary *datadic = [dic objectForKey:@"data"];
-                    
-                        self.todaypriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
-                        self.todaynumLab.text = [NSString stringWithFormat:@"合计%@笔",[datadic objectForKey:@"totalRow"]];
-                    
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            NSDictionary *listdic = [datadic objectForKey:@"data"];
+                            self.todaypriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[listdic objectForKey:@"totalAmount"]floatValue]];
+                            self.todaynumLab.text = [NSString stringWithFormat:@"合计%@笔",[listdic objectForKey:@"totalRow"]];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:
@@ -231,14 +250,29 @@ static NSString * const identifier = @"FXCyclePagerViewCell";
     [todaybill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
             [self closeLoding];
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
                     NSDictionary *datadic = [dic objectForKey:@"data"];
-                        self.tomopriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
-                        self.tomonumLab.text = [NSString stringWithFormat:@"合计%@笔",[datadic objectForKey:@"totalRow"]];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            NSDictionary *listdic = [datadic objectForKey:@"data"];
+                            self.tomopriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[listdic objectForKey:@"totalAmount"]floatValue]];
+                            self.tomonumLab.text = [NSString stringWithFormat:@"合计%@笔",[listdic objectForKey:@"totalRow"]];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:

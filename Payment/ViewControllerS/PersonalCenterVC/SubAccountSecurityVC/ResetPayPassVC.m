@@ -78,12 +78,27 @@
     [sms startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         [self closeLoding];
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject ;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    [self showMessage:@"验证码发送成功，请查看短信" viewHeight:0];
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            [self showMessage:@"验证码发送成功，请查看短信" viewHeight:0];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:
@@ -106,14 +121,29 @@
     [paypass startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         [self closeLoding];
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    [self showMessage:@"支付密码重置成功" viewHeight:0];
-                    user.paypasswdAuthed = 0;
-                    [self.navigationController popViewControllerAnimated:YES];
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            [self showMessage:@"支付密码重置成功" viewHeight:0];
+                            user.paypasswdAuthed = 0;
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:

@@ -63,13 +63,29 @@
     [passport startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         [self closeLoding];
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    [self showMessage:@"密码重置成功" viewHeight:0];
-                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            [self showMessage:@"密码重置成功" viewHeight:0];
+                            [self.navigationController popToRootViewControllerAnimated:YES];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:

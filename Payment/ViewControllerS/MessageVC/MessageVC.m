@@ -17,6 +17,11 @@
 
 @implementation MessageVC
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    UITabBarItem * item=[self.tabBarController.tabBar.items objectAtIndex:2];
+    item.badgeValue=[NSString stringWithFormat:@"%@",@"9"];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"消息";
@@ -146,7 +151,11 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     
 }
 

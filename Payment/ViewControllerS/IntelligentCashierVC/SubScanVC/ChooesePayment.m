@@ -22,6 +22,7 @@
     BOOL _shouldStop;
     NSInteger  shounum;
     BOOL ispush;
+    UserInfo *user;
 }
 @end
 
@@ -34,6 +35,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"支付方式";
+    user = [UserInfo shareObject];
     shounum = 0;
     self.chooseImg.image = [UIImage iconWithInfo:TBCityIconInfoMake(@"\U0000e60e", 40, ThemeColor)];
     self.subbackgView.layer.borderWidth = 1;
@@ -61,6 +63,10 @@
 
 
 - (IBAction)weixinAction:(id)sender {
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     platformId = @"100";
     platformname = @"微信";
     [self.ailtapimage setHidden:YES];
@@ -82,6 +88,10 @@
 }
 
 - (IBAction)ailpayAction:(id)sender {
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     platformId = @"101";
     platformname = @"支付宝";
     [self.ailtapimage setHidden:NO];
@@ -115,73 +125,93 @@
     CreateOrderApi *create = [[CreateOrderApi alloc]initWithPlatformId:platformId ProductName:self.industryBtn.titleLabel.text Money:self.pricenum Authcode:authcode];
     [create startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    NSDictionary *payorder = [dic objectForKey:@"payOrder"];
-                    NSInteger orderState = [[payorder objectForKey:@"orderState"] integerValue];
-                    NSString *orderNo = [payorder objectForKey:@"orderNo"];
-                    switch (orderState) {
-                        case 0:
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                     NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
                         {
-                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                                
-                                while (YES)
+                            NSDictionary *payorder = [datadic objectForKey:@"payOrder"];
+                            NSInteger orderState = [[payorder objectForKey:@"orderState"] integerValue];
+                            NSString *orderNo = [payorder objectForKey:@"orderNo"];
+                            switch (orderState) {
+                                case 0:
                                 {
-                                    if (_shouldStop)
-                                    {
-                                        goto CancelBlock;
-                                    }
-                                    [NSThread sleepForTimeInterval:2.0];
-                                    [self QueryOrderApi:orderNo];
-                                    //例如：下面是你block中实际任务中的一步
-                                    LxPrintf(@"***每5秒输出一次这段文字***") ;
-                                    shounum++;
-                                    if (shounum>=15) {
-                                        _shouldStop = YES;
-                                    }
+                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                                        
+                                        while (YES)
+                                        {
+                                            if (_shouldStop)
+                                            {
+                                                goto CancelBlock;
+                                            }
+                                            [NSThread sleepForTimeInterval:2.0];
+                                            [self QueryOrderApi:orderNo];
+                                            //例如：下面是你block中实际任务中的一步
+                                            LxPrintf(@"***每5秒输出一次这段文字***") ;
+                                            shounum++;
+                                            if (shounum>=15) {
+                                                _shouldStop = YES;
+                                            }
+                                        }
+                                        
+                                    CancelBlock:
+                                        //Do some clean up operations here
+                                        NSLog(@"Block is cancelled");
+                                        return;
+                                    });
                                 }
-                                
-                            CancelBlock:
-                                //Do some clean up operations here
-                                NSLog(@"Block is cancelled");
-                                return;
-                            });
+                                    break;
+                                case 1:
+                                {
+                                    [self closeLoding];
+                                    _shouldStop = YES;
+                                    [self syntheticVoice:[NSString stringWithFormat:@"%@收款%@元",platformname,self.pricenum]];
+                                    CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
+                                    OrderModel *moders = [[OrderModel alloc]init];
+                                    [moders mj_setKeyValues:payorder];
+                                    vc.model = moders;
+                                    vc.ispopRoot = YES;
+                                    [self.navigationController pushViewController:vc animated:YES];
+                                    return ;
+                                }
+                                    break;
+                                case 2:
+                                {
+                                    [self closeLoding];
+                                    [self showMessage:@"收款异常" viewHeight:0];
+                                }
+                                    break;
+                                default:
+                                {
+                                    [self closeLoding];
+                                }
+                                    break;
+                            }
                         }
                             break;
-                        case 1:
-                        {
-                            [self closeLoding];
-                            _shouldStop = YES;
-                            [self syntheticVoice:[NSString stringWithFormat:@"%@收款%@元",platformname,self.pricenum]];
-                            CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
-                            OrderModel *moders = [[OrderModel alloc]init];
-                            [moders mj_setKeyValues:payorder];
-                            vc.model = moders;
-                            vc.ispopRoot = YES;
-                            [self.navigationController pushViewController:vc animated:YES];
-                            return ;
-                          }
-                            break;
-                        case 2:
-                        {
-                            [self closeLoding];
-                            [self showMessage:@"收款异常" viewHeight:0];
-                        }
-                            break;
+                            
                         default:
                         {
                             [self closeLoding];
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
                         }
                             break;
                     }
+                    
+                    
                     
                 }
                     break;
                 default:
                 {
+                    [self closeLoding];
                     NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
                     [self showMessage:mesgStr viewHeight:0];
                 }
@@ -199,52 +229,70 @@
     QueryOrderApi *create = [[QueryOrderApi alloc]initWithOrderNo:orderNo];
     [create startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    NSDictionary *payorder = [dic objectForKey:@"payOrder"];
-                    NSInteger orderState = [[payorder objectForKey:@"orderState"] integerValue];
-                    switch (orderState) {
-                        case 0:
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
                         {
-                            if (_shouldStop) {
-                                [self closeLoding];
+                            NSDictionary *payorder = [dic objectForKey:@"payOrder"];
+                            NSInteger orderState = [[payorder objectForKey:@"orderState"] integerValue];
+                            switch (orderState) {
+                                case 0:
+                                {
+                                    if (_shouldStop) {
+                                        [self closeLoding];
+                                    }
+                                }
+                                    break;
+                                case 1:
+                                {
+                                    if (ispush) {
+                                        return ;
+                                    }
+                                    _shouldStop = YES;
+                                    [self closeLoding];
+                                    [self syntheticVoice:[NSString stringWithFormat:@"%@收款%@元",platformname,self.pricenum]];
+                                    CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
+                                    OrderModel *moders = [[OrderModel alloc]init];
+                                    [moders mj_setKeyValues:payorder];
+                                    vc.model = moders;
+                                    vc.ispopRoot = YES;
+                                    [self.navigationController pushViewController:vc animated:YES];
+                                    ispush = YES;
+                                }
+                                    break;
+                                case 2:
+                                {
+                                    [self showMessage:@"收款异常" viewHeight:0];
+                                    _shouldStop = YES;
+                                    [self closeLoding];
+                                }
+                                    break;
+                                default:
+                                    break;
                             }
+                            
                         }
                             break;
-                        case 1:
-                        {
-                            if (ispush) {
-                                return ;
-                            }
-                            _shouldStop = YES;
-                            [self closeLoding];
-                            [self syntheticVoice:[NSString stringWithFormat:@"%@收款%@元",platformname,self.pricenum]];
-                            CollectionSuccVC *vc = [[CollectionSuccVC alloc]initWithNibName:@"CollectionSuccVC" bundle:nil];
-                            OrderModel *moders = [[OrderModel alloc]init];
-                            [moders mj_setKeyValues:payorder];
-                            vc.model = moders;
-                            vc.ispopRoot = YES;
-                            [self.navigationController pushViewController:vc animated:YES];
-                            ispush = YES;
-                        }
-                            break;
-                        case 2:
-                        {
-                            [self showMessage:@"收款异常" viewHeight:0];
-                            _shouldStop = YES;
-                            [self closeLoding];
-                        }
-                            break;
+                            
                         default:
+                        {
+                            [self closeLoding];
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
                             break;
                     }
                 }
                     break;
                 default:
                 {
+                    [self closeLoding];
                     NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
                     [self showMessage:mesgStr viewHeight:0];
                 }

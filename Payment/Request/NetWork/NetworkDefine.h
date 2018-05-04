@@ -12,9 +12,9 @@
 
 //定义网络请求返回值
 typedef NS_ENUM(NSInteger, RequestStatus) {
-    RequestStatusSuccess = 1,
+    RequestStatusSuccess = 200,
     
-//    RequestStatusForbidQuery = 100,
+    SubRequestStatusSuccess = 1,
 //    RequestStatusUnofficialOwners = 130,
 //    RequestStatusPasswordError = 150,
 //    RequestStatusPasswordIrregularities = 151,
@@ -83,9 +83,8 @@ typedef NS_ENUM(NSInteger, RequestStatus) {
 
 };
 
-#define REFRESH_TOKEN_FIELD @"/Account/RefreshToken.ashx"  //刷新token的 url 参数
 #define ACCESSTOKEN_HEAD_FIELD @"" //token 对应的头字段key
-#define TOKEN_EXPIRE_CODE 905//token 过期的状态码
+#define TOKEN_EXPIRE_CODE 10999//token 过期的状态码
 #define TOKEN_ILLEGAL 904//token 非法的状态码
 #define SERVER_ERROR 903//服务器错误
 

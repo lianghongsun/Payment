@@ -146,6 +146,12 @@
         WithButtonCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         [cell.withdarBtn setTitle:@"我要提款" forState:UIControlStateNormal];
         cell.withdrawalstoBlock = ^(WithButtonCell *cell){
+            UserInfo *user = [UserInfo shareObject];
+            if (!user.isLogin) {
+                [self gobacklogin];
+                return;
+            }
+            
             if (self.listdataArr.count==0) {
                 [self showMessage:@"您还未绑定银行卡,请先去绑定收款银行" viewHeight:0];
                 return ;
@@ -167,6 +173,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
+        UserInfo *user = [UserInfo shareObject];
+        if (!user.isLogin) {
+            [self gobacklogin];
+            return;
+        }
         WithdrawalSucc *vc = [[WithdrawalSucc alloc]initWithNibName:@"WithdrawalSucc" bundle:nil];
         vc.ispopRoot = NO;
         [self.navigationController pushViewController:vc animated:YES];
@@ -208,14 +219,29 @@
     [query startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
             [self.tableview.mj_header endRefreshing];
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
                     
-                    [self.listdataArr removeAllObjects];
-                    [self.listdataArr addObjectsFromArray:[YHKModel mj_objectArrayWithKeyValuesArray:[dic objectForKey:@"list"]]];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            [self.listdataArr removeAllObjects];
+                            [self.listdataArr addObjectsFromArray:[YHKModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"list"]]];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:

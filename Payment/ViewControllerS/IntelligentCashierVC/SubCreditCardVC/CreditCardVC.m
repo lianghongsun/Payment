@@ -137,6 +137,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     YHKModel *model = self.listdataArr[indexPath.row];
     ConfirmPaymentVC *vc = [[ConfirmPaymentVC alloc]initWithNibName:@"ConfirmPaymentVC" bundle:nil];
     vc.realname = model.realname;
@@ -148,12 +154,22 @@
 }
 
 - (IBAction)addYHKAction:(id)sender {
-    
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     AddCreditCardVC *VC = [[AddCreditCardVC alloc]initWithNibName:@"AddCreditCardVC" bundle:nil];
     [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (void)rightbuttonAction {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     CraditRecordVC *vc = [[CraditRecordVC alloc]initWithNibName:@"CraditRecordVC" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -189,14 +205,29 @@
     [query startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
             [self.tableview.mj_header endRefreshing];
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    [self.listdataArr removeAllObjects];
-                    [self.listdataArr addObjectsFromArray:[YHKModel mj_objectArrayWithKeyValuesArray:[dic objectForKey:@"list"]]];
-                    [self.tableview cyl_reloadData];
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            [self.listdataArr removeAllObjects];
+                            [self.listdataArr addObjectsFromArray:[YHKModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"list"]]];
+                            [self.tableview cyl_reloadData];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                 }
                     break;
                 default:

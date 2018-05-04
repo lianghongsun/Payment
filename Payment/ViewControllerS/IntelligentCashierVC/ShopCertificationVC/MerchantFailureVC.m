@@ -30,6 +30,12 @@
 
 
 - (IBAction)uploadAgainAction:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     ShopCerifiSecoendVC *vc = [[ShopCerifiSecoendVC alloc]initWithNibName:@"ShopCerifiSecoendVC" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }

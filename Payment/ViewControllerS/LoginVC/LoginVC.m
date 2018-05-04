@@ -101,20 +101,35 @@
     [login startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         [self closeLoding];
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    UserInfo *user = [UserInfo shareObject];
-                    user.datatoken = [NSString stringWithFormat:@"%@",[dic objectForKey:@"token"]];
-                    user.type = [[dic objectForKey:@"type"]integerValue];
-                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                    //登陆成功后把用户名和密码存储到UserDefault
-                    [userDefaults setObject:self.usernameText.text forKey:@"name"];
-                    [userDefaults setObject:self.passwordText.text forKey:@"password"];
-                    [userDefaults synchronize];
-                    [self BaseinfoAPI];
+                    NSDictionary *datadic = [dic objectForKey:@"data"];
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            UserInfo *user = [UserInfo shareObject];
+                            user.datatoken = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"token"]];
+                            user.type = [[datadic objectForKey:@"type"]integerValue];
+                            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                            //登陆成功后把用户名和密码存储到UserDefault
+                            [userDefaults setObject:self.usernameText.text forKey:@"name"];
+                            [userDefaults setObject:self.passwordText.text forKey:@"password"];
+                            [userDefaults synchronize];
+                            [self BaseinfoAPI];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
+                    }
                     
                 }
                     break;
@@ -138,27 +153,39 @@
     BaseinfoAPI *basein = [[BaseinfoAPI alloc]initWith];
     [basein startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject ;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
-                    UserInfo *user = [UserInfo shareObject];
-                    [user mj_setKeyValues:dic];
-                    user.isLogin = YES;
-                    if (self.loginBlock) {
-                        self.loginBlock(self);
+                NSDictionary *datadic = [dic objectForKey:@"data"];
+                NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            UserInfo *user = [UserInfo shareObject];
+                            [user mj_setKeyValues:datadic];
+                            user.isLogin = YES;
+                            if (self.loginBlock) {
+                                self.loginBlock(self);
+                            }
+                            if (self.isloginout) {
+                                [self dismissViewControllerAnimated:YES completion:nil];
+                            }
+                            else{
+                                APPDELEGATE;
+                                [self presentViewController:del.tabController animated:YES completion:nil];
+                            }
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
                     }
-                    if (self.isloginout) {
-                        [self dismissViewControllerAnimated:YES completion:nil];
-                    }
-                    else{
-                        APPDELEGATE;
-                        [self presentViewController:del.tabController animated:YES completion:nil];
-                    }
-                    
-                    
-                    
                 }
                     break;
                 default:

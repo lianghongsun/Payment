@@ -9,12 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface ChooeseThree : BaseViewController
-
-@property (nonatomic,copy)NSString *pricenum;
-
 - (IBAction)weixinAction:(id)sender;
 
 - (IBAction)ailpayAction:(id)sender;
+@property (nonatomic,copy)NSString *pricenum;
 
 @property (weak, nonatomic) IBOutlet UIImageView *ailtapimage;
 @property (weak, nonatomic) IBOutlet UIImageView *weixintapimage;
@@ -23,5 +21,9 @@
 
 @property (weak, nonatomic) IBOutlet UIView *ailbackgrview;
 @property (weak, nonatomic) IBOutlet UIView *weixinbackgrview;
+- (IBAction)chooseindustryAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *industryBtn;
+@property (weak, nonatomic) IBOutlet UIImageView *chooseImg;
+@property (weak, nonatomic) IBOutlet UIView *subbackgView;
 
 @end

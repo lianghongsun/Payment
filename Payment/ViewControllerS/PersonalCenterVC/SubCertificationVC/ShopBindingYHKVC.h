@@ -25,4 +25,16 @@
 
 - (IBAction)submitAction:(id)sender;
 
+@property (nonatomic,copy)NSString *type;
+@property (nonatomic,copy)NSString *merName;
+@property (nonatomic,copy)NSString *provinceId;
+@property (nonatomic,copy)NSString *cityId;
+@property (nonatomic,copy)NSString *district;
+@property (nonatomic,copy)NSString *address;
+@property (nonatomic,copy)NSString *merContent;
+@property (nonatomic,copy)NSString *bizCode;
+@property (nonatomic,strong) UIImage *bizCodeimg;
+@property (nonatomic,strong)UIImage *bizHeadimg;
+@property (nonatomic,strong)UIImage *bizInnerimg;
+
 @end

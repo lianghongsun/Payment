@@ -19,7 +19,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    // 设置导航控制器的代理为self
+    self.navigationItem.hidesBackButton = NO;
     
 }
 - (void)viewDidLoad {

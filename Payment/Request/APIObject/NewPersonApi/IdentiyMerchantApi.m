@@ -22,9 +22,14 @@
     UIImage *_bizCodeFile;
     UIImage *_bizHeadFile;
     UIImage *_bizInnerFile;
+    NSString *_realname;
+    NSString *_bankNo;
+    NSString *_cardType;
+    NSString *_bankName;
+    NSString *_smscode;
 }
 
-- (id)initWithType:(NSString *)type MerName:(NSString *)merName ProvinceId:(NSString *)provinceId CityId:(NSString *)cityId District:(NSString *)district Address:(NSString *)address MerContent:(NSString *)merContent BizCode:(NSString *)bizCode BizCodeFile:(UIImage *)bizCodeFile BizHeadFile:(UIImage *)bizHeadFile BizInnerFile:(UIImage *)bizInnerFile {
+- (id)initWithType:(NSString *)type MerName:(NSString *)merName ProvinceId:(NSString *)provinceId CityId:(NSString *)cityId District:(NSString *)district Address:(NSString *)address MerContent:(NSString *)merContent BizCode:(NSString *)bizCode BizCodeFile:(UIImage *)bizCodeFile BizHeadFile:(UIImage *)bizHeadFile BizInnerFile:(UIImage *)bizInnerFile Realname:(NSString *)realname BankNo:(NSString *)bankNo CardType:(NSString *)cardType BankName:(NSString *)bankName Smscode:(NSString *)smscode{
     self = [super init];
     if (self) {
         _type = type?type:@"";
@@ -38,6 +43,11 @@
         _bizCodeFile = bizCodeFile;
         _bizHeadFile = bizHeadFile;
         _bizInnerFile = bizInnerFile;
+        _realname = realname?realname:@"";
+        _bankNo = bankNo?bankNo:@"";
+        _cardType = cardType?cardType:@"";
+        _bankName = bankName?bankName:@"";
+        _smscode = smscode?smscode:@"";
     }
     return self;
 }
@@ -75,7 +85,12 @@
               @"district":_district,
               @"address":_address,
               @"merContent":_merContent,
-              @"bizCode":_bizCode
+              @"bizCode":_bizCode,
+              @"realname":_realname,
+              @"bankNo":_bankNo,
+              @"cardType":_cardType,
+              @"bankName":_bankName,
+              @"smscode":_smscode,
               };
 }
 

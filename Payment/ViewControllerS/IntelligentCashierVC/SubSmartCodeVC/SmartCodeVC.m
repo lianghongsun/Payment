@@ -12,6 +12,7 @@
 @interface SmartCodeVC ()
 {
     NSString *QrUrlStr;
+    UserInfo *user;
 }
 @end
 
@@ -20,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"收款码收款";
-    
+    user = [UserInfo shareObject];
     
     [self setimage];
     [self setrigBtn];
@@ -50,8 +51,12 @@
 }
 
 - (void)rightAction {
-    
-    
+    if (user.isLogin) {
+        
+    }
+    else{
+        [self gobacklogin];
+    }
 }
 
 -(void)setimage {

@@ -84,6 +84,11 @@
 
 // 实名
 - (IBAction)realnameAction:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     if ([self.real_nameLab.text isEqualToString:@"未认证"]) {
         RealNameSecondVC *vc = [[RealNameSecondVC alloc]initWithNibName:@"RealNameSecondVC" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
@@ -99,7 +104,12 @@
 }
 //店铺信息
 - (IBAction)shopAction:(id)sender {
-    if ([self.shopLab.text isEqualToString:@"未审核"]) {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    if ([self.shopLab.text isEqualToString:@"未认证"]) {
         ShopCerifiSecoendVC *vc = [[ShopCerifiSecoendVC alloc]initWithNibName:@"ShopCerifiSecoendVC" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
     }

@@ -36,10 +36,10 @@
 //                    getUsefulStatus = [[(NSDictionary *)[request responseJSONObject] objectForKey:@"GetUsefulData"][@"Code"] integerValue];
 //                }
                 
-                if (getUsefulStatus == TOKEN_EXPIRE_CODE||[[(NSDictionary *)[request responseJSONObject] objectForKey:@"Code"] integerValue] == TOKEN_EXPIRE_CODE) {
+                if (getUsefulStatus == TOKEN_EXPIRE_CODE||[[(NSDictionary *)[request responseJSONObject] objectForKey:@"retcode"] integerValue] == TOKEN_EXPIRE_CODE) {
 //                    NSLog(@"%@过期",request.requestUrl);
                     
-                }else if (getUsefulStatus == TOKEN_ILLEGAL||[[(NSDictionary *)[request responseJSONObject] objectForKey:@"Code"] integerValue] == TOKEN_ILLEGAL){
+                }else if (getUsefulStatus == TOKEN_ILLEGAL||[[(NSDictionary *)[request responseJSONObject] objectForKey:@"retcode"] integerValue] == TOKEN_ILLEGAL){
 //                    NSLog(@"%@非法",request.requestUrl);
                     
                 }else{

@@ -10,6 +10,7 @@
 #import "ShopCationCell.h"
 #import "UIViewController+XHPhoto.h"
 #import "IdentiyMerchantApi.h"
+#import "ShopBindingYHKVC.h"
 
 @interface ShopCerifFourVC ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
@@ -99,6 +100,12 @@
     };
     
     cell.submittoBlock = ^(ShopCationCell *cell) {
+        UserInfo *user = [UserInfo shareObject];
+        if (!user.isLogin) {
+            [self gobacklogin];
+            return;
+        }
+        
         if ([mynameTx.text length]<=0) {
             [self showMessage:@"营业执照号不能为空" viewHeight:0];
             return ;
@@ -116,7 +123,20 @@
             [self showMessage:@"营业场所照片不能为空" viewHeight:0];
             return ;
         }
-        [self IdentiyMerchantApi];
+        
+        ShopBindingYHKVC *vc = [[ShopBindingYHKVC alloc]initWithNibName:@"ShopBindingYHKVC" bundle:nil];
+        vc.type = self.type;
+        vc.merName = self.merName;
+        vc.provinceId = self.provinceId;
+        vc.cityId = self.cityId;
+        vc.district = self.district;
+        vc.address = self.address;
+        vc.merContent = self.merContent;
+        vc.bizCode = mynameTx.text;
+        vc.bizCodeimg = bizCodeimg;
+        vc.bizHeadimg = bizHeadimg;
+        vc.bizInnerimg = bizInnerimg;
+        [self.navigationController pushViewController:vc animated:YES];
     };
     
     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -127,34 +147,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-}
-
-- (void)IdentiyMerchantApi {
-    [self showLoding:@"请稍后"];
-    IdentiyMerchantApi *identuy = [[IdentiyMerchantApi alloc]initWithType:self.type MerName:self.merName ProvinceId:self.provinceId CityId:self.cityId District:self.district Address:self.address MerContent:self.merContent BizCode:mynameTx.text BizCodeFile:bizCodeimg BizHeadFile:bizHeadimg BizInnerFile:bizInnerimg];
-    [identuy startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
-        [self closeLoding];
-        if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
-            switch (responseCode) {
-                case RequestStatusSuccess:
-                {
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                }
-                    break;
-                default:
-                {
-                    NSString *mesgStr = [NSString stringWithFormat:@"%@",[dic objectForKey:@"msg"]];
-                    [self showMessage:mesgStr viewHeight:0];
-                }
-                    break;
-            }
-        }
-    } failure:^(YTKBaseRequest *request) {
-        [self closeLoding];
-        
-    }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
  #import<AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import "LoginVC.h"
 
 @interface BaseViewController ()<UIImagePickerControllerDelegate>
 
@@ -420,8 +421,8 @@
         //设置语言类别（不能被识别，返回值为nil）
         speechUtterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"zh-CN"];
         //设置语速快慢
-        speechUtterance.rate = 0.45;
-        speechUtterance.pitchMultiplier = 0.5;
+        speechUtterance.rate = 0.55;
+        speechUtterance.pitchMultiplier = 0.8;
         
         //语音合成器会生成音频
         [ synthesizer speakUtterance:speechUtterance];
@@ -514,9 +515,73 @@
    
 }
 
-- (void)goimageImagePicker {
-    
+-(void)hideNavigationBarBottomLine:(BOOL)hidden{
+    //iOS10及以上的隐藏方法
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 10.0) {
+        if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
+            NSArray *list=self.navigationController.navigationBar.subviews;
+            for (id obj in list) {
+                //10.0的系统字段不一样
+                UIView *view =   (UIView*)obj;
+                for (id obj2 in view.subviews) {
+                    if ([obj2 isKindOfClass:[UIImageView class]]) {
+                        UIImageView *image =  (UIImageView*)obj2;
+                        if (image.frame.size.height <= 1) {
+                            image.hidden = hidden;
+                        }
+                    }
+                    
+                    if ([obj2 isKindOfClass:[UIView class]]) {
+                        UIView *view2 = (UIView *)obj2;
+                        if (view2.frame.size.height <= 1) {
+                            view2.hidden = hidden;
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+        return;
+    }
+    //iOS10以下的隐藏方法
+    if ([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]){
+        NSArray *list = self.navigationController.navigationBar.subviews;
+        for (id obj in list) {
+            if ([obj isKindOfClass:[UIImageView class]]) {
+                UIImageView *imageView = (UIImageView *)obj;
+                NSArray *list2 = imageView.subviews;
+                for (id obj2 in list2) {
+                    if ([obj2 isKindOfClass:[UIImageView class]]) {
+                        UIImageView *imageView2 = (UIImageView *)obj2;
+                        if (imageView2.frame.size.height <= 1) {
+                            imageView2.hidden = hidden;
+                        }
+                    }
+                    if ([obj2 isKindOfClass:[UIView class]]) {
+                        UIView *view2 = (UIView *)obj2;
+                        if (view2.frame.size.height <= 1) {
+                            view2.hidden = hidden;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
+
+- (BOOL)StringIsNullOrEmpty:(NSString *)str
+{
+    return (str == nil || [str isKindOfClass:[NSNull class]] || str.length == 0 || [str isEqualToString:@"(null)"] || [str isEqualToString:@"<null>"]);
+}
+
+- (void)gobacklogin {
+    LoginVC *vc = [[LoginVC alloc]initWithNibName:@"LoginVC" bundle:nil];
+    vc.isloginout = YES;
+    UINavigationController *naiv = [[UINavigationController alloc]initWithRootViewController:vc];
+    self.tabBarController.selectedIndex = 0;
+    [self presentViewController:naiv animated:YES completion:nil];
+}
 
 @end

@@ -30,7 +30,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+     [self hideNavigationBarBottomLine:YES];
     user = [UserInfo shareObject];
     if ([self.titleStr isEqualToString:@"支付宝账单详情"]) {
         platformId = @"101";
@@ -41,6 +41,11 @@
     
     [self.tableview.mj_header beginRefreshing];
     
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self hideNavigationBarBottomLine:NO];
 }
 
 - (void)viewDidLoad {
@@ -246,6 +251,11 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     TodayBilldetailModel *model = self.listdataArr[indexPath.row];
     
     TodayBillSuccVC *vc = [[TodayBillSuccVC alloc]initWithNibName:@"TodayBillSuccVC" bundle:nil];
@@ -285,29 +295,48 @@
     [minbill startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
         if ([request.responseJSONObject isKindOfClass:[NSDictionary class]]) {
             [self closeLoding];
-            NSDictionary *dic = [(NSDictionary *)request.responseJSONObject objectForKey:@"data"];
-            NSInteger responseCode = [[dic objectForKey:@"code"] integerValue];
+            NSDictionary *dic = (NSDictionary *)request.responseJSONObject;
+            NSInteger responseCode = [[dic objectForKey:@"retcode"] integerValue];
             switch (responseCode) {
                 case RequestStatusSuccess:
                 {
                     NSDictionary *datadic = [dic objectForKey:@"data"];
-                    self.allgetpriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[datadic objectForKey:@"totalAmount"]floatValue]];
-                    self.billnumLab.text = [NSString stringWithFormat:@"%@笔",[datadic objectForKey:@"totalCount"]];
-                    if (pageNum == 1) {
-                        [self.listdataArr removeAllObjects];
-                        [self.tableview.mj_header endRefreshing];
-                    }
-                    else{
-                        [self.tableview.mj_footer endRefreshing];
-                        
-                    }
-                    NSArray *arr = [datadic objectForKey:@"list"];
-                    if (arr.count<10) {
-                        self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
+                    NSInteger Code = [[datadic objectForKey:@"code"] integerValue];
+                    switch (Code) {
+                        case SubRequestStatusSuccess:
+                        {
+                            NSDictionary *listdic = [datadic objectForKey:@"data"];
+                            self.allgetpriceLab.text = [NSString stringWithFormat:@"¥%.2f",[[listdic objectForKey:@"totalAmount"]floatValue]];
+                            self.billnumLab.text = [NSString stringWithFormat:@"%@笔",[listdic objectForKey:@"totalCount"]];
+                            if (pageNum == 1) {
+                                [self.listdataArr removeAllObjects];
+                                [self.tableview.mj_header endRefreshing];
+                            }
+                            else{
+                                [self.tableview.mj_footer endRefreshing];
+                                
+                            }
+                            NSArray *arr = [listdic objectForKey:@"list"];
+                            if (arr.count<10) {
+                                self.tableview.mj_footer.state = MJRefreshStateNoMoreData;
+                            }
+                            
+                            [self.listdataArr addObjectsFromArray:[TodayBilldetailModel mj_objectArrayWithKeyValuesArray:[listdic objectForKey:@"list"]]];
+                            [self.tableview cyl_reloadData];
+                        }
+                            break;
+                            
+                        default:
+                        {
+                            [self.tableview.mj_header endRefreshing];
+                            [self.tableview.mj_footer endRefreshing];
+                            NSString *mesgStr = [NSString stringWithFormat:@"%@",[datadic objectForKey:@"msg"]];
+                            [self showMessage:mesgStr viewHeight:0];
+                        }
+                            break;
                     }
                     
-                    [self.listdataArr addObjectsFromArray:[TodayBilldetailModel mj_objectArrayWithKeyValuesArray:[datadic objectForKey:@"list"]]];
-                    [self.tableview cyl_reloadData];
+                    
                 }
                     break;
                 default:

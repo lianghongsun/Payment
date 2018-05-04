@@ -115,6 +115,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     if (indexPath.section == 0) {
         
         [self showCanEdit:YES photo:^(UIImage *photo) {

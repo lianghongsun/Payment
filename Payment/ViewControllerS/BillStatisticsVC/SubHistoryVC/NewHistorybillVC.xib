@@ -97,7 +97,6 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.68235294120000001" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="S6g-4j-rQv" secondAttribute="bottom" id="1p9-mT-iVK"/>
                         <constraint firstItem="nOg-iX-Y9q" firstAttribute="width" secondItem="csn-74-dir" secondAttribute="width" id="3yv-np-bnN"/>
@@ -121,13 +120,12 @@
                 </tableView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本月账单不包含今日数据" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nNg-hP-nar">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
-                    <color key="backgroundColor" red="0.0" green="0.68235294120000001" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.0" green="0.68235294120000001" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="zHn-NJ-QvB" firstAttribute="top" secondItem="5Wl-6v-V0v" secondAttribute="bottom" id="6Lp-qZ-XBZ"/>
                 <constraint firstAttribute="trailing" secondItem="nNg-hP-nar" secondAttribute="trailing" id="7gP-YT-srj"/>

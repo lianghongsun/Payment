@@ -105,5 +105,7 @@
 -(void)showMessage:(NSString*)message viewHeight:(float)height;
 - (void)showWinMessage:(NSString*)message viewHeight:(float)height;
 
-- (void)goimageImagePicker;
+-(void)hideNavigationBarBottomLine:(BOOL)hidden;
+- (BOOL)StringIsNullOrEmpty:(NSString *)str;
+- (void)gobacklogin;
 @end

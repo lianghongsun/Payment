@@ -37,7 +37,7 @@
         case 1:
         {
             titleArr = @[@"账户安全",@"信息认证"];
-            imageArr = @[@"user-ic-security",@"user-ic-message",@"user-ic-bankcard"];
+            imageArr = @[@"user-ic-security",@"user-ic-message"];
         }
             break;
         case 2:
@@ -120,11 +120,11 @@
         UsernameCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier1];
         [cell.userImg sd_setImageWithURL:[user.detail objectForKey:@"headPath"]  placeholderImage:[UIImage imageNamed:@"userporfile-pic"]];
         NSString *namestr;
-        if ([[user.detail objectForKey:@"realName"]length]>0) {
-            namestr = [user.detail objectForKey:@"realName"];
+        if ([self StringIsNullOrEmpty:[user.detail objectForKey:@"realName"]]) {
+            namestr = user.username;
         }
         else{
-            namestr = user.username;
+            namestr = [user.detail objectForKey:@"realName"];
         }
         cell.usernameLab.text = namestr;
         cell.usernumLab.text = user.username;
@@ -172,6 +172,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     if (indexPath.section == 0) {
         UserInfoVC *vc = [[UserInfoVC alloc]initWithNibName:@"UserInfoVC" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];

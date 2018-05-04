@@ -21,7 +21,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     user = [UserInfo shareObject];
-    switch (user.identityAuthed) {
+    switch (user.merchantAuthed) {
         case 0:
         {
             self.status.text = @"未认证";
@@ -59,6 +59,12 @@
 
 
 - (IBAction)nextAction:(id)sender {
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
+    
     if ([self.status.text isEqualToString:@"未认证"]) {
         ShopCerifiSecoendVC *vc = [[ShopCerifiSecoendVC alloc]initWithNibName:@"ShopCerifiSecoendVC" bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];

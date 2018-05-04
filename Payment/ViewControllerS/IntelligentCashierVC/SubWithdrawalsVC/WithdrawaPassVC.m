@@ -55,7 +55,11 @@
 }
 
 - (IBAction)nextAction:(id)sender {
-   
+    UserInfo *user = [UserInfo shareObject];
+    if (!user.isLogin) {
+        [self gobacklogin];
+        return;
+    }
     
 }
 @end

@@ -76,13 +76,21 @@
     
     
     if (isButtonOn) {
-        self.voiceswitch.userInteractionEnabled = YES;
+         [self.vibrationswitch setOn:YES];
+         [self.voiceswitch setOn:YES];
         self.vibrationswitch.userInteractionEnabled = YES;
+        self.voiceswitch.userInteractionEnabled = YES;
         [userDef setObject:@"开启" forKey:@"allMessnoti"];
+        [userDef setObject:@"开启" forKey:@"voiceMessnoti"];
+        [userDef setObject:@"开启" forKey:@"vibrationMess"];
     }else {
         [userDef setObject:@"关闭" forKey:@"allMessnoti"];
-        self.voiceswitch.userInteractionEnabled = NO;
+        [userDef setObject:@"关闭" forKey:@"voiceMessnoti"];
+        [userDef setObject:@"关闭" forKey:@"vibrationMess"];
+        [self.vibrationswitch setOn:NO];
+        [self.voiceswitch setOn:NO];
         self.vibrationswitch.userInteractionEnabled = NO;
+        self.voiceswitch.userInteractionEnabled = NO;
     }
     [userDef synchronize];
 }
